@@ -29,6 +29,7 @@
 		"@fortawesome/free-solid-svg-icons": "^6.2.1",
 		"@sveltejs/adapter-static": "^1.0.4",
 		"lottie-svelte": "^1.3.3",
+		"nostr": "github:jb55/nostr-js",
 		"nostr-tools": "github:nbd-wtf/nostr-tools",
 		"svelte-fa": "^3.0.3",
 		"svelte-local-storage-store": "^0.3.2",

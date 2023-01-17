@@ -2,7 +2,11 @@
 	import { faHandshake } from '@fortawesome/free-solid-svg-icons/index.js';
 
 	import Fa from 'svelte-fa/src/fa.svelte';
-	import { faRightToBracket, faRightFromBracket, faDove } from '@fortawesome/free-solid-svg-icons/index.js';
+	import {
+		faRightToBracket,
+		faRightFromBracket,
+		faDove
+	} from '@fortawesome/free-solid-svg-icons/index.js';
 	/** @type {import('./$types').LayoutData} */
 	export let data;
 	import { base } from '$app/paths';
@@ -36,7 +40,6 @@
     </Row>
 </Container> -->
 <!-- <Nav /> -->
-
 
 <Container>
 	<Row cols={2}>

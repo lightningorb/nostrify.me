@@ -4,7 +4,7 @@
 	import { get } from 'svelte/store';
 	let prefs = get(preferences);
 	let text = '';
-	export let relay;
+	export let pool;
 	async function post() {
 		let event = {
 			kind: 1,
@@ -15,16 +15,25 @@
 		};
 		event.id = window.NostrTools.getEventHash(event);
 		event.sig = window.NostrTools.signEvent(event, prefs.private_key);
-		let pub = relay.publish(event);
-		pub.on('ok', () => {
-			text = '';
-		});
-		pub.on('seen', () => {
-			console.log(`we saw the event on ${relay.url}`);
-		});
-		pub.on('failed', (reason) => {
-			console.log(`failed to publish to ${relay.url}: ${reason}`);
-		});
+		console.log(event);
+		for (var i in prefs.relays) {
+			var relay_address = prefs.relays[i];
+			console.log(relay_address);
+			const relay = window.NostrTools.relayInit(relay_address);
+			await relay.connect();
+			relay.on('connect', async () => {
+				let pub = await relay.publish(event);
+				pub.on('ok', () => {
+					text = '';
+				});
+				pub.on('seen', () => {
+					console.log(`we saw the event `);
+				});
+				pub.on('failed', (reason) => {
+					console.log(`failed to publish`);
+				});
+			});
+		}
 	}
 </script>
 

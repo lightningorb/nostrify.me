@@ -21,10 +21,9 @@ const config = {
 		},
 		prerender: {
 			entries: ['/', '/profile'],
-		    crawl: false
-	    },
+			crawl: false
+		}
 	}
 };
 
 export default config;
-

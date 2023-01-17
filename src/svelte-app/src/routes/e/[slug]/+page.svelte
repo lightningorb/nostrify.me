@@ -1,14 +1,14 @@
 <script>
+	import { RelayPool } from 'nostr';
 	import { writable } from 'svelte/store';
 	import { preferences } from '$lib/store.js';
 	import { get } from 'svelte/store';
 	import { onMount } from 'svelte';
-	import Note from '../components/Note.svelte';
-	import Post from '../components/Post.svelte';
-	import { RelayPool } from 'nostr';
+	import Note from '../../../components/Note.svelte';
 	import { Spinner } from 'sveltestrap';
 	import { Form, FormGroup, FormText, Input, Label, Button } from 'sveltestrap';
 	import { browser, dev } from '$app/environment';
+
 	const events = writable({});
 	let prefs = get(preferences);
 	let relay_address = prefs.relay;
@@ -17,13 +17,15 @@
 		prefs.public_key = window.NostrTools.getPublicKey(prefs.private_key);
 		preferences.set(prefs);
 	}
+	// $: relays = get(preferences).relays || [];
+
 	let connected = false;
 	const pool = RelayPool(prefs.relays);
 	pool.on('open', (relay) => {
 		connected = true;
 		relay.subscribe('subid', {
 			kinds: [1],
-			since: Math.floor(Date.now() / 1000) - 3600
+			'#e': [window.location.pathname.slice(3, window.location.pathname.length)]
 		});
 	});
 	// pool.on('eose', (relay) => relay.close());
@@ -36,8 +38,8 @@
 </script>
 
 <br />
-<Post {pool} />
-<p>Notes: {Object.entries($events).length}</p>
+
+<p>Notes: {$events.length}</p>
 {#if !connected}
 	<Spinner size="sm" type="grow" />
 {/if}
