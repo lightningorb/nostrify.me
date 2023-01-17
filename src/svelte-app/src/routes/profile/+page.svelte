@@ -1,0 +1,54 @@
+<script>
+	import { preferences } from '$lib/store.js';
+	import { get } from 'svelte/store';
+	import { Form, FormGroup, FormText, Label, Input } from 'sveltestrap';
+	$: relay = get(preferences).relay;
+	$: public_key = get(preferences).public_key;
+	$: private_key = get(preferences).private_key;
+</script>
+
+<h1>Profile</h1>
+<br />
+
+<FormGroup>
+	<Label for="relay">Relay</Label>
+	<Input
+		type="text"
+		name="relay"
+		id="relay"
+		placeholder="wss://nostr.onsats.org"
+		on:change={() => {
+			let p = get(preferences);
+			p.relay = relay;
+			preferences.set(p);
+		}}
+		bind:value={relay}
+	/>
+	<hr />
+	<Label for="public_key">Public Key</Label>
+	<Input
+		type="text"
+		name="pubic key"
+		id="public_key"
+		placeholder={public_key}
+		on:change={() => {
+			let p = get(preferences);
+			p.public_key = public_key;
+			preferences.set(p);
+		}}
+		bind:value={public_key}
+	/>
+	<Label for="private_key">Private Key</Label>
+	<Input
+		type="text"
+		name="pviate key"
+		id="private_key"
+		placeholder={private_key}
+		on:change={() => {
+			let p = get(preferences);
+			p.private_key = private_key;
+			preferences.set(p);
+		}}
+		bind:value={private_key}
+	/>
+</FormGroup>
