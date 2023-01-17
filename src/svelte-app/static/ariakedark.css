@@ -1,0 +1,99 @@
+/* Ariake Dark CSS Theme for Sveltestrap */
+
+/* Body and Base Styles */
+body {
+background-color: #212327 !important;
+color: #d1d1d1 !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+color: #8f6b6b !important;
+}
+
+/* Links */
+a {
+color: #5e81ac !important;
+}
+a:hover {
+color: #8f6b6b !important;
+}
+
+/* Buttons */
+.btn {
+background-color: #5e81ac !important;
+color: #212327 !important;
+border-color: #5e81ac !important;
+}
+.btn:hover {
+background-color: #8f6b6b !important;
+color: #d1d1d1 !important;
+border-color: #8f6b6b !important;
+}
+
+/* Inputs */
+input, textarea {
+background-color: #373b41 !important;
+color: #d1d1d1 !important;
+border-color: #5e81ac !important;
+}
+
+/* Table Styles */
+table {
+background-color: #373b41 !important;
+color: #d1d1d1 !important;
+}
+th {
+background-color: #5e81ac !important;
+color: #212327 !important;
+}
+td {
+border-color: #5e81ac !important;
+}
+
+/* Navbar */
+.navbar {
+background-color: #212327 !important;
+color: #d1d1d1 !important;
+}
+.navbar a {
+color: #d1d1d1 !important;
+}
+.navbar a:hover {
+color: #5e81ac !important;
+}
+.navbar .navbar-brand {
+color: #8f6b6b !important;
+}
+
+/* Cards */
+.card {
+background-color: #373b41 !important;
+color: #d1d1d1 !important;
+border-color: #5e81ac !important;
+}
+
+/* Forms */
+.form-control {
+background-color: #373b41 !important;
+color: #d1d1d1 !important;
+border-color: #5e81ac !important;
+}
+
+/* Code Blocks */
+pre {
+background-color: #373b41 !important;
+color: #d1d1d1 !important;
+border-color: #5e81ac !important;
+}
+code {
+background-color: #373b41 !important;
+color: #d1d1d1 !important;
+border-color: #5e81ac !important;
+}
+
+/* Footer */
+footer {
+background-color: #212327 !important;
+color: #d1d1d1 !important;
+}

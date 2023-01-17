@@ -1,4 +1,5 @@
 <script type="text/javascript">
+    import SvelteMarkdown from 'svelte-markdown'
 	import {
 		Button,
 		Card,
@@ -22,8 +23,8 @@
 		content = content.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
 		return content;
 	}
-	let content = makeSafeHtml(e.content);
-	content = content.replace(/<img/gi, '<img class="img-fluid"');
+	let source = makeSafeHtml(e.content);
+	source = source.replace(/<img/gi, '<img class="img-fluid"');
 	let ref = e.tags.filter((x) => x[0] == 'e');
 	onMount(async () => {
 		isOpen = true;
@@ -42,7 +43,8 @@
 			<CardBody>
 				<!-- <CardSubtitle></CardSubtitle> -->
 				<CardText>
-					{@html content}
+					<SvelteMarkdown {source} />
+					<!-- {content} -->
 				</CardText>
 			</CardBody>
 			<CardFooter>

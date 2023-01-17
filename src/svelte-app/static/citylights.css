@@ -1,0 +1,99 @@
+/* City Lights CSS Theme */
+
+/* Body and Base Styles */
+body {
+background-color: #1d1c1c !important;
+color: #f8f8f2 !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+color: #ffa500 !important;
+}
+
+/* Links */
+a {
+color: #00bfff !important;
+}
+a:hover {
+color: #ffa500 !important;
+}
+
+/* Buttons */
+.btn {
+background-color: #00bfff !important;
+color: #1d1c1c !important;
+border-color: #00bfff !important;
+}
+.btn:hover {
+background-color: #ffa500 !important;
+color: #f8f8f2 !important;
+border-color: #ffa500 !important;
+}
+
+/* Inputs */
+input, textarea {
+background-color: #2a2a2a !important;
+color: #f8f8f2 !important;
+border-color: #00bfff !important;
+}
+
+/* Table Styles */
+table {
+background-color: #2a2a2a !important;
+color: #f8f8f2 !important;
+}
+th {
+background-color: #00bfff !important;
+color: #1d1c1c !important;
+}
+td {
+border-color: #00bfff !important;
+}
+
+/* Navbar */
+.navbar {
+background-color: #1d1c1c !important;
+color: #f8f8f2 !important;
+}
+.navbar a {
+color: #f8f8f2 !important;
+}
+.navbar a:hover {
+color: #00bfff !important;
+}
+.navbar .navbar-brand {
+color: #ffa500 !important;
+}
+
+/* Cards */
+.card {
+background-color: #2a2a2a !important;
+color: #f8f8f2 !important;
+border-color: #00bfff !important;
+}
+
+/* Forms */
+.form-control {
+background-color: #2a2a2a !important;
+color: #f8f8f2 !important;
+border-color: #00bfff !important;
+}
+
+/* Code Blocks */
+pre {
+background-color: #2a2a2a !important;
+color: #f8f8f2 !important;
+border-color: #00bfff !important;
+}
+code {
+background-color: #2a2a2a !important;
+color: #f8f8f2 !important;
+border-color: #00bfff !important;
+}
+
+/* Footer */
+footer {
+background-color: #1d1c1c !important;
+color: #f8f8f2 !important;
+}

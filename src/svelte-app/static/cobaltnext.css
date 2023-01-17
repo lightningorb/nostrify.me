@@ -1,0 +1,102 @@
+/* Cobalt Next CSS Theme */
+
+/* Body and Base Styles */
+body {
+background-color: #1e1f29 !important;
+color: #c5c8c6 !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+color: #c678dd !important;
+}
+
+/* Links */
+a {
+color: #61afef !important;
+}
+a:hover {
+color: #c678dd !important;
+}
+
+/* Buttons */
+.btn {
+background-color: #61afef !important;
+color: #1e1f29 !important;
+border-color: #61afef !important;
+}
+.btn:hover {
+background-color: #c678dd !important;
+color: #c5c8c6 !important;
+border-color: #c678dd !important;
+}
+
+/* Inputs */
+input, textarea {
+background-color: #3b3f4b !important;
+color: #c5c8c6 !important;
+border-color: #61afef !important;
+}
+
+/* Table Styles */
+table {
+background-color: #3b3f4b !important;
+color: #c5c8c6 !important;
+}
+th {
+background-color: #61afef !important;
+color: #1e1f29 !important;
+}
+td {
+border-color: #61afef !important;
+}
+
+/* Navbar */
+.navbar {
+background-color: #1e1f29 !important;
+color: #c5c8c6 !important;
+}
+.navbar a {
+color: #c5c8c6 !important;
+}
+.navbar a:hover {
+color: #61afef !important;
+}
+.navbar .navbar-brand {
+color: #c678dd !important;
+}
+
+/* Cards */
+.card {
+background-color: #3b3f4b !important;
+color: #c5c8c6 !important;
+border-color: #61afef !important;
+}
+
+/* Forms */
+.form-control {
+background-color: #3b3f4b !important;
+color: #c5c8c6 !important;
+border-color: #61afef !important;
+}
+
+/* Code Blocks */
+pre {
+background-color: #3b3f4b !important;
+color: #c5c8c6 !important;
+border-color: #61afef !important;
+}
+code {
+background-color: #3b3f4b !important;
+color: #c5c8c6 !important;
+border-color: #61afef !important;
+}
+
+/* Footer */
+footer {
+background-color: #1e1f29 !important;
+color: #c5c8c6 !important;
+}
+
+
+

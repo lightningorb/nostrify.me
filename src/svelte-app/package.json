@@ -33,6 +33,7 @@
 		"nostr-tools": "github:nbd-wtf/nostr-tools",
 		"svelte-fa": "^3.0.3",
 		"svelte-local-storage-store": "^0.3.2",
+		"svelte-markdown": "^0.2.3",
 		"svelte-time": "^0.7.1",
 		"sveltestrap": "^5.10.0"
 	}

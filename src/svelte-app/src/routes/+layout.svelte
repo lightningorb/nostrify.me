@@ -20,16 +20,18 @@
 	// import { browser, dev } from '$app/environment';
 	// import { save_user_info } from '$lib/utils.js';
 	import { Col, Container, Row } from 'sveltestrap';
-	// import { get } from 'svelte/store';
+	import { get } from 'svelte/store';
 	// import '$lib/interceptors.js';
-	// let p = get(preferences);
-	// p.podcast = '';
-	// preferences.set(p);
-	// let theme_name = p.theme_name || 'light';
+	let p = get(preferences);
+	let theme_name = p.theme_name || 'light';
 </script>
 
 <svelte:head>
-	<!-- <link rel="stylesheet" href="{base}/style-{theme_name}.css" /> -->
+	{#if theme_name != 'light'}
+		<link rel="stylesheet" href="{base}/{theme_name}.css" />
+		<!-- <link rel="stylesheet" href="%sveltekit.assets%/monokai.css" /> -->
+
+	{/if}
 </svelte:head>
 <Styles />
 <!-- <Banner /> -->

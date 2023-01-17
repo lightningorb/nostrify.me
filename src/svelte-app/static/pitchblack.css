@@ -1,0 +1,99 @@
+/* Pitch Black CSS Theme */
+
+/* Body and Base Styles */
+body {
+background-color: #000000 !important;
+color: #ffffff !important;
+}
+
+/* Headings */
+h1, h2, h3, h4, h5, h6 {
+color: #ff00ff !important;
+}
+
+/* Links */
+a {
+color: #00ffff !important;
+}
+a:hover {
+color: #ff00ff !important;
+}
+
+/* Buttons */
+.btn {
+background-color: #00ffff !important;
+color: #000000 !important;
+border-color: #00ffff !important;
+}
+.btn:hover {
+background-color: #ff00ff !important;
+color: #ffffff !important;
+border-color: #ff00ff !important;
+}
+
+/* Inputs */
+input, textarea {
+background-color: #333333 !important;
+color: #ffffff !important;
+border-color: #00ffff !important;
+}
+
+/* Table Styles */
+table {
+background-color: #333333 !important;
+color: #ffffff !important;
+}
+th {
+background-color: #00ffff !important;
+color: #000000 !important;
+}
+td {
+border-color: #00ffff !important;
+}
+
+/* Navbar */
+.navbar {
+background-color: #000000 !important;
+color: #ffffff !important;
+}
+.navbar a {
+color: #ffffff !important;
+}
+.navbar a:hover {
+color: #00ffff !important;
+}
+.navbar .navbar-brand {
+color: #ff00ff !important;
+}
+
+/* Cards */
+.card {
+background-color: #333333 !important;
+color: #ffffff !important;
+border-color: #00ffff !important;
+}
+
+/* Forms */
+.form-control {
+background-color: #333333 !important;
+color: #ffffff !important;
+border-color: #00ffff !important;
+}
+
+/* Code Blocks */
+pre {
+background-color: #333333 !important;
+color: #ffffff !important;
+border-color: #00ffff !important;
+}
+code {
+background-color: #333333 !important;
+color: #ffffff !important;
+border-color: #00ffff !important;
+}
+
+/* Footer */
+footer {
+background-color: #000000 !important;
+color: #ffffff !important;
+}
