@@ -10,19 +10,7 @@ const config = {
 			fallback: null,
 			precompress: false
 		}),
-		alias: {
-			components: 'src/components/' // can't use this for some reason, breaks the build
-		},
-		version: {
-			name: Date.now().toString()
-		},
-		paths: {
-			base: process.env.BN_SVELTE_BASE
-		},
-		prerender: {
-			entries: ['/', '/profile'],
-			crawl: false
-		}
+		trailingSlash: 'always'
 	}
 };
 

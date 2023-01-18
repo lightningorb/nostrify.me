@@ -9,7 +9,6 @@
 	import { Spinner } from 'sveltestrap';
 	import { Form, FormGroup, FormText, Input, Label, Button } from 'sveltestrap';
 	import { browser, dev } from '$app/environment';
-	const events = writable({});
 	let prefs = get(preferences);
 	let relay_address = prefs.relay;
 	if (browser && prefs.public_key == '') {
@@ -28,19 +27,17 @@
 	});
 	// pool.on('eose', (relay) => relay.close());
 	pool.on('event', (relay, sub_id, ev) => {
-		events.update((currentValue) => {
-			currentValue[ev.id] = ev;
-			return currentValue;
-		});
+		prefs.notes[ev.id] = ev;
+		preferences.set(prefs);
 	});
 </script>
 
 <br />
 <Post {pool} />
-<p>Notes: {Object.entries($events).length}</p>
+<p>Notes: {Object.entries(prefs.notes).length}</p>
 {#if !connected}
 	<Spinner size="sm" type="grow" />
 {/if}
-{#each Object.entries($events).sort((a, b) => b[1].created_at - a[1].created_at) as [event_id, event] (event.id)}
+{#each Object.entries(prefs.notes).sort((a, b) => b[1].created_at - a[1].created_at) as [event_id, event] (event.id)}
 	<Note {event} />
 {/each}

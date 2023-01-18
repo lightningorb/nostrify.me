@@ -1,5 +1,5 @@
 <script>
-	import { faHandshake } from '@fortawesome/free-solid-svg-icons/index.js';
+	/*import { faHandshake } from '@fortawesome/free-solid-svg-icons/index.js';*/
 
 	import Fa from 'svelte-fa/src/fa.svelte';
 	import {
