@@ -16,7 +16,7 @@ onMount ->
     relay.subscribe 'subid',
       kinds: [1],
       since: Math.floor(Date.now() / 1000) - (prefs.global_hours || 1) * 3600
-  pool.on 'eose', (relay) => relay.close()
+  # pool.on 'eose', (relay) => relay.close()
   pool.on 'event', (relay, sub_id, ev) =>
     prefs.notes[ev.id] = ev
     preferences.set(prefs)
