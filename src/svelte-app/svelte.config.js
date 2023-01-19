@@ -1,3 +1,4 @@
+import preprocess from 'svelte-preprocess';
 import adapter from '@sveltejs/adapter-static';
 
 /** @type {import('@sveltejs/kit').Config} */
@@ -11,7 +12,15 @@ const config = {
 			precompress: false
 		}),
 		trailingSlash: 'always'
-	}
+	},
+
+	preprocess: [
+		preprocess({
+			coffeescript: {
+				bare: true
+			}
+		})
+	]
 };
 
 export default config;

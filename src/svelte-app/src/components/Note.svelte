@@ -1,36 +1,30 @@
-<script type="text/javascript">
-    import SvelteMarkdown from 'svelte-markdown'
+<script lang="coffeescript">
 	import {
-		Button,
-		Card,
-		CardBody,
-		CardFooter,
-		CardHeader,
-		CardSubtitle,
-		CardText,
-		CardTitle,
-		Fade
-	} from 'sveltestrap';
-	import Time from 'svelte-time';
-	import { onMount } from 'svelte';
-
-	let isOpen = false;
-	export let event;
-	let e = event;
-	function makeSafeHtml(content) {
-		const imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/gi;
-		content = content.replace(imgRegex, '<img src="$1" alt="image">');
-		content = content.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '');
-		return content;
-	}
-	let source = makeSafeHtml(e.content);
-	source = source.replace(/<img/gi, '<img class="img-fluid"');
-	let ref = e.tags.filter((x) => x[0] == 'e');
-	onMount(async () => {
-		isOpen = true;
-	});
+	  Card,
+	  CardText,
+	  CardBody,
+	  CardFooter,
+	  CardHeader,
+	  Fade
+	} from 'sveltestrap'
+	import { onMount } from 'svelte'
+	import Time from 'svelte-time'
+	import SvelteMarkdown from 'svelte-markdown'
+	isOpen = false
+	export event = null
+	e = event
+	makeSafeHtml = (content) ->
+	    imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/gi
+	    content = content.replace(imgRegex, '<img src="$1" alt="image">')
+	    content = content.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
+	    content
+	source = makeSafeHtml(e.content)
+	source = source.replace(/<img/gi, '<img class="img-fluid"')
+	ref = e.tags.filter((x) => x[0] == 'e')
+	onMount(() ->
+	    isOpen = true
+	)
 </script>
-
 {#if e}
 	<Fade {isOpen} id={e.id}>
 		<Card class="mb-3">
@@ -41,10 +35,8 @@
 				{/if}
 			</CardHeader>
 			<CardBody>
-				<!-- <CardSubtitle></CardSubtitle> -->
 				<CardText>
 					<SvelteMarkdown {source} />
-					<!-- {content} -->
 				</CardText>
 			</CardBody>
 			<CardFooter>

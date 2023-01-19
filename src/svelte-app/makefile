@@ -9,3 +9,6 @@ build:
 push:
 	aws s3 cp build/ s3://nostrify/ --recursive
 	aws cloudfront create-invalidation --distribution-id E14Q4FNWR3HZVI --paths '/*'
+
+compile:
+	. ~/.bash_profile && nvm use v16 && coffee --compile src/routes/+layout.coffee

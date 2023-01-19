@@ -1,37 +1,18 @@
-<script>
-	/*import { faHandshake } from '@fortawesome/free-solid-svg-icons/index.js';*/
-
-	import Fa from 'svelte-fa/src/fa.svelte';
-	import {
-		faRightToBracket,
-		faRightFromBracket,
-		faDove
-	} from '@fortawesome/free-solid-svg-icons/index.js';
-	/** @type {import('./$types').LayoutData} */
-	export let data;
-	import { base } from '$app/paths';
-	import { preferences } from '$lib/store.js';
-	import { Styles } from 'sveltestrap';
-	// import Nav from '../components/Nav.svelte';
-	// import Banner from '../components/Banner.svelte';
-	// import Footer from '../components/Footer.svelte';
-	// import { preferences } from '$lib/store.js';
-	// import { base } from '$app/paths';
-	// import { browser, dev } from '$app/environment';
-	// import { save_user_info } from '$lib/utils.js';
-	import { Col, Container, Row } from 'sveltestrap';
-	import { get } from 'svelte/store';
-	// import '$lib/interceptors.js';
-	let p = get(preferences);
-	let theme_name = p.theme_name || 'light';
+<script lang='coffeescript'>
+	import Fa from 'svelte-fa/src/fa.svelte'
+	import { faRightToBracket, faRightFromBracket, faDove } from '@fortawesome/free-solid-svg-icons/index.js'
+	import { base } from '$app/paths'
+	import { preferences } from '$lib/store.js'
+	import { Styles } from 'sveltestrap'
+	import { Col, Container, Row } from 'sveltestrap'
+	import { get } from 'svelte/store'
+	export data = null
+	prefs = {}
+	preferences.subscribe (x) => prefs = x
 </script>
 
 <svelte:head>
-	{#if theme_name != 'light'}
-		<link rel="stylesheet" href="{base}/{theme_name}.css" />
-		<!-- <link rel="stylesheet" href="%sveltekit.assets%/monokai.css" /> -->
-
-	{/if}
+	<link rel="stylesheet" href="{base}/{prefs.theme_name}.css" />
 </svelte:head>
 <Styles />
 <!-- <Banner /> -->

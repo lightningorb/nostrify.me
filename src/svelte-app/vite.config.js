@@ -1,3 +1,4 @@
+import coffee from 'vite-plugin-coffee';
 // import { sveltekit } from '@sveltejs/kit/vite';
 
 // /** @type {import('vite').UserConfig} */
@@ -19,7 +20,12 @@ const config = {
 			target: 'es2020'
 		}
 	},
-	plugins: [sveltekit()],
+	plugins: [
+		sveltekit(),
+		coffee({
+			jsx: false
+		})
+	],
 	server: {
 		port: 3000,
 		strictPort: false

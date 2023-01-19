@@ -1,19 +1,36 @@
-<script>
-	import { preferences } from '$lib/store.js';
-	import { get } from 'svelte/store';
-	import { Form, FormGroup, FormText, Label, Input } from 'sveltestrap';
-	import Relay from '../../components/Relay.svelte';
-	import ThemeSelector from '../../components/ThemeSelector.svelte';
-	$: relays = get(preferences).relays || [];
-	$: public_key = get(preferences).public_key;
-	$: private_key = get(preferences).private_key;
-
+<script lang='coffee'>
+	import { connect, print } from '$lib/utils.coffee';
+	import { preferences } from '$lib/store.js'
+	import { get } from 'svelte/store'
+	import { Button, Form, FormGroup, FormText, Label, Input } from 'sveltestrap'
+	import Relay from '../../components/Relay.svelte'
+	import ThemeSelector from '../../components/ThemeSelector.svelte'
+	prefs = {}
+	preferences.subscribe (x) -> prefs = x
+	global_hours = prefs.global_hours
+	clear_notes = () => preferences.update ({notes, ...rest}) -> {notes: [], ...rest}
+	add_relay = () => preferences.update ({relays, ...rest}) ->
+		relays.push('')
+		{relays, ...rest}
 </script>
-
-<h1>Profile</h1>
+<h1>Profile</h1><br />
+<Button on:click={clear_notes}>Clear message cache</Button>
 <br />
-
+<hr/>
 <ThemeSelector/>
+<hr/>
+<Label for="global_hours">Hours of global to get</Label>
+<Input
+	type="text"
+	id="global_hours"
+	placeholder='1'
+	on:change={() => {
+		let p = get(preferences);
+		p.global_hours = global_hours;
+		preferences.set(p);
+	}}
+	bind:value={global_hours}
+/>
 
 <hr/>
 
@@ -22,32 +39,34 @@
 	type="text"
 	name="pubic key"
 	id="public_key"
-	placeholder={public_key}
-	on:change={() => {
+	placeholder={prefs.public_key}
+	on:change={(x) => {
 		let p = get(preferences);
-		p.public_key = public_key;
+		p.public_key = x.target.value;
 		preferences.set(p);
 	}}
-	bind:value={public_key}
+	bind:value={prefs.public_key}
 />
 <Label for="private_key">Private Key</Label>
 <Input
 	type="text"
 	name="pviate key"
 	id="private_key"
-	placeholder={private_key}
+	placeholder={prefs.private_key}
 	on:change={() => {
 		let p = get(preferences);
-		p.private_key = private_key;
+		p.private_key = x.target.value;
 		preferences.set(p);
 	}}
-	bind:value={private_key}
+	bind:value={prefs.private_key}
 />
 
 <hr/>
 
+<Button on:click={add_relay}>Add Relay</Button>
+
 <FormGroup>
-	{#each relays as relay, i}
+	{#each prefs.relays as relay, i}
 		<Relay {relay} {i} />
 	{/each}
 	<hr />
