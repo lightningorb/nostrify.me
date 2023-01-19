@@ -1,4 +1,5 @@
 <script lang='coffeescript'>
+import { onDestroy } from 'svelte'
 import { preferences } from '$lib/store.js'
 import { connect, print } from '$lib/utils.coffee'
 import { onMount } from 'svelte'
@@ -15,7 +16,7 @@ onMount ->
     relay.subscribe 'subid',
       kinds: [1],
       since: Math.floor(Date.now() / 1000) - (prefs.global_hours || 1) * 3600
-  # pool.on 'eose', (relay) => relay.close()
+  pool.on 'eose', (relay) => relay.close()
   pool.on 'event', (relay, sub_id, ev) =>
     prefs.notes[ev.id] = ev
     preferences.set(prefs)
