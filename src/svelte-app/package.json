@@ -33,6 +33,7 @@
 	"type": "module",
 	"dependencies": {
 		"@fortawesome/free-solid-svg-icons": "^6.2.1",
+		"@rmw/coffee-label-patch": "^0.0.17",
 		"axios": "^1.1.3",
 		"lottie-svelte": "^1.3.3",
 		"nostr": "github:jb55/nostr-js",

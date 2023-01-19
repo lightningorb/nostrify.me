@@ -8,7 +8,7 @@
 	prefs = {}
 	preferences.subscribe (x) -> prefs = x
 	global_hours = prefs.global_hours
-	clear_notes = () => preferences.update ({notes, ...rest}) -> {notes: [], ...rest}
+	clear_notes = () => preferences.update ({notes, ...rest}) -> {notes: {}, ...rest}
 	add_relay = () => preferences.update ({relays, ...rest}) ->
 		relays.push('')
 		{relays, ...rest}

@@ -20,6 +20,7 @@ export const preferences = persisted('preferences', {
     'wss://nostr1.tunnelsats.com',
     'wss://nostr.rewardsbunny.com',
     'wss://nostr.lnprivate.network',
-    'wss://node01.nostress.cc'
+    'wss://node01.nostress.cc',
+    'wss://nostr.mouton.dev'
   ]
 });

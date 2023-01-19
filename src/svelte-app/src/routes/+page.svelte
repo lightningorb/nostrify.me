@@ -9,17 +9,24 @@ import { Spinner } from 'sveltestrap'
 import { Form, FormGroup, FormText, Input, Label, Button } from 'sveltestrap'
 [prefs, pool, connected] = [{}, undefined, false]
 preferences.subscribe (x) => prefs = x
+message = ""
 onMount ->
+  window.addEventListener "scroll", =>
+    if (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight
+      message = "done"
+      max += 50
   pool = connect()
   pool.on 'open', (relay) =>
     connected = true
     relay.subscribe 'subid',
       kinds: [1],
       since: Math.floor(Date.now() / 1000) - (prefs.global_hours || 1) * 3600
-  # pool.on 'eose', (relay) => relay.close()
   pool.on 'event', (relay, sub_id, ev) =>
     prefs.notes[ev.id] = ev
     preferences.set(prefs)
+sotr = (a, b) => b[1].created_at - a[1].created_at
+max = 50
+`$: entries = Object.entries(prefs.notes).sort(sotr).slice(0, max)`
 </script>
 <br />
 {#if pool}
@@ -27,8 +34,8 @@ onMount ->
 {/if}
 <p>Notes: {Object.entries(prefs.notes).length}</p>
 {#if !connected}
-	<Spinner size="sm" type="grow" />
+	<Spinner size="sm" type="grow"/>
 {/if}
-{#each Object.entries(prefs.notes).sort((a, b) => b[1].created_at - a[1].created_at) as [event_id, event] (event.id)}
+{#each entries as [event_id, event] (event.id)}
 	<Note {event} />
 {/each}
