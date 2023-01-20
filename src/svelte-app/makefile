@@ -4,6 +4,7 @@ all:
 .PHONY: build
 
 build:
+	. ~/.bash_profile && nvm use v16 && coffee -c src/routes/+layout.coffee
 	. ~/.bash_profile && nvm use v16 && npm run build
 
 push:

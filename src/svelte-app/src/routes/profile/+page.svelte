@@ -54,7 +54,7 @@
 	name="pviate key"
 	id="private_key"
 	placeholder={prefs.private_key}
-	on:change={() => {
+	on:change={(x) => {
 		let p = get(preferences);
 		p.private_key = x.target.value;
 		preferences.set(p);

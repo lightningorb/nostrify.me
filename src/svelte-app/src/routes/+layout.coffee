@@ -6,5 +6,5 @@ export load = ->
 		{ slug: 'profile/', title: 'Profile', icon: faCog }
 	]
 export csr = true
-export ssr = false
-export prerender = false
+export ssr = true
+export prerender = true

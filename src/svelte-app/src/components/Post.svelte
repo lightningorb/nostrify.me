@@ -4,6 +4,7 @@
 	import { get } from 'svelte/store';
 	let prefs = get(preferences);
 	let text = '';
+	export let e;
 	async function post() {
 		let event = {
 			kind: 1,
@@ -12,6 +13,8 @@
 			tags: [],
 			content: text
 		};
+		if (e)
+			event.tags.push(['e', e])
 		event.id = window.NostrTools.getEventHash(event);
 		event.sig = window.NostrTools.signEvent(event, prefs.private_key);
 		for (var i in prefs.relays) {

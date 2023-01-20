@@ -13,7 +13,23 @@
     import { browser, dev } from '$app/environment';
     import db from '$lib/db.coffee'
     id = $page.url.searchParams.get('id')
+    intervals = []
     events = db.get_related(id)
+    intervalId = setInterval (->
+      events = db.get_related(id)
+      db.save()
+    ), 1000 * 5
+    intervals.push(intervalId)
+    timer = undefined
+
+    debounce = (id) ->
+      clearTimeout timer
+      timer = setTimeout((->
+        events = db.get_related(id)
+        return
+      ), 150)
+      return
+
     onMount ->
       pool.add_callback((relay) ->
         relay.subscribe 'subid',
@@ -22,6 +38,8 @@
       )
       pool.pool.on('event', (relay, sub_id, ev) =>
         db.insert_data(ev)
+        debounce(id)
+        db.get_related(id)
       );
 </script>
 

@@ -12,13 +12,11 @@ export var load = function() {
       {
         slug: '',
         title: 'Home',
-        auth: false,
         icon: faHouse
       },
       {
         slug: 'profile/',
         title: 'Profile',
-        auth: false,
         icon: faCog
       }
     ]
@@ -27,6 +25,6 @@ export var load = function() {
 
 export var csr = true;
 
-export var ssr = false;
+export var ssr = true;
 
-export var prerender = false;
+export var prerender = true;
