@@ -1,35 +1,12 @@
 import initSqlJs from 'sql.js'
-import {print} from '$lib/utils.coffee'
+import { print, toBinString, toBinArray } from '$lib/utils.coffee'
 import { preferences } from '$lib/store.js'
-
-SQL = await initSqlJs()
-
-toBinString = (arr) ->
-  uarr = new Uint8Array(arr)
-  strings = []
-  chunksize = 0xffff
-  i = 0
-  while i * chunksize < uarr.length
-    strings.push String.fromCharCode.apply(null, uarr.subarray(i * chunksize, (i + 1) * chunksize))
-    i++
-  strings.join ''
-
-toBinArray = (str) ->
-  l = str.length
-  arr = new Uint8Array(l)
-  i = 0
-  while i < l
-    arr[i] = str.charCodeAt(i)
-    i++
-  arr
-
-
 
 class Database
   constructor: ->
     return @
-  init: =>
-    data = localStorage.getItem('mydata')
+  init: (SQL) =>
+    data = window?.sessionStorage.getItem('mydata2')
     if data?
       @db = new (SQL.Database)(toBinArray(data))
     else
@@ -49,15 +26,27 @@ class Database
   insert_data: (data) ->
     res = @db.exec("SELECT * FROM data WHERE id = '#{data.id}'")
     if res.length == 0
-      @db.run("INSERT INTO data VALUES (:id, :pubkey, :created_at, :kind, :tags, :content, :sig)", {':id': data.id, ':pubkey': data.pubkey, ':created_at': data.created_at, ':kind': data.kind, ':tags': data.tags, ':content': data.content, ':sig': data.sig})
+      @db.run("INSERT INTO data VALUES (:id, :pubkey, :created_at, :kind, :tags, :content, :sig)", {':id': data.id, ':pubkey': data.pubkey, ':created_at': data.created_at, ':kind': data.kind, ':tags': JSON.stringify(data.tags), ':content': data.content, ':sig': data.sig})
   save: ->
-    window.localStorage.setItem("mydata", toBinString(@db.export()));
+    sessionStorage.setItem("mydata2", toBinString(@db.export()));
   get_data: (max) =>
     stmt = @db.prepare("SELECT * FROM data WHERE kind=:kindval ORDER BY created_at DESC LIMIT #{max}")
     stmt.getAsObject({':kindval' : 1})
     stmt.bind({':kindval' : 1})
     while stmt.step()
       stmt.getAsObject()
+  get_related: (e) =>
+    stmt = @db.prepare("SELECT * FROM data WHERE kind=:kindval ORDER BY created_at ASC")
+    stmt.getAsObject({':kindval' : 1})
+    stmt.bind({':kindval' : 1})
+    r = []
+    while stmt.step()
+      doc = stmt.getAsObject()
+      tags = JSON.parse(doc.tags)
+      for t in tags
+        if t[0] == 'e' and t[1] == e
+          r.push(doc)
+    r
 
 db = new Database()
 export default db = db

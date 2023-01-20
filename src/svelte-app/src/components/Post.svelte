@@ -4,7 +4,6 @@
 	import { get } from 'svelte/store';
 	let prefs = get(preferences);
 	let text = '';
-	export let pool;
 	async function post() {
 		let event = {
 			kind: 1,

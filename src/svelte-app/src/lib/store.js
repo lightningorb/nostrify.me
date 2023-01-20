@@ -1,4 +1,7 @@
 import { persisted } from 'svelte-local-storage-store';
+import { writable } from 'svelte/store';
+
+export const pool = writable();
 
 // First param `preferences` is the local storage key.
 // Second param is the initial value.

@@ -13,6 +13,7 @@
 	isOpen = false
 	export event = null
 	e = event
+	tags = JSON.parse(e.tags)
 	makeSafeHtml = (content) ->
 	    imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/gi
 	    content = content.replace(imgRegex, '<img src="$1" alt="image">')
@@ -20,7 +21,7 @@
 	    content
 	source = makeSafeHtml(e.content)
 	source = source.replace(/<img/gi, '<img class="img-fluid"')
-	ref = e.tags.filter((x) => x[0] == 'e')
+	ref = tags.filter((x) => x[0] == 'e')
 	onMount(() ->
 	    isOpen = true
 	)
@@ -31,7 +32,7 @@
 			<CardHeader>
 				<Time id={'time' + e.id} relative live={1000} timestamp={e.created_at * 1000} />
 				{#if ref.length != 0}
-					<small>In reply to: <a href={'/e/' + ref[0][1]}>{ref[0][1].slice(0, 5)}</a>...</small>
+					<small>In reply to: <a href={'/e/?id=' + ref[0][1]}>{ref[0][1].slice(0, 5)}</a>...</small>
 				{/if}
 			</CardHeader>
 			<CardBody>
@@ -43,6 +44,7 @@
 				<small>User Identity: {e.pubkey.slice(0, 10)}...</small>
 				<br />
 				<small>Note Identity: {e.id.slice(0, 10)}...</small>
+				<!-- <small>Note Identity: <a href={'/e/?id=' + e.id}>{e.id.slice(0, 10)}</a>...</small> -->
 			</CardFooter>
 		</Card>
 	</Fade>

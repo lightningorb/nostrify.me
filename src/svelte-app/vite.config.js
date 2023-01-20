@@ -13,7 +13,8 @@ import { sveltekit } from '@sveltejs/kit/vite';
 /** @type {import('vite').UserConfig} */
 const config = {
 	build: {
-		target: 'es2020'
+		target: 'es2020',
+        minify: false
 	},
 	optimizeDeps: {
 		esbuildOptions: {

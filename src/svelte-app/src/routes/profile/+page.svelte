@@ -1,5 +1,5 @@
 <script lang='coffee'>
-	import { connect, print } from '$lib/utils.coffee';
+	import { print } from '$lib/utils.coffee';
 	import { preferences } from '$lib/store.js'
 	import { get } from 'svelte/store'
 	import { Button, Form, FormGroup, FormText, Label, Input } from 'sveltestrap'
@@ -15,9 +15,9 @@
 		{relays, ...rest}
 </script>
 <h1>Profile</h1><br />
-<Button on:click={clear_notes}>Clear message cache</Button>
-<br/>
-<hr/>
+<!-- <Button on:click={clear_notes}>Clear message cache</Button> -->
+<!-- <br/> -->
+<!-- <hr/> -->
 <ThemeSelector/>
 <hr/>
 <Label for="global_hours">Hours of global to get</Label>

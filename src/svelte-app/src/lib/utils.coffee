@@ -1,14 +1,21 @@
-import { RelayPool } from 'nostr'
-import { get } from 'svelte/store'
-import { preferences } from '$lib/store.js'
-import { browser, dev } from '$app/environment'
-
 export print = (x) -> console.log x
 
-export connect = ->
-  prefs = get(preferences)
-  if browser and prefs.public_key is ''
-    prefs.private_key = window.NostrTools.generatePrivateKey()
-    prefs.public_key = window.NostrTools.getPublicKey(prefs.private_key)
-    preferences.set(prefs)
-  RelayPool(prefs.relays)
+export toBinString = (arr) ->
+  uarr = new Uint8Array(arr)
+  strings = []
+  chunksize = 0xffff
+  i = 0
+  while i * chunksize < uarr.length
+    strings.push String.fromCharCode.apply(null, uarr.subarray(i * chunksize, (i + 1) * chunksize))
+    i++
+  strings.join ''
+
+export toBinArray = (str) ->
+  l = str.length
+  arr = new Uint8Array(l)
+  i = 0
+  while i < l
+    arr[i] = str.charCodeAt(i)
+    i++
+  arr
+

@@ -1,4 +1,8 @@
-<script lang='coffeescript'>
+<script>
+	import initSqlJs from 'sql.js'
+	import db from '$lib/db.coffee'
+	import { print } from '$lib/utils.coffee'
+	import { Spinner } from 'sveltestrap'
 	import Fa from 'svelte-fa/src/fa.svelte'
 	import { faRightToBracket, faRightFromBracket, faDove } from '@fortawesome/free-solid-svg-icons/index.js'
 	import { base } from '$app/paths'
@@ -6,9 +10,22 @@
 	import { Styles } from 'sveltestrap'
 	import { Col, Container, Row } from 'sveltestrap'
 	import { get } from 'svelte/store'
-	export data = null
-	prefs = {}
-	preferences.subscribe (x) => prefs = x
+	import { pool as store_pool } from '$lib/store.js'
+	import pool from '$lib/pool.coffee'
+	var p = pool.init()
+	store_pool.set(p)
+	export let data = null
+	let prefs = {}
+	preferences.subscribe((x) => prefs = x)
+	let connected = false
+	let db_init = false
+	pool.add_callback((relay, sub_id, ev) => connected = true)
+	async function init(){
+		var SQL = await initSqlJs()
+		db.init(SQL)
+		db_init = true
+	}
+	init()
 </script>
 
 <svelte:head>
@@ -24,6 +41,10 @@
 </Container> -->
 <!-- <Nav /> -->
 
+{#if !connected}
+	<Spinner size="sm" type="grow"/>
+{/if}
+{#if db_init}
 <Container>
 	<Row cols={2}>
 		<Col xs={2}>
@@ -60,3 +81,4 @@
 		text-decoration: none;
 	}
 </style>
+{/if}
