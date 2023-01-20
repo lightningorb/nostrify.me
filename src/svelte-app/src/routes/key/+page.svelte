@@ -29,7 +29,7 @@
             <FormGroup>
                 <Label for="val">Hex Key</Label>
                 <Input plaintext placeholder='hey key...' on:input={(e) => {
-                    key = hex_key_to_key(e.target.value)
+                    key = hex_key_to_key('note', e.target.value)
                 }} bind:value={hex_key} />
             </FormGroup>
         </Form>

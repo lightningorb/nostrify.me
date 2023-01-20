@@ -1,4 +1,5 @@
 <script lang="coffeescript">
+	import { key_to_hex_key, hex_key_to_key} from '$lib/key.js'
 	import Fa from 'svelte-fa/src/fa.svelte'
 	import db from '$lib/db.coffee'
 	import Post from '../components/Post.svelte'

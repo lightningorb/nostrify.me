@@ -25,13 +25,12 @@ export function key_to_hex_key(key) {
     return hex_encode(bytes);
 }
 
-export function hex_key_to_key(hex_key) {
+export function hex_key_to_key(prefix, hex_key) {
     var bytes = new Uint8Array(hex_key.length / 2);
     for (var i = 0; i < hex_key.length; i += 2) {
         bytes[i / 2] = parseInt(hex_key.substring(i, i + 2), 16);
     }
     var words = toWords(bytes);
-    var prefix = "note";
     var key = bech32.encode(prefix, words);
     return key;
 }
