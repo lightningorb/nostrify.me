@@ -9,13 +9,14 @@
 	preferences.subscribe (x) -> prefs = x
 	global_hours = prefs.global_hours
 	clear_notes = () => preferences.update ({notes, ...rest}) -> {notes: {}, ...rest}
+	clear_prefs = () => delete localStorage.preferences
 	add_relay = () => preferences.update ({relays, ...rest}) ->
 		relays.push('')
 		{relays, ...rest}
 </script>
 <h1>Profile</h1><br />
 <Button on:click={clear_notes}>Clear message cache</Button>
-<br />
+<br/>
 <hr/>
 <ThemeSelector/>
 <hr/>
@@ -72,3 +73,7 @@
 	<hr />
 </FormGroup>
 
+<p>If things seem broken, try this:</p>
+<Button on:click={clear_prefs}>Clear all prefs</Button>
+<br />
+<hr/>

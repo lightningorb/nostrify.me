@@ -1,4 +1,5 @@
 <script lang='coffeescript'>
+import db from '$lib/db.coffee'
 import { onDestroy } from 'svelte'
 import { preferences } from '$lib/store.js'
 import { connect, print } from '$lib/utils.coffee'
@@ -9,24 +10,34 @@ import { Spinner } from 'sveltestrap'
 import { Form, FormGroup, FormText, Input, Label, Button } from 'sveltestrap'
 [prefs, pool, connected] = [{}, undefined, false]
 preferences.subscribe (x) => prefs = x
-message = ""
+max = 10
+entries = []
+intervals = []
+lim = () => Math.floor(Date.now() / 1000) - (prefs?.global_hours || 1) * 3600
+onDestroy ->
+  for intv in intervals
+    clearInterval intv
 onMount ->
+  db.init()
+  entries = db.get_data(max)
+  intervalId = setInterval (->
+    entries = db.get_data(max)
+    db.save()
+  ), 1000 * 5
+  intervals.push(intervalId)
   window.addEventListener "scroll", =>
     if (window.innerHeight + window.pageYOffset) >= document.body.offsetHeight
-      message = "done"
-      max += 50
+      max += 10
+      entries = db.get_data(max)
   pool = connect()
   pool.on 'open', (relay) =>
     connected = true
     relay.subscribe 'subid',
       kinds: [1],
-      since: Math.floor(Date.now() / 1000) - (prefs.global_hours || 1) * 3600
+      since: lim()
   pool.on 'event', (relay, sub_id, ev) =>
-    prefs.notes[ev.id] = ev
-    preferences.set(prefs)
+    db.insert_data(ev)
 sotr = (a, b) => b[1].created_at - a[1].created_at
-max = 50
-`$: entries = Object.entries(prefs.notes).sort(sotr).slice(0, max)`
 </script>
 <br />
 {#if pool}
@@ -36,6 +47,6 @@ max = 50
 {#if !connected}
 	<Spinner size="sm" type="grow"/>
 {/if}
-{#each entries as [event_id, event] (event.id)}
+{#each entries as event (event.id)}
 	<Note {event} />
 {/each}
