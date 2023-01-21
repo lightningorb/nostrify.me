@@ -10,7 +10,7 @@ class Database
     if data?
       @db = new (SQL.Database)(toBinArray(data))
     else
-      print("NO DB")
+      print("NO Session Storage data - initializing db")
       @db = new SQL.Database()
       sqlstr = "CREATE TABLE data ( \
         id TEXT PRIMARY KEY, \
@@ -47,6 +47,11 @@ class Database
         if t[0] == 'e' and t[1] == e
           r.push(doc)
     r
+  get_note: (hex_key) =>
+    stmt = @db.prepare("SELECT * FROM data WHERE id=:idval")
+    doc = stmt.getAsObject({':idval' : hex_key})
+    if doc?.id?
+      doc
 
 db = new Database()
 export default db = db

@@ -67,7 +67,7 @@ color: #c678dd !important;
 }
 
 /* Cards */
-.card {
+.card, .popover-body, .popover-header {
 background-color: #3b3f4b !important;
 color: #c5c8c6 !important;
 border-color: #61afef !important;

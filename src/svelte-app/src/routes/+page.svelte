@@ -40,7 +40,7 @@ sotr = (a, b) => b[1].created_at - a[1].created_at
 </script>
 <br />
 <Post/>
-{#each entries as event (event.id)}
-	<Note {event} />
+{#each entries as note (note.id)}
+  <Note parent={null} related={note.related} pubkey={note.pubkey} created_at={note.created_at} tags={note.tags} id={note.id} content={note.content}/>
 {/each}
 <!-- <Button on:click={moar}>Load moar</Button> -->

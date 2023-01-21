@@ -1,52 +1,91 @@
-<script lang='coffeescript'>
+<script>
     import { print } from '$lib/utils.coffee'
-    import pool from '$lib/pool.coffee'
     import { page } from '$app/stores'
-    import { RelayPool } from 'nostr';
-    import { writable } from 'svelte/store';
-    import { preferences } from '$lib/store.js';
-    import { get } from 'svelte/store';
     import { onMount } from 'svelte';
+    import pool from '$lib/pool.coffee'
     import Note from '../../components/Note.svelte';
-    import { Spinner } from 'sveltestrap';
-    import { Form, FormGroup, FormText, Input, Label, Button } from 'sveltestrap';
-    import { browser, dev } from '$app/environment';
     import db from '$lib/db.coffee'
-    id = $page.url.searchParams.get('id')
-    intervals = []
-    events = db.get_related(id)
-    intervalId = setInterval (->
-      events = db.get_related(id)
-      db.save()
-    ), 1000 * 5
-    intervals.push(intervalId)
-    timer = undefined
+    import Key from '$lib/Key.coffee'
+    var debounce, intervalId, intervals, note, timer;
+    $: key = $page.url.searchParams;
+    intervals = [];
 
-    debounce = (id) ->
-      clearTimeout timer
-      timer = setTimeout((->
-        events = db.get_related(id)
+    function get_note(id){
+      var seen = {}
+      note = db.get_note(id);
+      if (note)
+        get_note_tree(note, 0, seen)
+      return note
+    }
+
+    $: note = get_note($page.url.searchParams.get('key'))
+    timer = void 0;
+
+    debounce = function(id) {
+      clearTimeout(timer);
+      timer = setTimeout((function() {
+        db.save()
+        note = get_note($page.url.searchParams.get('key'))
+      }), 150);
+    };
+
+    function get_note_tree(note, depth, seen){
+      var id = note.id;
+      if (seen[id])
         return
-      ), 150)
-      return
+      seen[id] = true;
+      note.related = [];
+      var related = db.get_related(id);
+      var space = '';
+      for (var j = 0; j < depth; j++)
+        space += '  '
+      for (var i = 0; i < related.length; i++){
+        if (!seen[related[i].id]){
+            note.related.push(related[i])
+            get_note_tree(related[i], depth+1, seen)
+        }
+      }
+    }
 
-    onMount ->
-      pool.add_callback((relay) ->
-        relay.subscribe 'subid',
+    function sub_to_note(){
+      pool.add_callback(function(relay) {
+        return relay.subscribe('note', {
           kinds: [1],
-          '#e': [id]
-      )
-      pool.pool.on('event', (relay, sub_id, ev) =>
-        db.insert_data(ev)
-        debounce(id)
-        db.get_related(id)
-      );
-</script>
+          'ids': [$page.url.searchParams.get('key')]
+        });
+      });
+    }
 
+    function sub_to_refs(){
+      pool.add_callback(function(relay) {
+        return relay.subscribe('refs', {
+          kinds: [1],
+          '#e': [$page.url.searchParams.get('key')]
+        });
+      });
+    }
+
+    onMount(function() {
+      note = get_note($page.url.searchParams.get('key'))
+      if (note == undefined)
+        sub_to_note()
+      sub_to_refs()
+      function on_event(relay, sub_id, ev) {
+          db.insert_data(ev);
+          if (sub_id == 'refs') {
+              debounce($page.url.searchParams.get('key'));
+          }
+          else if (sub_id == 'note') {
+              note = get_note($page.url.searchParams.get('key'))
+          }
+        };
+      pool.pool.on('event', on_event);
+    });
+</script>
 <br/>
 <h2>Thread</h2>
 <hr/>
 <br/>
-{#each events as event}
-    <Note {event} />
-{/each}
+{#if note && note.content != undefined}
+  <Note related={note.related} pubkey={note.pubkey} created_at={note.created_at} tags={note.tags} id={note.id} content={note.content}/>
+{/if}
