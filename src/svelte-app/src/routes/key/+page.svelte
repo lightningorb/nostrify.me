@@ -1,7 +1,7 @@
 <script lang="coffeescript">
   import { Button, Form, FormGroup, FormText, Label, Input, Row, Col } from 'sveltestrap'
-  import { key_to_hex_key, hex_key_to_key} from '$lib/key.coffee'
-  import { print } from '$lib/utils.coffee'
+  import { key_to_hex_key, hex_key_to_key} from '$lib/key.ts'
+  import { print } from '$lib/utils.ts'
   import { bech32, fromWords } from '$lib/bech32.js'
   key = ''
   hex_key = ''

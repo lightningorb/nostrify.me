@@ -1,8 +1,8 @@
 <script lang="coffeescript">
 	import db from '$lib/db.coffee'
 	import subs from '$lib/subscriptions.coffee'
-	import { key_to_hex_key, hex_key_to_key} from '$lib/key.coffee'
-	import { print, getRandomInt} from '$lib/utils.coffee'
+	import { key_to_hex_key, hex_key_to_key} from '$lib/key.ts'
+	import { print, getRandomInt} from '$lib/utils.ts'
 	import YTFrame from '../components/YoutubeIframe.svelte'
 	import VideoIframe from '../components/VimeoIframe.svelte'
 	import Fa from 'svelte-fa/src/fa.svelte'

@@ -1,11 +1,11 @@
 <script>
-	import { print } from '$lib/utils.coffee';
+	import { print } from '$lib/utils.ts';
 	import { page } from '$app/stores';
 	import { onMount, onDestroy } from 'svelte';
-	import pool from '$lib/pool.coffee';
+	import pool from '$lib/pool.ts';
 	import Note from '../../components/Note.svelte';
 	import db from '$lib/db.coffee';
-	import Key from '$lib/Key.coffee';
+	import Key from '$lib/Key.ts';
 	var note;
 	$: key = $page.url.searchParams;
 

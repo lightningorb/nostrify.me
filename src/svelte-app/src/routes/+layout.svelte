@@ -2,8 +2,7 @@
 	import { onMount } from 'svelte';
 	import initSqlJs from 'sql.js';
 	import db from '$lib/db.coffee';
-	// import {idb, init_index_db} from '$lib/index_db.js';
-	import { print } from '$lib/utils.coffee';
+	import { print } from '$lib/utils.ts';
 	import { Spinner } from 'sveltestrap';
 	import Fa from 'svelte-fa/src/fa.svelte';
 	import {
@@ -17,7 +16,7 @@
 	import { Col, Container, Row } from 'sveltestrap';
 	import { get } from 'svelte/store';
 	import { pool as store_pool } from '$lib/store.js';
-	import pool from '$lib/pool.coffee';
+	import pool from '$lib/pool.ts';
 	var p = pool.init();
 	store_pool.set(p);
 	export let data = null;
@@ -28,8 +27,6 @@
 	pool.add_callback((relay, sub_id, ev) => (connected = true));
 	async function init() {
 		var SQL = await initSqlJs();
-		// idb.idb = await init_index_db();
-		// var data = await idb.get_data();
 		db.init(SQL);
 		db_init = true;
 	}
@@ -49,7 +46,7 @@
 {#if db_init}
 	<Container>
 		<Row cols={2}>
-			<Col xs={2}>
+			<Col xs={1}>
 				<div class="submenu">
 					<br />
 					<Fa style="font-size: 2em; color: #1DA1F2;" icon={faDove} />
@@ -68,7 +65,7 @@
 					<hr />
 				</div>
 			</Col>
-			<Col xs={10}>
+			<Col xs={11}>
 				<slot />
 			</Col>
 		</Row>

@@ -1,6 +1,6 @@
-import pool from '$lib/pool.coffee';
+import pool from '$lib/pool.ts';
 import db from '$lib/db.coffee'
-import { print } from '$lib/utils.coffee'
+import { print } from '$lib/utils.ts'
 import { preferences } from '$lib/store.js'
 import { get } from 'svelte/store'
 import { browser, dev } from '$app/environment'

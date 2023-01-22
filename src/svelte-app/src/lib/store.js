@@ -13,7 +13,6 @@ export const preferences = persisted('preferences', {
 	private_key: '',
 	relays: [
 		'wss://nostr.lnorb.com',
-		'wss://nostream-production-539a.up.railway.app',
 		'wss://relay.damus.io',
 		'wss://nostr-pub.wellorder.net',
 		'wss://nostr.xpersona.net',

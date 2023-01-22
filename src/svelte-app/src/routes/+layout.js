@@ -2,6 +2,7 @@
 import Fa from 'svelte-fa/src/fa.svelte';
 
 import {
+  faUser,
   faHouse,
   faCircleInfo,
   faCog
@@ -12,17 +13,22 @@ export var load = function() {
     sections: [
       {
         slug: '',
-        title: 'Home',
+        title: '',
         icon: faHouse
       },
       {
         slug: 'profile/',
-        title: 'Profile',
+        title: '',
+        icon: faUser
+      },
+      {
+        slug: 'settings/',
+        title: '',
         icon: faCog
       },
       {
         slug: 'about/',
-        title: 'About',
+        title: '',
         icon: faCircleInfo
       }
     ]
