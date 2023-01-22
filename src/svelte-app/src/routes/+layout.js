@@ -3,6 +3,7 @@ import Fa from 'svelte-fa/src/fa.svelte';
 
 import {
   faHouse,
+  faCircleInfo,
   faCog
 } from '@fortawesome/free-solid-svg-icons/index.js';
 
@@ -18,6 +19,11 @@ export var load = function() {
         slug: 'profile/',
         title: 'Profile',
         icon: faCog
+      },
+      {
+        slug: 'about/',
+        title: 'About',
+        icon: faCircleInfo
       }
     ]
   };
