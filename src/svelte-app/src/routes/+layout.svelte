@@ -1,5 +1,5 @@
 <script>
-	import { onMount } from 'svelte'
+	import { onMount } from 'svelte';
 	import initSqlJs from 'sql.js';
 	import db from '$lib/db.coffee';
 	// import {idb, init_index_db} from '$lib/index_db.js';
@@ -35,7 +35,7 @@
 	}
 	onMount(() => {
 		init();
-	})
+	});
 </script>
 
 <svelte:head>

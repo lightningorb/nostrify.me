@@ -2,6 +2,8 @@
 	import db from '$lib/db.coffee'
 	import { key_to_hex_key, hex_key_to_key} from '$lib/key.coffee'
 	import { print, getRandomInt} from '$lib/utils.coffee'
+	import YTFrame from '../components/YoutubeIframe.svelte'
+	import VideoIframe from '../components/VimeoIframe.svelte'
 	import Fa from 'svelte-fa/src/fa.svelte'
 	import Post from '../components/Post.svelte'
 	import Note from '../components/Note.svelte'
@@ -30,9 +32,21 @@
 	export pubkey = ''
 	export created_at = 0
 	export related = {}
+	w = 0
+	h = 0
+	yt = ''
+	vimeo = ''
 	makeSafeHtml = (content) ->
 		if content? and content != undefined
 			imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/gi
+			youtubeRegex = /(?:https?:\/\/)?(?:www\.)?(?:youtube\.com|youtu\.be)\/(?:watch\?v=)?([a-zA-Z0-9_-]{11})/
+			ytre = '<iframe width="560" height="315" src="https://www.youtube.com/embed/$1" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>'
+			m = content.match(youtubeRegex)
+			yt = if m then m[0] else m
+			vimeoRegex = /https?:\/\/(?:www\.)?vimeo.com\/(?:channels\/(?:\w+\/)?|groups\/([^\/]*)\/videos\/|album\/(\d+)\/video\/|)(\d+)(?:$|\/|\?)/
+			m = content.match(vimeoRegex)
+			# if m
+			# 	vimeo = m[3];
 			content = content.replace(imgRegex, '<img src="$1" alt="image">')
 			content = content.replace(/<script\b[^<]*(?:(?!<\/script>)<[^<]*)*<\/script>/gi, '')
 			content = content.replace(/<img/gi, '<img class="img-fluid"')
@@ -65,10 +79,18 @@
 			<Metadata note_id={id} {kind} id={rand_int} {pubkey} {created_at} {tags} {content} />
 		</CardHeader>
 		<CardBody>
-			<CardText>
-				<SvelteMarkdown {source} />
-			</CardText>
-		</CardBody>
+			<div bind:clientWidth={w} bind:clientHeight={h}>
+				<CardText>
+					<SvelteMarkdown {source} />
+					{#if yt}
+						<YTFrame id={yt} width={w} height={w / (16 / 9)} />
+					{/if}
+					{#if vimeo}
+						<VideoIframe id={'33316053'} width={w} height={w / (16 / 9)} />
+					{/if}
+				</CardText>
+			</div></CardBody
+		>
 		<CardFooter>
 			<small>User Identity: {pubkey.slice(0, 10)}...</small>
 			<br />
