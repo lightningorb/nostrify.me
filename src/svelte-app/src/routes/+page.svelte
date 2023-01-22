@@ -21,9 +21,16 @@ lim = () =>
 moar = () =>
   max += 10
   entries = db.get_data(max)
+
+event_cb = (relay, sub_id, ev) =>
+  if sub_id is 'global'
+    db.insert_data(ev)
+
 onDestroy ->
   for intv in intervals
     clearInterval intv
+  pool.remove_event_callback event_cb
+  pool.pool.unsubscribe 'global'
 onMount ->
   entries = db.get_data(max)
   intervalId = setInterval (->
@@ -34,18 +41,11 @@ onMount ->
   window.addEventListener "scroll", =>
     if Math.ceil(window.innerHeight + window.pageYOffset) >= document.body.offsetHeight
       moar()
-  # missing = db.get_missing_ids(lim())
-  # pool.pool.unsubscribe 'ids'
-  # pool.pool.subscribe 'ids',
-  #   kinds: [0],
-  #   pubkeys: missing
   pool.pool.unsubscribe 'global'
   pool.pool.subscribe 'global',
     kinds: [1],
     since: lim()
-  pool.add_event_callback (relay, sub_id, ev) =>
-    db.insert_data(ev)
-    console.log(ev.id)
+  pool.add_event_callback event_cb
 sotr = (a, b) => b[1].created_at - a[1].created_at
 </script>
 

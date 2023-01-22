@@ -27,6 +27,10 @@ class Database
     res = @db.exec("SELECT * FROM data WHERE id = '#{data.id}'")
     if res.length == 0
       @db.run("INSERT INTO data VALUES (:id, :pubkey, :created_at, :kind, :tags, :content, :sig)", {':id': data.id, ':pubkey': data.pubkey, ':created_at': data.created_at, ':kind': data.kind, ':tags': JSON.stringify(data.tags), ':content': data.content, ':sig': data.sig})
+  insert_identity_data: (data) ->
+    res = @db.exec("SELECT * FROM data WHERE kind = 0 AND pubkey = '#{data.pubkey}'")
+    if res.length == 0
+      @db.run("INSERT INTO data VALUES (:id, :pubkey, :created_at, :kind, :tags, :content, :sig)", {':id': data.id, ':pubkey': data.pubkey, ':created_at': data.created_at, ':kind': data.kind, ':tags': JSON.stringify(data.tags), ':content': data.content, ':sig': data.sig})
   save: ->
     sessionStorage.setItem("mydata2", toBinString(@db.export()));
   get_data: (max) =>
@@ -53,16 +57,14 @@ class Database
       doc
   get_identity: (pubkey) =>
     stmt = @db.prepare("SELECT * FROM data WHERE kind=0 AND pubkey=:pubkeyval")
-    stmt.getAsObject({':pubkeyval' : pubkey})
+    doc = stmt.getAsObject({':pubkeyval' : pubkey})
     if doc?.id?
       doc
-  get_missing_ids: (created_at) => #  AND created_at > :created_atval, 1673726763
-    # print(created_at)
-    # print(1673728763)
-    stmt = @db.prepare("\
-      SELECT pubkey FROM data WHERE (kind = 1)")
-    # stmt.getAsObject({':created_atval': created_at})
-    stmt.getAsObject()
+  get_missing_ids: (created_at) =>
+    stmt = @db.prepare("SELECT pubkey FROM data WHERE (kind = 1 AND created_at > :created_atval)")
+    # stmt = @db.prepare("SELECT pubkey FROM data WHERE (kind = 1)")
+    stmt.getAsObject({':created_atval': created_at})
+    # stmt.getAsObject({})
     stmt.bind({})
     while stmt.step()
       stmt.getAsObject().pubkey

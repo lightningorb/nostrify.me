@@ -7,7 +7,7 @@ import { RelayPool } from 'nostr'
 class Pool
   constructor: ->
     @callbacks = []
-    @event_callbacks = []
+    @event_callbacks = new Set([])
     return @
   init: =>
     prefs = get(preferences)
@@ -20,7 +20,7 @@ class Pool
       for cb in @callbacks
         cb(relay)
     @pool.on 'event', (relay, sub_id, ev) =>
-      for cb in @event_callbacks
+      for cb in [...@event_callbacks]
         cb(relay, sub_id, ev)
     return @pool
   add_callback: (cb) =>
@@ -28,7 +28,9 @@ class Pool
   clear_callbacks: () =>
     @callbacks = []
   add_event_callback: (cb) =>
-    @event_callbacks.push(cb)
+    @event_callbacks.add(cb)
+  remove_event_callback: (cb) =>
+    @event_callbacks.add(cb)
 
 pool = new Pool()
 export default pool = pool

@@ -1,14 +1,28 @@
 <script>
 	import { print } from '$lib/utils.coffee';
 	import { page } from '$app/stores';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import pool from '$lib/pool.coffee';
 	import Note from '../../components/Note.svelte';
 	import db from '$lib/db.coffee';
 	import Key from '$lib/Key.coffee';
-	var debounce, intervalId, intervals, note, timer;
+	var note;
 	$: key = $page.url.searchParams;
-	intervals = [];
+
+    function get_pubkeys(note){
+        var pubkeys = new Set([])
+        if (note){
+            var in_db = db.get_identity(note.pubkey)
+            if (!in_db)
+                pubkeys.add(note.pubkey)
+            for (var rel of note.related) {
+                for (var pk of get_pubkeys(rel)){
+                    pubkeys.add(pk)
+                }
+            }
+        }
+        return pubkeys
+    }
 
 	function get_note(id) {
 		var seen = {};
@@ -18,9 +32,11 @@
 	}
 
 	$: note = get_note($page.url.searchParams.get('key'));
-	timer = void 0;
+	$: pubkeys = get_pubkeys(note)
+	var timer = 0;
+	var sub_to_ids_timer = 0;
 
-	debounce = function (id) {
+	var debounce = function (id) {
 		clearTimeout(timer);
 		timer = setTimeout(function () {
 			db.save();
@@ -44,8 +60,18 @@
 		}
 	}
 
+	var sub_to_ids_debounce = function (pubkeys) {
+		clearTimeout(sub_to_ids_timer);
+		sub_to_ids_timer = setTimeout(function () {
+			pool.pool.unsubscribe('ids');
+			pool.pool.subscribe('ids', {
+				kinds: [0],
+				authors: [...pubkeys]
+			});
+		}, 3000);
+	};
+
 	function sub_to_note(id) {
-		print('subbing to' + id);
 		pool.pool.unsubscribe('note');
 		pool.pool.subscribe('note', {
 			kinds: [1],
@@ -63,20 +89,31 @@
 
 	$: sub = sub_to_note($page.url.searchParams.get('key'));
 	$: refs = sub_to_refs($page.url.searchParams.get('key'));
+	$: sub_ids = sub_to_ids_debounce(pubkeys)
+
+	function on_event(relay, sub_id, ev) {
+		if (sub_id == 'refs') {
+			db.insert_data(ev);
+			debounce($page.url.searchParams.get('key'));
+		} else if (sub_id == 'note') {
+			db.insert_data(ev);
+			note = get_note($page.url.searchParams.get('key'));
+		} else if (sub_id == 'ids') {
+			db.insert_identity_data(ev)
+		}
+	}
+
+	onDestroy(function() {
+		pool.pool.unsubscribe('refs');
+		pool.pool.unsubscribe('note');
+		pool.pool.unsubscribe('ids');
+		pool.remove_event_callback(on_event)
+	})
 
 	onMount(function () {
-		function on_event(relay, sub_id, ev) {
-			db.insert_data(ev);
-			if (sub_id == 'refs') {
-				debounce($page.url.searchParams.get('key'));
-			} else if (sub_id == 'note') {
-				note = get_note($page.url.searchParams.get('key'));
-			}
-		}
-		pool.pool.on('event', on_event);
+		pool.add_event_callback(on_event)
 	});
 </script>
-
 <br />
 <h2>Thread</h2>
 <hr />
@@ -88,6 +125,7 @@
 		created_at={note.created_at}
 		tags={note.tags}
 		id={note.id}
+		sig={note.sig}
 		content={note.content}
 	/>
 {/if}

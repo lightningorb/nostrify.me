@@ -8,10 +8,8 @@
 	export let tags = [];
 	$: result = {};
 	let posting = false;
-	$: done_posting = Object.entries(result).length == prefs.relays.length;
 	async function post() {
 		posting = true;
-		done_posting = false;
 		let event = {
 			kind: 1,
 			pubkey: prefs.public_key,
@@ -25,45 +23,22 @@
 			var relay_address = prefs.relays[i];
 			const relay = window.NostrTools.relayInit(relay_address);
 			await relay.connect(1);
-			let r = await new Promise((resolve) => {
-				try {
-					relay.on('connect', async () => {
-						let pub = await relay.publish(event);
-						pub.on('ok', () => {
-							text = '';
-						});
-						pub.on('seen', () => {
-							console.log(`we saw the event`);
-							// resolve([relay.url, '✓'])
-						});
-						pub.on('failed', (reason) => {
-							console.log(`failed to publish`);
-							console.log(reason);
-							// resolve([relay.url, "×"])
-						});
-					});
-				} catch {
-					resolve([relay, '×']);
-				}
+			relay.on('connect', async () => {
+				let pub = await relay.publish(event);
+				pub.on('ok', () => {
+					text = '';
+				});
+				pub.on('seen', () => {
+					console.log(`we saw the event`);
+				});
+				pub.on('failed', (reason) => {
+					console.log(`failed to publish`);
+					console.log(reason);
+				});
 			});
-			// try {
-			// 	if (r.length == 2)
-			// 		result[r[0]] = r[1]
-			// 	else
-			// 		result[relay_address] = "x"
-			// } catch {
-			// 	// result[relay_address] = "×"
-			// }
 		}
 	}
 </script>
-
-<!-- {#if posting && !done_posting}
-	<Lottie path="https://assets3.lottiefiles.com/packages/lf20_LkipNu.json" speed={1} loop={true}/>
-	{#each Object.entries(result) as [a, b]}
-		<p>{b} {a} </p>
-	{/each}
-{/if} -->
 <FormGroup class="que-pasa">
 	{#if !posting}
 		<Input

@@ -1,5 +1,6 @@
 <script lang="coffeescript">
 	import db from '$lib/db.coffee'
+	import subs from '$lib/subscriptions.coffee'
 	import { key_to_hex_key, hex_key_to_key} from '$lib/key.coffee'
 	import { print, getRandomInt} from '$lib/utils.coffee'
 	import YTFrame from '../components/YoutubeIframe.svelte'
@@ -8,7 +9,7 @@
 	import Post from '../components/Post.svelte'
 	import Note from '../components/Note.svelte'
 	import Metadata from '../components/Metadata.svelte'
-	import { faReply, faInfo } from '@fortawesome/free-solid-svg-icons/index.js'
+	import { faReply, faInfo, faCertificate } from '@fortawesome/free-solid-svg-icons/index.js'
 	import {
 	  Card,
 	  Button,
@@ -25,6 +26,7 @@
 	export parent = null
 	export parents = []
 	export id = null
+	export sig = null
 	export depth = 0
 	export kind = 0
 	export content = ''
@@ -32,10 +34,12 @@
 	export pubkey = ''
 	export created_at = 0
 	export related = {}
+	show_meta_button = false
 	w = 0
 	h = 0
 	yt = ''
 	vimeo = ''
+	user_id = null
 	makeSafeHtml = (content) ->
 		if content? and content != undefined
 			imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/gi
@@ -56,27 +60,48 @@
 	rand_int = 'id_'+getRandomInt(0, 1e10).toString()
 	[is_replying, show_metadata] = [false, false]
 	onMount ->
+		subs.init()
 		if pubkey?
-			user_id = db?.get_identity(pubkey)
-			console.log(user_id)
+			subs.main(pubkey)
+		cmd = () ->
+			if pubkey?
+				user_id = db.get_identity(pubkey)?.content
+				if user_id
+					user_id = JSON.parse(user_id)
+		setInterval(cmd, 1000)
+		cmd()
 		isOpen = true
 </script>
 
 <Fade {isOpen} {id}>
 	<Card class="mb-3" style={'padding-left: ' + 5 + 'px; margin-left: ' + 5 + 'px;'}>
 		<CardHeader>
+			{#if user_id && user_id.picture}
+				<img style='width: 30px; height: 30px; border-radius: 30px;' src={user_id.picture}/>&nbsp;&nbsp;&nbsp;
+				{user_id.name ? user_id.name : pubkey.slice(0, 5)}
+			{/if}
 			<Time id={'time' + id} relative live={1000} timestamp={created_at * 1000} />
+			{#if user_id}
+				{#if user_id.nip05}
+					<br/><small>{user_id.nip05}</small>
+				{/if}
+				{#if user_id.nip05valid}
+					<Fa class="small-fa" icon={faCertificate} />
+				{/if}
+			{/if}
 			{#if parent}
-				<br /><small>In reply to: <a href={'/e/?key=' + parent}>{parent.slice(0, 5)}</a>...</small>
+				<br /><small>reply to: <a href={'/e/?key=' + parent}>{parent.slice(0, 5)}</a>...</small>
 			{:else if ref.length != 0}
 				{#each ref as r}
-					<br /><small>In reply to: <a href={'/e/?key=' + r[1]}>{r[1].slice(0, 5)}</a>...</small>
+					<br /><small>reply to: <a href={'/e/?key=' + r[1]}>{r[1].slice(0, 5)}</a>...</small>
 				{/each}
 			{/if}
+			{#if show_meta_button}
 			<Button class="small-button" id={rand_int} size="sm"
 				><Fa class="small-fa" icon={faInfo} /></Button
 			>
 			<Metadata note_id={id} {kind} id={rand_int} {pubkey} {created_at} {tags} {content} />
+			{/if}
 		</CardHeader>
 		<CardBody>
 			<div bind:clientWidth={w} bind:clientHeight={h}>
@@ -109,6 +134,7 @@
 					{kind}
 					parent={id}
 					related={note.related}
+					sig={sig}
 					depth={depth + 1}
 					pubkey={note.pubkey}
 					created_at={note.created_at}
