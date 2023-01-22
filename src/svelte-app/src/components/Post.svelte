@@ -1,6 +1,5 @@
 <script type="text/javascript">
 	import { Form, FormGroup, FormText, Input, Label, Button } from 'sveltestrap';
-	import { Lottie } from 'lottie-svelte';
 	import { preferences } from '$lib/store.js';
 	import { get } from 'svelte/store';
 	let prefs = get(preferences);
