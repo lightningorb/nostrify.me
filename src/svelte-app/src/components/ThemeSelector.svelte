@@ -1,4 +1,4 @@
-<script lang='coffeescript'>
+<script lang="coffeescript">
     import { preferences } from '$lib/store.js'
     import { get } from 'svelte/store'
     themes = [
@@ -14,11 +14,12 @@
     preferences.subscribe (x) -> prefs = x
     handleChange = (event) -> preferences.update ({theme_name, ...rest}) -> {theme_name: event.target.value, ...rest}
 </script>
+
 <div>
-    <label for="theme-selector">Select Theme:</label>
-    <select id="theme-selector" on:change={handleChange}>
-        {#each themes as theme}
-            <option value={theme.value} selected={theme.value === prefs.theme_name}>{theme.name}</option>
-        {/each}
-    </select>
+	<label for="theme-selector">Select Theme:</label>
+	<select id="theme-selector" on:change={handleChange}>
+		{#each themes as theme}
+			<option value={theme.value} selected={theme.value === prefs.theme_name}>{theme.name}</option>
+		{/each}
+	</select>
 </div>

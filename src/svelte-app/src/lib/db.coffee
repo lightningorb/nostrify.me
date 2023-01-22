@@ -42,8 +42,7 @@ class Database
     r = []
     while stmt.step()
       doc = stmt.getAsObject()
-      tags = JSON.parse(doc.tags)
-      for t in tags
+      for t in JSON.parse(doc.tags)
         if t[0] == 'e' and t[1] == e
           r.push(doc)
     r
@@ -52,6 +51,21 @@ class Database
     doc = stmt.getAsObject({':idval' : hex_key})
     if doc?.id?
       doc
+  get_identity: (pubkey) =>
+    stmt = @db.prepare("SELECT * FROM data WHERE kind=0 AND pubkey=:pubkeyval")
+    stmt.getAsObject({':pubkeyval' : pubkey})
+    if doc?.id?
+      doc
+  get_missing_ids: (created_at) => #  AND created_at > :created_atval, 1673726763
+    # print(created_at)
+    # print(1673728763)
+    stmt = @db.prepare("\
+      SELECT pubkey FROM data WHERE (kind = 1)")
+    # stmt.getAsObject({':created_atval': created_at})
+    stmt.getAsObject()
+    stmt.bind({})
+    while stmt.step()
+      stmt.getAsObject().pubkey
 
 db = new Database()
 export default db = db

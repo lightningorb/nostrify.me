@@ -12,17 +12,12 @@
     p.relays.splice i,1
     preferences.set(p)
 </script>
+
 <Row>
-  <Col xs={6}>
-    <Input
-      type="text"
-      name="relay"
-      id="relay{i}"
-      on:change={handleChange}
-      bind:value={relay}
-    />
-  </Col>
-  <Col xs={6}>
-    <Button on:click={deleteRelay}>Delete</Button>
-  </Col>
+	<Col xs={6}>
+		<Input type="text" name="relay" id="relay{i}" on:change={handleChange} bind:value={relay} />
+	</Col>
+	<Col xs={6}>
+		<Button on:click={deleteRelay}>Delete</Button>
+	</Col>
 </Row>

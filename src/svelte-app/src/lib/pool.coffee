@@ -25,6 +25,8 @@ class Pool
     return @pool
   add_callback: (cb) =>
     @callbacks.push(cb)
+  clear_callbacks: () =>
+    @callbacks = []
   add_event_callback: (cb) =>
     @event_callbacks.push(cb)
 

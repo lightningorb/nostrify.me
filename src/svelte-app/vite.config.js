@@ -14,7 +14,7 @@ import { sveltekit } from '@sveltejs/kit/vite';
 const config = {
 	build: {
 		target: 'es2020',
-        minify: false
+		minify: false
 	},
 	optimizeDeps: {
 		esbuildOptions: {

@@ -6,6 +6,7 @@ all:
 build:
 	. ~/.bash_profile && nvm use v16 && coffee -c src/routes/+layout.coffee
 	. ~/.bash_profile && nvm use v16 && npm run build
+	cp static/nostr.jpeg build/
 
 push:
 	aws s3 cp build/ s3://nostrify/ --recursive

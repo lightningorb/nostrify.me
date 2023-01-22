@@ -18,7 +18,7 @@ const config = {
 		preprocess({
 			coffeescript: {
 				bare: true,
-	            sourceMap: true
+				sourceMap: true
 			}
 		})
 	]

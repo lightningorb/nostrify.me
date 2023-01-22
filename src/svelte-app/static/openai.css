@@ -2,98 +2,106 @@
 
 /* Body and Base Styles */
 body {
-background-color: #1a1a1a !important;
-color: #f8f9fa !important;
+	background-color: #1a1a1a !important;
+	color: #f8f9fa !important;
 }
 
 /* Headings */
-h1, h2, h3, h4, h5, h6 {
-color: #dc3545 !important;
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: #dc3545 !important;
 }
 
 /* Links */
 a {
-color: #17a2b8 !important;
+	color: #17a2b8 !important;
 }
 a:hover {
-color: #dc3545 !important;
+	color: #dc3545 !important;
 }
 
 /* Buttons */
 .btn {
-background-color: #17a2b8 !important;
-color: #1a1a1a !important;
-border-color: #17a2b8 !important;
+	background-color: #17a2b8 !important;
+	color: #1a1a1a !important;
+	border-color: #17a2b8 !important;
 }
 .btn:hover {
-background-color: #dc3545 !important;
-color: #f8f9fa !important;
-border-color: #dc3545 !important;
+	background-color: #dc3545 !important;
+	color: #f8f9fa !important;
+	border-color: #dc3545 !important;
 }
 
 /* Inputs */
-input, textarea {
-background-color: #343a40 !important;
-color: #f8f9fa !important;
-border-color: #17a2b8 !important;
+input,
+textarea {
+	background-color: #343a40 !important;
+	color: #f8f9fa !important;
+	border-color: #17a2b8 !important;
 }
 
 /* Table Styles */
 table {
-background-color: #343a40 !important;
-color: #f8f9fa !important;
+	background-color: #343a40 !important;
+	color: #f8f9fa !important;
 }
 th {
-background-color: #17a2b8 !important;
-color: #1a1a1a !important;
+	background-color: #17a2b8 !important;
+	color: #1a1a1a !important;
 }
 td {
-border-color: #17a2b8 !important;
+	border-color: #17a2b8 !important;
 }
 
 /* Navbar */
 .navbar {
-background-color: #1a1a1a !important;
-color: #f8f9fa !important;
+	background-color: #1a1a1a !important;
+	color: #f8f9fa !important;
 }
 .navbar a {
-color: #f8f9fa !important;
+	color: #f8f9fa !important;
 }
 .navbar a:hover {
-color: #17a2b8 !important;
+	color: #17a2b8 !important;
 }
 .navbar .navbar-brand {
-color: #dc3545 !important;
+	color: #dc3545 !important;
 }
 
 /* Cards */
-.card, .popover-body, .popover-header {
-background-color: #343a40 !important;
-color: #f8f9fa !important;
-border-color: #17a2b8 !important;
+.card,
+.popover-body,
+.popover-header {
+	background-color: #343a40 !important;
+	color: #f8f9fa !important;
+	border-color: #17a2b8 !important;
 }
 
 /* Forms */
 .form-control {
-background-color: #343a40 !important;
-color: #f8f9fa !important;
-border-color: #17a2b8 !important;
+	background-color: #343a40 !important;
+	color: #f8f9fa !important;
+	border-color: #17a2b8 !important;
 }
 
 /* Code Blocks */
 pre {
-background-color: #343a40 !important;
-color: #f8f9fa !important;
-border-color: #17a2b8 !important;
+	background-color: #343a40 !important;
+	color: #f8f9fa !important;
+	border-color: #17a2b8 !important;
 }
 code {
-background-color: #343a40 !important;
-color: #f8f9fa !important;
-border-color: #17a2b8 !important;
+	background-color: #343a40 !important;
+	color: #f8f9fa !important;
+	border-color: #17a2b8 !important;
 }
 
 /* Footer */
 footer {
-background-color: #1a1a1a !important;
-color: #f8f9fa !important;
+	background-color: #1a1a1a !important;
+	color: #f8f9fa !important;
 }

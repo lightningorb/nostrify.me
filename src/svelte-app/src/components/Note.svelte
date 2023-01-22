@@ -1,4 +1,5 @@
 <script lang="coffeescript">
+	import db from '$lib/db.coffee'
 	import { key_to_hex_key, hex_key_to_key} from '$lib/key.coffee'
 	import { print, getRandomInt} from '$lib/utils.coffee'
 	import Fa from 'svelte-fa/src/fa.svelte'
@@ -39,11 +40,65 @@
 	`$: source = makeSafeHtml(content)`
 	`$: ref = JSON.parse(tags).filter((x) => x[0] == 'e')`
 	rand_int = 'id_'+getRandomInt(0, 1e10).toString()
-	is_replying = false
-	show_metadata = false
+	[is_replying, show_metadata] = [false, false]
 	onMount ->
+		if pubkey?
+			user_id = db?.get_identity(pubkey)
+			console.log(user_id)
 		isOpen = true
 </script>
+
+<Fade {isOpen} {id}>
+	<Card class="mb-3" style={'padding-left: ' + 5 + 'px; margin-left: ' + 5 + 'px;'}>
+		<CardHeader>
+			<Time id={'time' + id} relative live={1000} timestamp={created_at * 1000} />
+			{#if parent}
+				<br /><small>In reply to: <a href={'/e/?key=' + parent}>{parent.slice(0, 5)}</a>...</small>
+			{:else if ref.length != 0}
+				{#each ref as r}
+					<br /><small>In reply to: <a href={'/e/?key=' + r[1]}>{r[1].slice(0, 5)}</a>...</small>
+				{/each}
+			{/if}
+			<Button class="small-button" id={rand_int} size="sm"
+				><Fa class="small-fa" icon={faInfo} /></Button
+			>
+			<Metadata note_id={id} {kind} id={rand_int} {pubkey} {created_at} {tags} {content} />
+		</CardHeader>
+		<CardBody>
+			<CardText>
+				<SvelteMarkdown {source} />
+			</CardText>
+		</CardBody>
+		<CardFooter>
+			<small>User Identity: {pubkey.slice(0, 10)}...</small>
+			<br />
+			<small>Note Identity: <a href={'/e/?key=' + id}>{id.slice(0, 5)}</a></small>
+			<Button class="small-button" size="sm" on:click={() => (is_replying = true)}
+				><Fa class="small-fa" icon={faReply} /></Button
+			>
+			{#if is_replying}
+				<Post tags={[...JSON.parse(tags), ['e', id], ['p', pubkey]]} />
+			{/if}
+		</CardFooter>
+		{#if depth < 5 && related}
+			{#each Object.entries(related) as [_id, note] (note.id)}
+				<Note
+					parents={[...parents, id]}
+					{kind}
+					parent={id}
+					related={note.related}
+					depth={depth + 1}
+					pubkey={note.pubkey}
+					created_at={note.created_at}
+					tags={note.tags}
+					id={note.id}
+					content={note.content}
+				/>
+			{/each}
+		{/if}
+	</Card>
+</Fade>
+
 <style>
 	:global(.small-button) {
 		border: unset;
@@ -63,40 +118,3 @@
 		max-width: 80%;
 	}
 </style>
-<Fade {isOpen} id={id}>
-	<Card class="mb-3" style={"padding-left: "+5+"px; margin-left: "+5+'px;'}>
-		<CardHeader>
-			<Time id={'time' + id} relative live={1000} timestamp={created_at * 1000} />
-			{#if parent}
-				<br/><small>In reply to: <a href={'/e/?key=' + parent}>{parent.slice(0, 5)}</a>...</small>
-			{:else}
-				{#if ref.length != 0}
-					{#each ref as r}
-						<br/><small>In reply to: <a href={'/e/?key=' + r[1]}>{r[1].slice(0, 5)}</a>...</small>
-					{/each}
-				{/if}
-			{/if}
-			<Button class='small-button' id={rand_int} size='sm' ><Fa class='small-fa' icon={faInfo}/></Button>
-			<Metadata note_id={id} kind={kind} id={rand_int} pubkey={pubkey} created_at={created_at} tags={tags} content={content}/>
-		</CardHeader>
-		<CardBody>
-			<CardText>
-				<SvelteMarkdown {source} />
-			</CardText>
-		</CardBody>
-		<CardFooter>
-			<small>User Identity: {pubkey.slice(0, 10)}...</small>
-			<br />
-			<small>Note Identity: <a href={'/e/?key='+id}>{id.slice(0, 5)}</a></small>
-			<Button class='small-button' size='sm' on:click={() => is_replying = true}><Fa class='small-fa' icon={faReply}/></Button>
-		{#if is_replying}
-			<Post tags={[...JSON.parse(tags), ['e', id], ['p', pubkey]]}/>
-		{/if}
-		</CardFooter>
-		{#if depth < 5 && related}
-			{#each Object.entries(related) as [_id, note] (note.id)}
-  				<Note parents={[...parents, id]} kind={kind} parent={id} related={note.related} depth={depth+1} pubkey={note.pubkey} created_at={note.created_at} tags={note.tags} id={note.id} content={note.content}/>
-			{/each}
-		{/if}
-	</Card>
-</Fade>

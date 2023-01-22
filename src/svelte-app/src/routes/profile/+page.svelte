@@ -1,4 +1,4 @@
-<script lang='coffee'>
+<script lang="coffee">
 	import { print } from '$lib/utils.coffee';
 	import { preferences } from '$lib/store.js'
 	import { get } from 'svelte/store'
@@ -14,17 +14,19 @@
 		relays.push('')
 		{relays, ...rest}
 </script>
-<h1>Profile</h1><br />
+
+<h1>Profile</h1>
+<br />
 <!-- <Button on:click={clear_notes}>Clear message cache</Button> -->
 <!-- <br/> -->
 <!-- <hr/> -->
-<ThemeSelector/>
-<hr/>
+<ThemeSelector />
+<hr />
 <Label for="global_hours">Hours of global to get</Label>
 <Input
 	type="text"
 	id="global_hours"
-	placeholder='1'
+	placeholder="1"
 	on:change={() => {
 		let p = get(preferences);
 		p.global_hours = global_hours;
@@ -33,7 +35,7 @@
 	bind:value={global_hours}
 />
 
-<hr/>
+<hr />
 
 <Label for="public_key">Public Key</Label>
 <Input
@@ -62,7 +64,7 @@
 	bind:value={prefs.private_key}
 />
 
-<hr/>
+<hr />
 
 <Button on:click={add_relay}>Add Relay</Button>
 
@@ -76,4 +78,4 @@
 <p>If things seem broken, try this:</p>
 <Button on:click={clear_prefs}>Clear all prefs</Button>
 <br />
-<hr/>
+<hr />
