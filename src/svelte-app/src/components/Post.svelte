@@ -38,6 +38,7 @@
 		}
 	}
 </script>
+
 <FormGroup class="que-pasa">
 	{#if !posting}
 		<Input

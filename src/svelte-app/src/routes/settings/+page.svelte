@@ -64,8 +64,8 @@
 <hr />
 
 <Button on:click={add_relay}>Add Relay</Button>
-<br/>
-<br/>
+<br />
+<br />
 <FormGroup>
 	{#each prefs.relays as relay, i}
 		<Relay {relay} {i} />

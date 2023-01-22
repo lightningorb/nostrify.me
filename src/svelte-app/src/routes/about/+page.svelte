@@ -2,21 +2,25 @@
 </script>
 
 <h1>About</h1>
-<br/>
+<br />
 
-Nostrify.me aims to be a really fast, simple and intuitive client for Nostr. It is open source, with a GPL licence.
+Nostrify.me aims to be a really fast, simple and intuitive client for Nostr. It is open source, with
+a GPL licence.
 
-<br/>
-<br/>
+<br />
+<br />
 
-<a href='https://github.com/lightningorb/nostrify.me'>https://github.com/lightningorb/nostrify.me</a>
+<a href="https://github.com/lightningorb/nostrify.me">https://github.com/lightningorb/nostrify.me</a
+>
 
-<br/>
-<br/>
+<br />
+<br />
 
 <h2>Contributing</h2>
 
-<br/>
+<br />
 
-<p>Contributing is easy. Just fork the repo, make some changes, commit and push them, then create a pull request.</p>
-
+<p>
+	Contributing is easy. Just fork the repo, make some changes, commit and push them, then create a
+	pull request.
+</p>

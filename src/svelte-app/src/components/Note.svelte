@@ -77,13 +77,16 @@
 	<Card class="mb-3" style={'padding-left: ' + 5 + 'px; margin-left: ' + 5 + 'px;'}>
 		<CardHeader>
 			{#if user_id && user_id.picture}
-				<img style='width: 30px; height: 30px; border-radius: 30px;' src={user_id.picture}/>&nbsp;&nbsp;&nbsp;
+				<img
+					style="width: 30px; height: 30px; border-radius: 30px;"
+					src={user_id.picture}
+				/>&nbsp;&nbsp;&nbsp;
 				{user_id.name ? user_id.name : pubkey.slice(0, 5)}
 			{/if}
 			<Time id={'time' + id} relative live={1000} timestamp={created_at * 1000} />
 			{#if user_id}
 				{#if user_id.nip05}
-					<br/><small>{user_id.nip05}</small>
+					<br /><small>{user_id.nip05}</small>
 				{/if}
 				{#if user_id.nip05valid}
 					<Fa class="small-fa" icon={faCertificate} />
@@ -97,10 +100,10 @@
 				{/each}
 			{/if}
 			{#if show_meta_button}
-			<Button class="small-button" id={rand_int} size="sm"
-				><Fa class="small-fa" icon={faInfo} /></Button
-			>
-			<Metadata note_id={id} {kind} id={rand_int} {pubkey} {created_at} {tags} {content} />
+				<Button class="small-button" id={rand_int} size="sm"
+					><Fa class="small-fa" icon={faInfo} /></Button
+				>
+				<Metadata note_id={id} {kind} id={rand_int} {pubkey} {created_at} {tags} {content} />
 			{/if}
 		</CardHeader>
 		<CardBody>
@@ -134,7 +137,7 @@
 					{kind}
 					parent={id}
 					related={note.related}
-					sig={sig}
+					{sig}
 					depth={depth + 1}
 					pubkey={note.pubkey}
 					created_at={note.created_at}

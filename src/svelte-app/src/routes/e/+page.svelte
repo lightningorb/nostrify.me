@@ -9,20 +9,19 @@
 	var note;
 	$: key = $page.url.searchParams;
 
-    function get_pubkeys(note){
-        var pubkeys = new Set([])
-        if (note){
-            var in_db = db.get_identity(note.pubkey)
-            if (!in_db)
-                pubkeys.add(note.pubkey)
-            for (var rel of note.related) {
-                for (var pk of get_pubkeys(rel)){
-                    pubkeys.add(pk)
-                }
-            }
-        }
-        return pubkeys
-    }
+	function get_pubkeys(note) {
+		var pubkeys = new Set([]);
+		if (note) {
+			var in_db = db.get_identity(note.pubkey);
+			if (!in_db) pubkeys.add(note.pubkey);
+			for (var rel of note.related) {
+				for (var pk of get_pubkeys(rel)) {
+					pubkeys.add(pk);
+				}
+			}
+		}
+		return pubkeys;
+	}
 
 	function get_note(id) {
 		var seen = {};
@@ -32,7 +31,7 @@
 	}
 
 	$: note = get_note($page.url.searchParams.get('key'));
-	$: pubkeys = get_pubkeys(note)
+	$: pubkeys = get_pubkeys(note);
 	var timer = 0;
 	var sub_to_ids_timer = 0;
 
@@ -89,7 +88,7 @@
 
 	$: sub = sub_to_note($page.url.searchParams.get('key'));
 	$: refs = sub_to_refs($page.url.searchParams.get('key'));
-	$: sub_ids = sub_to_ids_debounce(pubkeys)
+	$: sub_ids = sub_to_ids_debounce(pubkeys);
 
 	function on_event(relay, sub_id, ev) {
 		if (sub_id == 'refs') {
@@ -99,21 +98,22 @@
 			db.insert_data(ev);
 			note = get_note($page.url.searchParams.get('key'));
 		} else if (sub_id == 'ids') {
-			db.insert_identity_data(ev)
+			db.insert_identity_data(ev);
 		}
 	}
 
-	onDestroy(function() {
+	onDestroy(function () {
 		pool.pool.unsubscribe('refs');
 		pool.pool.unsubscribe('note');
 		pool.pool.unsubscribe('ids');
-		pool.remove_event_callback(on_event)
-	})
+		pool.remove_event_callback(on_event);
+	});
 
 	onMount(function () {
-		pool.add_event_callback(on_event)
+		pool.add_event_callback(on_event);
 	});
 </script>
+
 <br />
 <h2>Thread</h2>
 <hr />
