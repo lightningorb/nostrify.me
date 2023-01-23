@@ -1,5 +1,5 @@
 <script lang="coffeescript">
-    import { preferences } from '$lib/store.js'
+    import { preferences } from '$lib/store.ts'
     import { get } from 'svelte/store'
     themes = [
             { name: "Light", value: "light" },

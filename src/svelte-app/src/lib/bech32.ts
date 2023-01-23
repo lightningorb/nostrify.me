@@ -1,11 +1,13 @@
-var ALPHABET = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
-var ALPHABET_MAP = {};
-for (var z = 0; z < ALPHABET.length; z++) {
-	var x = ALPHABET.charAt(z);
-	ALPHABET_MAP[x] = z;
+const ALPHABET: string = 'qpzry9x8gf2tvdw0s3jn54khce6mua7l';
+const ALPHABET_MAP: Record<string, number> = {};
+
+for (let i = 0; i < ALPHABET.length; i++) {
+	const char = ALPHABET.charAt(i);
+	ALPHABET_MAP[char] = i;
 }
-function polymodStep(pre) {
-	var b = pre >> 25;
+
+function polymodStep(pre: number): number {
+	const b = pre >> 25;
 	return (
 		((pre & 0x1ffffff) << 5) ^
 		(-((b >> 0) & 1) & 0x3b6a57b2) ^
@@ -15,26 +17,33 @@ function polymodStep(pre) {
 		(-((b >> 4) & 1) & 0x2a1462b3)
 	);
 }
-function prefixChk(prefix) {
-	var chk = 1;
-	for (var i = 0; i < prefix.length; ++i) {
-		var c = prefix.charCodeAt(i);
+
+function prefixChk(prefix: string): number | string {
+	let chk = 1;
+	for (let i = 0; i < prefix.length; ++i) {
+		const c = prefix.charCodeAt(i);
 		if (c < 33 || c > 126) return 'Invalid prefix (' + prefix + ')';
 		chk = polymodStep(chk) ^ (c >> 5);
 	}
 	chk = polymodStep(chk);
-	for (var i = 0; i < prefix.length; ++i) {
-		var v = prefix.charCodeAt(i);
+	for (let i = 0; i < prefix.length; ++i) {
+		const v = prefix.charCodeAt(i);
 		chk = polymodStep(chk) ^ (v & 0x1f);
 	}
 	return chk;
 }
-function convertbits(data, inBits, outBits, pad) {
-	var value = 0;
-	var bits = 0;
-	var maxV = (1 << outBits) - 1;
-	var result = [];
-	for (var i = 0; i < data.length; ++i) {
+
+function convertbits(
+	data: number[],
+	inBits: number,
+	outBits: number,
+	pad: boolean
+): number[] | string {
+	let value = 0;
+	let bits = 0;
+	const maxV = (1 << outBits) - 1;
+	const result: number[] = [];
+	for (let i = 0; i < data.length; ++i) {
 		value = (value << inBits) | data[i];
 		bits += inBits;
 		while (bits >= outBits) {
@@ -52,26 +61,31 @@ function convertbits(data, inBits, outBits, pad) {
 	}
 	return result;
 }
-export function toWords(bytes) {
+
+export function toWords(bytes: number[]): number[] {
 	return convertbits(bytes, 8, 5, true);
 }
-function fromWordsUnsafe(words) {
-	var res = convertbits(words, 5, 8, false);
+
+function fromWordsUnsafe(words: number[]): number[] | undefined {
+	const res = convertbits(words, 5, 8, false);
 	if (Array.isArray(res)) return res;
 }
-export function fromWords(words) {
-	var res = convertbits(words, 5, 8, false);
+
+export function fromWords(words: number[]): number[] {
+	const res = convertbits(words, 5, 8, false);
 	if (Array.isArray(res)) return res;
 	throw new Error(res);
 }
-function getLibraryFromEncoding(encoding) {
-	var ENCODING_CONST;
+
+function getLibraryFromEncoding(encoding: string) {
+	let ENCODING_CONST: number;
 	if (encoding === 'bech32') {
 		ENCODING_CONST = 1;
 	} else {
 		ENCODING_CONST = 0x2bc830a3;
 	}
-	function encode(prefix, words, LIMIT) {
+
+	function encode(prefix: string, words: number[], LIMIT?: number) {
 		LIMIT = LIMIT || 90;
 		if (prefix.length + 7 + words.length > LIMIT) throw new TypeError('Exceeds length limit');
 		prefix = prefix.toLowerCase();
@@ -125,12 +139,13 @@ function getLibraryFromEncoding(encoding) {
 		if (chk !== ENCODING_CONST) return 'Invalid checksum for ' + str;
 		return { prefix: prefix, words: words };
 	}
-	function decodeUnsafe(str, LIMIT) {
-		var res = __decode(str, LIMIT);
+	function decodeUnsafe(str: string, LIMIT?: number): object | undefined {
+		const res = __decode(str, LIMIT);
 		if (typeof res === 'object') return res;
 	}
-	function decode(str, LIMIT) {
-		var res = __decode(str, LIMIT);
+
+	function decode(str: string, LIMIT?: number): object {
+		const res = __decode(str, LIMIT);
 		if (typeof res === 'object') return res;
 		throw new Error(res);
 	}

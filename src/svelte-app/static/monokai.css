@@ -1,107 +1,11 @@
 /* Monokai Dark CSS Theme for Sveltestrap */
 
-/* Body and Base Styles */
-body {
-	background-color: #272822 !important;
-	color: #f8f8f2 !important;
-}
-
-/* Headings */
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
-	color: #f92672 !important;
-}
-
-/* Links */
-a {
-	color: #66d9ef !important;
-}
-a:hover {
-	color: #f92672 !important;
-}
-
-/* Buttons */
-.btn {
-	background-color: #66d9ef !important;
-	color: #272822 !important;
-	border-color: #66d9ef !important;
-}
-.btn:hover {
-	background-color: #f92672 !important;
-	color: #f8f8f2 !important;
-	border-color: #f92672 !important;
-}
-
-/* Inputs */
-input,
-textarea {
-	background-color: #49483e !important;
-	color: #f8f8f2 !important;
-	border-color: #66d9ef !important;
-}
-
-/* Table Styles */
-table {
-	background-color: #49483e !important;
-	color: #f8f8f2 !important;
-}
-th {
-	background-color: #66d9ef !important;
-	color: #272822 !important;
-}
-td {
-	border-color: #66d9ef !important;
-}
-
-/* Navbar */
-.navbar {
-	background-color: #272822 !important;
-	color: #f8f8f2 !important;
-}
-.navbar a {
-	color: #f8f8f2 !important;
-}
-.navbar a:hover {
-	color: #66d9ef !important;
-}
-.navbar .navbar-brand {
-	color: #f92672 !important;
-}
-
-/* Cards */
-.card,
-.popover-body,
-.popover-header {
-	background-color: #49483e !important;
-	color: #f8f8f2 !important;
-	border-color: #66d9ef !important;
-}
-
-/* Forms */
-.form-control {
-	background-color: #49483e !important;
-	color: #f8f8f2 !important;
-	border-color: #66d9ef !important;
-}
-
-/* Code Blocks */
-pre {
-	background-color: #49483e !important;
-	color: #f8f8f2 !important;
-	border-color: #66d9ef !important;
-}
-code {
-	background-color: #49483e !important;
-	color: #f8f8f2 !important;
-	border-color: #66d9ef !important;
-}
-
-/* Footer */
-footer {
-	background-color: #272822 !important;
-	color: #f8f8f2 !important;
+:root {
+	--primary-color: #66d9ef;
+	--primary-color-hover: #f92672;
+	--secondary-color: #272822;
+	--text-color: #f8f8f2;
+	--heading-color: #f92672;
+	--table-secondary-color: #49483e;
+	--border-color: #66d9ef;
 }

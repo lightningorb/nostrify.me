@@ -1,4 +1,4 @@
-import { preferences } from '$lib/store.js';
+import { preferences } from '$lib/store.ts';
 import { get } from 'svelte/store';
 import { browser, dev } from '$app/environment';
 import { RelayPool } from 'nostr';

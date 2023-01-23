@@ -1,6 +1,6 @@
 <script lang="coffeescript">
   import { Button, Form, FormGroup, FormText, Label, Input, Row, Col } from 'sveltestrap'
-  import { preferences } from '$lib/store.js'
+  import { preferences } from '$lib/store.ts'
   import { get } from 'svelte/store'
   export relay = null
   export i = null

@@ -1,6 +1,6 @@
 import initSqlJs from 'sql.js'
 import { print, toBinString, toBinArray } from '$lib/utils.ts'
-import { preferences } from '$lib/store.js'
+import { preferences } from '$lib/store.ts'
 
 class Database
   constructor: ->

@@ -74,13 +74,10 @@
 </script>
 
 <Fade {isOpen} {id}>
-	<Card class="mb-3" style={'padding-left: ' + 5 + 'px; margin-left: ' + 5 + 'px;'}>
+	<Card class="mb-0" style={'padding-left: ' + 5 + 'px; margin-left: ' + 5 + 'px;'}>
 		<CardHeader>
 			{#if user_id && user_id.picture}
-				<img
-					style="width: 30px; height: 30px; border-radius: 30px;"
-					src={user_id.picture}
-				/>&nbsp;&nbsp;&nbsp;
+				<img style="width: 30px; height: 30px; border-radius: 30px;" src={user_id.picture} />
 				{user_id.name ? user_id.name : pubkey.slice(0, 5)}
 			{/if}
 			<Time id={'time' + id} relative live={1000} timestamp={created_at * 1000} />

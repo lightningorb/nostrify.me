@@ -17,7 +17,7 @@
   import { Figure, Image } from 'sveltestrap';
   import db from '$lib/db.coffee'
   import { print } from '$lib/utils.ts';
-  import { preferences } from '$lib/store.js'
+  import { preferences } from '$lib/store.ts'
   import { onMount } from 'svelte'
   import { onDestroy } from 'svelte'
   import pool from '$lib/pool.ts'
@@ -47,15 +47,15 @@
 <h1>Profile</h1>
 <br />
 {#if profile}
-	<Card class="mb-3" style="max-width: 600px;">
+	<Card class="mb-3" style="max-width: 600px; margin-bottom: 0px; padding-bottom: 0px;">
 		<CardHeader>
 			{#if edit}
 				<Label for="name">name</Label>
 				<Input type="textarea" name="name" id="name" bind:value={profile.name} />
 			{:else if profile.name}
 				<CardTitle>{profile.name}</CardTitle>
-      {:else}
-        <p><small>Please set your profile name or pseudonym.</small></p>
+			{:else}
+				<p><small>Please set your profile name or pseudonym.</small></p>
 			{/if}
 		</CardHeader>
 		<CardBody>
@@ -81,17 +81,20 @@
 			<Input type="textarea" name="about" id="about" bind:value={profile.about} />
 		{:else if profile.about}
 			<CardFooter>About: <SvelteMarkdown source={profile.about} /></CardFooter>
-    {:else}
-      <p><small>Please tell us what this profile is about.</small></p>
+		{:else}
+			<p><small>Please tell us what this profile is about.</small></p>
 		{/if}
 		{#if edit}
 			<Label for="website">Website</Label>
 			<Input type="text" name="website" id="website" bind:value={profile.website} />
 		{:else if profile.website}
 			<CardFooter>Website: {profile.website}</CardFooter>
-      {:else}
-      <p><small>Please set your website. If you're not sure, you can use https://nostrify.me.</small></p>
+		{:else}
+			<p>
+				<small>Please set your website. If you're not sure, you can use https://nostrify.me.</small>
+			</p>
 		{/if}
+		<hr style="padding-bottom: 0xp; margin-bottom: 0px; border-width: 2px !important;" />
 	</Card>
 	{#if edit}
 		<Button

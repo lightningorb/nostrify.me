@@ -1,5 +1,5 @@
 import { print } from '$lib/utils.ts';
-import { bech32, fromWords, toWords } from '$lib/bech32.js';
+import { bech32, fromWords, toWords } from '$lib/bech32.ts';
 
 // Helper function to convert a number to its hex character representation
 const hex_char = (val: number): string => {
@@ -75,3 +75,21 @@ export default class Key {
 		}
 	}
 }
+
+// Test key_to_hex_key function
+const testKey = 'note1x052g5cym0y6pdtcmp9wvfl5j9wtwfzlx3jv4gvaqfc273t5q52sjlgv9d';
+const expectedHexKey = '33e8a45304dbc9a0b578d84ae627f4915cb7245f3464caa19d0270af45740515';
+console.assert(key_to_hex_key(testKey) === expectedHexKey);
+
+// Test hex_key_to_key function
+const testPrefix = 'note';
+const testHexKey = '33e8a45304dbc9a0b578d84ae627f4915cb7245f3464caa19d0270af45740515';
+const expectedKey = 'note1x052g5cym0y6pdtcmp9wvfl5j9wtwfzlx3jv4gvaqfc273t5q52sjlgv9d';
+console.assert(hex_key_to_key(testPrefix, testHexKey) === expectedKey);
+
+// Test Key class
+const testKeyString = 'note1x052g5cym0y6pdtcmp9wvfl5j9wtwfzlx3jv4gvaqfc273t5q52sjlgv9d';
+const testKeyHex = '33e8a45304dbc9a0b578d84ae627f4915cb7245f3464caa19d0270af45740515';
+const testKeyObject = new Key(testKeyString);
+console.assert(testKeyObject.is_note() === true);
+console.assert(testKeyObject.as_hex() === testKeyHex);

@@ -1,6 +1,6 @@
 <script lang="coffee">
 	import { print } from '$lib/utils.ts';
-	import { preferences } from '$lib/store.js'
+	import { preferences } from '$lib/store.ts'
 	import { get } from 'svelte/store'
 	import { Button, Form, FormGroup, FormText, Label, Input } from 'sveltestrap'
 	import Relay from '../../components/Relay.svelte'

@@ -1,7 +1,7 @@
 <script lang="coffeescript">
 import db from '$lib/db.coffee'
 import { onDestroy } from 'svelte'
-import { preferences} from '$lib/store.js'
+import { preferences} from '$lib/store.ts'
 import pool from '$lib/pool.ts'
 import { print } from '$lib/utils.ts'
 import { onMount } from 'svelte'

@@ -11,14 +11,12 @@
 		faDove
 	} from '@fortawesome/free-solid-svg-icons/index.js';
 	import { base } from '$app/paths';
-	import { preferences } from '$lib/store.js';
+	import { preferences } from '$lib/store.ts';
 	import { Styles } from 'sveltestrap';
 	import { Col, Container, Row } from 'sveltestrap';
 	import { get } from 'svelte/store';
-	import { pool as store_pool } from '$lib/store.js';
 	import pool from '$lib/pool.ts';
-	var p = pool.init();
-	store_pool.set(p);
+	pool.init();
 	export let data = null;
 	let prefs = {};
 	preferences.subscribe((x) => (prefs = x));
@@ -32,10 +30,20 @@
 	}
 	onMount(() => {
 		init();
+		if (window)
+			window.addEventListener('scroll', () => {
+				if (window.pageYOffset > 500) {
+					left_style = 'padding-left: 10px; padding-right: 10px;';
+				} else {
+					left_style = 'padding-left: 50px; padding-right: 10px;';
+				}
+			});
 	});
+	var left_style = 'padding-left: 50px; padding-right: 10px;';
 </script>
 
 <svelte:head>
+	<link rel="stylesheet" href="{base}/styles.css" />
 	<link rel="stylesheet" href="{base}/{prefs.theme_name}.css" />
 </svelte:head>
 <Styles />
@@ -44,35 +52,26 @@
 	<Spinner size="sm" type="grow" />
 {/if}
 {#if db_init}
-	<Container>
-		<Row cols={2}>
-			<Col xs={1}>
-				<div class="submenu">
-					<br />
-					<Fa style="font-size: 2em; color: #1DA1F2;" icon={faDove} />
-					<br />
-					<br />
-					{#each data.sections as section}
-						<a href={`${base}/${section.slug}`}>
-							{#if section.icon}
-								<Fa icon={section.icon} />
-							{/if}
-							{@html section.title}
-						</a>
-						<br />
-						<br />
-					{/each}
-					<hr />
-				</div>
-			</Col>
-			<Col xs={11}>
-				<slot />
-			</Col>
-		</Row>
-	</Container>
-	<br />
-
-	<!-- <Footer /> -->
+	<div class="submenu" style="position: absolute; top: 10px; left: 10px;">
+		<br />
+		<a href="/"><Fa style="font-size: 1.5em; color: #1DA1F2;" icon={faDove} /></a>
+		<br />
+		<br />
+		{#each data.sections as section}
+			<a href={`${base}/${section.slug}`}>
+				{#if section.icon}
+					<Fa icon={section.icon} />
+				{/if}
+				{@html section.title}
+			</a>
+			<br />
+			<br />
+		{/each}
+		<hr />
+	</div>
+	<div style={left_style}>
+		<slot />
+	</div>
 	<style>
 		a {
 			color: black;

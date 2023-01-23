@@ -1,0 +1,143 @@
+@import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
+
+hr {
+	color: var(--border-color) !important;
+}
+
+/* Body and Base Styles */
+body {
+	font-family: 'Source Code Pro', monospace !important;
+	background-color: var(--secondary-color) !important;
+	color: var(--text-color) !important;
+}
+
+/* Headings */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	color: var(--heading-color) !important;
+	font-family: 'Open Sans', sans-serif ! !important;
+}
+
+/* Links */
+a {
+	color: var(--primary-color) !important;
+}
+a:hover {
+	color: var(--primary-color-hover) !important;
+}
+
+/* Buttons */
+.btn {
+	background-color: var(--primary-color) !important;
+	color: var(--secondary-color) !important;
+	border-color: var(--primary-color) !important;
+}
+.btn:hover {
+	background-color: var(--primary-color-hover) !important;
+	color: var(--text-color) !important;
+	border-color: var(--primary-color-hover) !important;
+}
+
+/* Inputs */
+input,
+textarea {
+	background-color: var(--table-secondary-color) !important;
+	color: var(--text-color) !important;
+	border-color: var(--primary-color) !important;
+}
+
+/* Table Styles */
+table {
+	background-color: var(--table-secondary-color) !important;
+	color: var(--text-color) !important;
+}
+th {
+	background-color: var(--primary-color) !important;
+	color: var(--secondary-color) !important;
+}
+td {
+	border-color: var(--primary-color) !important;
+}
+
+/* Navbar */
+.navbar {
+	background-color: var(--secondary-color) !important;
+	color: var(--text-color) !important;
+}
+.navbar a {
+	color: var(--text-color) !important;
+}
+.navbar a:hover {
+	color: var(--primary-color) !important;
+}
+.navbar .navbar-brand {
+	color: var(--primary-color-hover) !important;
+}
+
+.card-header {
+	border-bottom-color: #00000000 !important;
+	--bs-card-cap-bg: #00000000 !important;
+	background-color: #00000000;
+}
+.card-footer {
+	border-top-color: #00000000 !important;
+	--bs-card-cap-bg: #00000000 !important;
+	background-color: #00000000 !important;
+}
+/* Cards */
+.card,
+.popover-body,
+.popover-header {
+	--bs-card-cap-bg: #00000000 !important;
+	background-color: #00000000 !important;
+	color: var(--text-color) !important;
+	border-color: var(--border-color) !important;
+	border-radius: 0px !important;
+	border-bottom-style: none !important;
+}
+
+/* Forms */
+.form-control {
+	margin-left: 5px;
+	background-color: var(--secondary-color) !important;
+	color: var(--text-color) !important;
+	border-color: var(--border-color) !important;
+	border-radius: 0px !important;
+}
+
+textarea:focus,
+input[type='text']:focus,
+input[type='password']:focus,
+input[type='datetime']:focus,
+input[type='datetime-local']:focus,
+input[type='date']:focus,
+input[type='month']:focus,
+input[type='time']:focus,
+input[type='week']:focus,
+input[type='number']:focus,
+input[type='email']:focus,
+input[type='url']:focus,
+input[type='search']:focus,
+input[type='tel']:focus,
+input[type='color']:focus,
+.uneditable-input:focus {
+	border-color: var(--primary-color) !important;
+	box-shadow: none !important;
+	outline: 0 none;
+}
+
+/* Code Blocks */
+pre {
+	background-color: var(--table-secondary-color) !important;
+	color: var(--text-color) !important;
+}
+/* Footer */
+footer {
+	background-color: var(--secondary-color) !important;
+	color: var(--text-color) !important;
+}

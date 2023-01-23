@@ -129,3 +129,4 @@
 		content={note.content}
 	/>
 {/if}
+<hr class="mt-0" style="margin-left: 5px;" />
