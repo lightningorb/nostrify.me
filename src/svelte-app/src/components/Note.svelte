@@ -1,7 +1,8 @@
 <script lang="coffeescript">
+	import { preferences, input_focus, key_pressed } from '$lib/store.ts';
 	import { goto } from '$app/navigation';
 	import db from '$lib/db.coffee'
-	import subs from '$lib/subscriptions.coffee'
+	import subs from '$lib/subscriptions.ts'
 	import { key_to_hex_key, hex_key_to_key} from '$lib/key.ts'
 	import { print, getRandomInt} from '$lib/utils.ts'
 	import { page } from '$app/stores';
@@ -22,10 +23,12 @@
 	  Fade
 	} from 'sveltestrap'
 	import { onMount } from 'svelte'
-	import Time from 'svelte-time'
+	import Time from '../components/Time.svelte'
 	import SvelteMarkdown from 'svelte-markdown'
 	isOpen = false
 	export parent = null
+	export self = null
+	export restart = null
 	export parents = []
 	export id = null
 	export sig = null
@@ -35,7 +38,6 @@
 	export tags = '[]'
 	export pubkey = ''
 	export created_at = 0
-	export related = {}
 	show_meta_button = false
 	w = 0
 	h = 0
@@ -62,7 +64,6 @@
 	rand_int = 'id_'+getRandomInt(0, 1e10).toString()
 	[is_replying, show_metadata] = [false, false]
 	onMount ->
-		subs.init()
 		if pubkey?
 			subs.main(pubkey)
 		cmd = () ->
@@ -76,85 +77,102 @@
 	on_note_click = ->
 		$page.url.searchParams.set('key', id)
 		goto('/e/?'+$page.url.searchParams.toString())
+	key_pressed.subscribe((x) ->
+		if self.active
+			key = x[0].key;
+			if key == 'j'
+				next = self.next
+				if next?
+					$page.url.searchParams.set('key', next.id)
+					goto('/e/?'+$page.url.searchParams.toString())
+			else if key == 'k'
+				prev = self.prev or ref?[ref.length-1][1]
+				if prev
+					$page.url.searchParams.set('key', prev)
+					goto('/e/?'+$page.url.searchParams.toString())
+	)
 </script>
 
-<Fade {isOpen} {id}>
-	<Card class="mb-0" style={'px; margin-left: ' + 5 + 'px;'}>
-		<span class="note-content">
-			<span on:click={on_note_click}>
-				<CardHeader>
-					{#if user_id && user_id.picture}
-						<img style="width: 30px; height: 30px; border-radius: 30px;" src={user_id.picture} />
-						{user_id.name ? user_id.name : pubkey.slice(0, 5)}
-					{/if}
-					<Time id={'time' + id} relative live={1000} timestamp={created_at * 1000} />
-					{#if user_id}
-						{#if user_id.nip05}
-							<br /><small>{user_id.nip05}</small>
-						{/if}
-						{#if user_id.nip05valid}
-							<Fa class="small-fa" icon={faCertificate} />
-						{/if}
-					{/if}
-					{#if parent}
-						<br /><small>reply to: <a href={'/e/?key=' + parent}>{parent.slice(0, 5)}</a>...</small>
-					{:else if ref.length != 0}
-						{#each ref as r}
-							<br /><small>reply to: <a href={'/e/?key=' + r[1]}>{r[1].slice(0, 5)}</a>...</small>
-						{/each}
-					{/if}
-					{#if show_meta_button}
-						<Button class="small-button" id={rand_int} size="sm"
-							><Fa class="small-fa" icon={faInfo} /></Button
-						>
-						<Metadata note_id={id} {kind} id={rand_int} {pubkey} {created_at} {tags} {content} />
-					{/if}
-				</CardHeader>
-				<CardBody>
-					<div bind:clientWidth={w} bind:clientHeight={h}>
-						<CardText>
-							<SvelteMarkdown {source} />
-							{#if yt}
-								<YTFrame id={yt} width={w} height={w / (16 / 9)} />
-							{/if}
-							{#if vimeo}
-								<VideoIframe id={'33316053'} width={w} height={w / (16 / 9)} />
-							{/if}
-						</CardText>
-					</div></CardBody
-				>
-			</span>
-			<CardFooter>
-				<small>User Identity: {pubkey.slice(0, 10)}...</small>
-				<br />
-				<small>Note Identity: <a href={'/e/?key=' + id}>{id.slice(0, 5)}</a></small>
-				<Button class="small-button" size="sm" on:click={() => (is_replying = true)}
-					><Fa class="small-fa" icon={faReply} /></Button
-				>
-				{#if is_replying}
-					<Post tags={[...JSON.parse(tags), ['e', id], ['p', pubkey]]} />
+<Card class="mb-0" style={'px; margin-left: ' + 5 + 'px; padding: 5px;'}>
+	<!-- {#if self.parent}
+	<p>parent: {self.parent.id.slice(0, 5)}</p>
+{/if}
+
+{#if self.prev}
+	<p>prev: {self.prev.id.slice(0, 5)}</p>
+{/if}
+
+{#if self.next}
+	<p>next: {self.next.id.slice(0, 5)}</p>
+{/if}
+ -->
+	<span class={'note-content'}>
+		<div on:click={on_note_click} style="margin: 0px; padding: 0px;">
+			{#if user_id && user_id.picture}
+				<img style="width: 30px; height: 30px; border-radius: 30px;" src={user_id.picture} />
+				{user_id.name ? user_id.name : pubkey.slice(0, 5)}
+			{/if}
+			<Time id={'time' + id} utc={created_at} />
+			{#if user_id}
+				{#if user_id.nip05}
+					<br /><small>{user_id.nip05}</small>
 				{/if}
-			</CardFooter>
-		</span>
-		{#if depth < 5 && related}
-			{#each Object.entries(related) as [_id, note] (note.id)}
-				<Note
-					parents={[...parents, id]}
-					{kind}
-					parent={id}
-					related={note.related}
-					{sig}
-					depth={depth + 1}
-					pubkey={note.pubkey}
-					created_at={note.created_at}
-					tags={note.tags}
-					id={note.id}
-					content={note.content}
-				/>
-			{/each}
+				{#if user_id.nip05valid}
+					<Fa class="small-fa" icon={faCertificate} />
+				{/if}
+			{/if}
+			{#if parent}
+				<br /><small>reply to: <a href={'/e/?key=' + parent}>{parent.slice(0, 5)}</a>...</small>
+			{:else if ref.length != 0}
+				{#each ref as r}
+					<br /><small>reply to: <a href={'/e/?key=' + r[1]}>{r[1].slice(0, 5)}</a>...</small>
+				{/each}
+			{/if}
+			{#if show_meta_button}
+				<Button class="small-button" id={rand_int} size="sm"
+					><Fa class="small-fa" icon={faInfo} /></Button
+				>
+				<Metadata note_id={id} {kind} id={rand_int} {pubkey} {created_at} {tags} {content} />
+			{/if}
+			{#if yt}
+				<div bind:clientWidth={w} bind:clientHeight={h}>
+					<SvelteMarkdown {source} />
+					<YTFrame id={yt} width={w} height={w / (16 / 9)} />
+				</div>
+			{:else}
+				<SvelteMarkdown {source} />
+			{/if}
+		</div>
+		<small>User Identity: {pubkey.slice(0, 10)}...</small>
+		<br />
+		<small>Note Identity: <a href={'/e/?key=' + id}>{id.slice(0, 5)}</a></small>
+		<Button class="small-button" size="sm" on:click={() => (is_replying = true)}
+			><Fa class="small-fa" icon={faReply} /></Button
+		>
+		{#if is_replying}
+			<Post tags={[...JSON.parse(tags), ['e', id], ['p', pubkey]]} />
 		{/if}
-	</Card>
-</Fade>
+	</span>
+	{#if depth < 5 && self.related}
+		{#each Object.entries(self.related) as [_id, note] (note.id)}
+			<Note
+				parents={[...parents, id]}
+				{kind}
+				parent={id}
+				self={note}
+				parent_note={self}
+				{sig}
+				depth={depth + 1}
+				pubkey={note.pubkey}
+				created_at={note.created_at}
+				tags={note.tags}
+				id={note.id}
+				content={note.content}
+				{restart}
+			/>
+		{/each}
+	{/if}
+</Card>
 
 <style>
 	:global(.small-button) {

@@ -142,6 +142,10 @@ footer {
 	color: var(--text-color) !important;
 }
 
+.note-content-highlighted {
+	background-color: var(--table-secondary-color) !important;
+}
+
 .note-content:hover {
 	background-color: var(--table-secondary-color) !important;
 	cursor: pointer;

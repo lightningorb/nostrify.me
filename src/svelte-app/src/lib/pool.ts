@@ -1,57 +1,48 @@
 import { preferences } from '$lib/store.ts';
 import { get } from 'svelte/store';
 import { browser, dev } from '$app/environment';
-import { RelayPool } from 'nostr';
-
-interface Callback {
-	(relay: any): void;
-}
-
-interface EventCallback {
-	(relay: any, sub_id: string, ev: any): void;
-}
+import { relayInit, generatePrivateKey, getPublicKey, getEventHash, signEvent } from 'nostr-tools';
 
 class Pool {
-	callbacks: Callback[];
-	event_callbacks: Set<EventCallback>;
-	pool: any;
-
 	constructor() {
-		this.callbacks = [];
-		this.event_callbacks = new Set([]);
+		this.relays = new Set();
+		this.subs = {};
 	}
-
 	init() {
 		const prefs = get(preferences);
+		prefs.relays.forEach((x) => this.relays.add(relayInit(x)));
 		if (browser && prefs.public_key === '') {
-			prefs.private_key = window.NostrTools.generatePrivateKey();
-			prefs.public_key = window.NostrTools.getPublicKey(prefs.private_key);
+			prefs.private_key = generatePrivateKey();
+			prefs.public_key = getPublicKey(prefs.private_key);
 			preferences.set(prefs);
 		}
-		this.pool = RelayPool(prefs.relays);
-		this.pool.on('open', (relay) => {
-			this.callbacks.forEach((cb) => cb(relay));
+	}
+	connect() {
+		this.relays.forEach(async (x) => {
+			await x.connect();
 		});
-		this.pool.on('event', (relay, sub_id, ev) => {
-			this.event_callbacks.forEach((cb) => cb(relay, sub_id, ev));
-		});
-		return this.pool;
 	}
-
-	add_callback(cb: (relay: any) => void) {
-		this.callbacks.push(cb);
+	on(event_name, callback) {
+		if (event_name == 'event') {
+			Object.entries(this.subs).forEach((sub) => {
+				sub[1].forEach((s) => s[1].on('event', (event) => callback(s[0], sub[0], event)));
+			});
+		} else {
+			this.relays.forEach((relay) => relay.on(event_name, () => callback(relay)));
+		}
 	}
-
-	clear_callbacks() {
-		this.callbacks = [];
-	}
-
-	add_event_callback(cb: (relay: any, sub_id: string, ev: any) => void) {
-		this.event_callbacks.add(cb);
-	}
-
-	remove_event_callback(cb: (relay: any, sub_id: string, ev: any) => void) {
-		this.event_callbacks.add(cb);
+	unsub(x, y) {}
+	sub(name, what) {
+		var subs = [];
+		for (var relay of this.relays.values()) {
+			if (this.subs[name] == undefined) {
+				this.subs[name] = [];
+			}
+			var s = [relay.url, relay.sub([what])];
+			this.subs[name].push(s);
+			subs.push(s);
+		}
+		return subs;
 	}
 }
 

@@ -6,7 +6,7 @@
 	import { Popover } from 'sveltestrap';
 	import EmojiPicker from 'svelte-emoji-picker';
 	import { Form, FormGroup, FormText, Input, Label, Button } from 'sveltestrap';
-	import { preferences } from '$lib/store.ts';
+	import { preferences, input_focus } from '$lib/store.ts';
 	import { get } from 'svelte/store';
 	let prefs = get(preferences);
 	let text = '';
@@ -63,6 +63,10 @@
 			id="exampleText"
 			class="mb-2"
 			bind:value={text}
+			on:focus
+			on:focus={() => {
+				input_focus.set(true);
+			}}
 			autofocus
 		/>
 	{/if}

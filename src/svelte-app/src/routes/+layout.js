@@ -31,7 +31,5 @@ export var load = function () {
 };
 
 export var csr = true;
-
-export var ssr = true;
-
-export var prerender = true;
+export var ssr = false;
+export var prerender = false;

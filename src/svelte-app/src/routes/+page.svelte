@@ -21,16 +21,14 @@ lim = () =>
 moar = () =>
   max += 10
   entries = db.get_data(max)
-
-event_cb = (relay, sub_id, ev) =>
-  if sub_id is 'global'
-    db.insert_data(ev)
-
+event_cb = (ev) => 
+  db.insert_data(ev)
+subs = []
 onDestroy ->
   for intv in intervals
     clearInterval intv
-  pool.remove_event_callback event_cb
-  pool.pool.unsubscribe 'global'
+  for s in subs
+    s[1].unsub()
 onMount ->
   entries = db.get_data(max)
   intervalId = setInterval (->
@@ -41,11 +39,9 @@ onMount ->
   window.addEventListener "scroll", =>
     if Math.ceil(window.innerHeight + window.pageYOffset) >= document.body.offsetHeight
       moar()
-  pool.pool.unsubscribe 'global'
-  pool.pool.subscribe 'global',
-    kinds: [1],
-    since: lim()
-  pool.add_event_callback event_cb
+  subs = pool.sub('global', {kinds: [1], since: lim()})
+  for s in subs
+    s[1].on('event', event_cb);
 sotr = (a, b) => b[1].created_at - a[1].created_at
 </script>
 
@@ -53,6 +49,7 @@ sotr = (a, b) => b[1].created_at - a[1].created_at
 <Post />
 {#each entries as note (note.id)}
 	<Note
+		self={note}
 		parent={null}
 		related={note.related}
 		pubkey={note.pubkey}

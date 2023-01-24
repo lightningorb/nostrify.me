@@ -1,6 +1,9 @@
 import { persisted } from 'svelte-local-storage-store';
 import { writable } from 'svelte/store';
 
+export var input_focus = writable(false);
+export var key_pressed = writable([{}]);
+
 var initial = {
 	theme_name: 'light',
 	global_hours: 1,
