@@ -1,4 +1,5 @@
 <script type="text/javascript">
+	import { getEventHash, signEvent, relayInit } from 'nostr-tools';
 	import Fa from 'svelte-fa/src/fa.svelte';
 	import { faInfo } from '@fortawesome/free-solid-svg-icons/index.js';
 	import { print, getRandomInt } from '$lib/utils.ts';
@@ -23,24 +24,32 @@
 			content: text
 		};
 		for (var i in prefs.relays) {
-			event.id = window.NostrTools.getEventHash(event);
-			event.sig = window.NostrTools.signEvent(event, prefs.private_key);
-			var relay_address = prefs.relays[i];
-			const relay = window.NostrTools.relayInit(relay_address);
-			await relay.connect(1);
-			relay.on('connect', async () => {
-				let pub = await relay.publish(event);
-				pub.on('ok', () => {
-					text = '';
+			try {
+				event.id = getEventHash(event);
+				event.sig = signEvent(event, prefs.private_key);
+				var relay_address = prefs.relays[i];
+				const relay = relayInit(relay_address);
+				await relay.connect(1);
+				relay.on('connect', async () => {
+					try {
+						let pub = await relay.publish(event);
+						pub.on('ok', () => {
+							text = '';
+						});
+						pub.on('seen', () => {
+							console.log(`we saw the event`);
+						});
+						pub.on('failed', (reason) => {
+							console.log(`failed to publish`);
+							console.log(reason);
+						});
+					} catch {
+						console.log('failed publishing to', relay_address);
+					}
 				});
-				pub.on('seen', () => {
-					console.log(`we saw the event`);
-				});
-				pub.on('failed', (reason) => {
-					console.log(`failed to publish`);
-					console.log(reason);
-				});
-			});
+			} catch {
+				console.log('failed to init', prefs.relays[i]);
+			}
 		}
 	}
 </script>

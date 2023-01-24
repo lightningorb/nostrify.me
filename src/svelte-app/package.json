@@ -39,7 +39,7 @@
 		"idb": "^7.1.1",
 		"jest": "^29.3.1",
 		"nostr": "github:jb55/nostr-js",
-		"nostr-tools": "github:nbd-wtf/nostr-tools",
+		"nostr-tools": "^1.2.0",
 		"sql.js": "^1.8.0",
 		"svelte-emoji-picker": "^1.1.2",
 		"svelte-fa": "^3.0.3",

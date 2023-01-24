@@ -14,3 +14,9 @@ push:
 
 compile:
 	. ~/.bash_profile && nvm use v16 && coffee --compile src/routes/+layout.coffee
+
+format:
+	. ~/.bash_profile && nvm use v16 && npm run format
+
+front:
+	. ~/.bash_profile && nvm use v16 && npm run dev

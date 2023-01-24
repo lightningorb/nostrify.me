@@ -59,17 +59,6 @@
 		}
 	}
 
-	var sub_to_ids_debounce = function (pubkeys) {
-		clearTimeout(sub_to_ids_timer);
-		sub_to_ids_timer = setTimeout(function () {
-			pool.pool.unsubscribe('ids');
-			pool.pool.subscribe('ids', {
-				kinds: [0],
-				authors: [...pubkeys]
-			});
-		}, 3000);
-	};
-
 	function sub_to_note(id) {
 		pool.pool.unsubscribe('note');
 		pool.pool.subscribe('note', {
@@ -88,7 +77,6 @@
 
 	$: sub = sub_to_note($page.url.searchParams.get('key'));
 	$: refs = sub_to_refs($page.url.searchParams.get('key'));
-	$: sub_ids = sub_to_ids_debounce(pubkeys);
 
 	function on_event(relay, sub_id, ev) {
 		if (sub_id == 'refs') {
@@ -97,15 +85,12 @@
 		} else if (sub_id == 'note') {
 			db.insert_data(ev);
 			note = get_note($page.url.searchParams.get('key'));
-		} else if (sub_id == 'ids') {
-			db.insert_identity_data(ev);
 		}
 	}
 
 	onDestroy(function () {
 		pool.pool.unsubscribe('refs');
 		pool.pool.unsubscribe('note');
-		pool.pool.unsubscribe('ids');
 		pool.remove_event_callback(on_event);
 	});
 

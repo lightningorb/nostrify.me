@@ -24,3 +24,15 @@ a GPL licence.
 	Contributing is easy. Just fork the repo, make some changes, commit and push them, then create a
 	pull request.
 </p>
+
+<h3>Thanks</h3>
+
+<p>Thanks for the owners of these repos. These libs helped me get started easily.</p>
+
+<a target="_blank" href="https://github.com/jb55/nostr-js">https://github.com/jb55/nostr-js</a>
+
+<br />
+
+<a target="_blank" href="https://github.com/nbd-wtf/nostr-tools"
+	>https://github.com/nbd-wtf/nostr-tools</a
+>
