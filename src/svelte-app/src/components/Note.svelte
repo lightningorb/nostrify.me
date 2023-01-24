@@ -1,8 +1,10 @@
 <script lang="coffeescript">
+	import { goto } from '$app/navigation';
 	import db from '$lib/db.coffee'
 	import subs from '$lib/subscriptions.coffee'
 	import { key_to_hex_key, hex_key_to_key} from '$lib/key.ts'
 	import { print, getRandomInt} from '$lib/utils.ts'
+	import { page } from '$app/stores';
 	import YTFrame from '../components/YoutubeIframe.svelte'
 	import VideoIframe from '../components/VimeoIframe.svelte'
 	import Fa from 'svelte-fa/src/fa.svelte'
@@ -71,62 +73,69 @@
 		setInterval(cmd, 1000)
 		cmd()
 		isOpen = true
+	on_note_click = ->
+		$page.url.searchParams.set('key', id)
+		goto('/e/?'+$page.url.searchParams.toString())
 </script>
 
 <Fade {isOpen} {id}>
-	<Card class="mb-0" style={'padding-left: ' + 5 + 'px; margin-left: ' + 5 + 'px;'}>
-		<CardHeader>
-			{#if user_id && user_id.picture}
-				<img style="width: 30px; height: 30px; border-radius: 30px;" src={user_id.picture} />
-				{user_id.name ? user_id.name : pubkey.slice(0, 5)}
-			{/if}
-			<Time id={'time' + id} relative live={1000} timestamp={created_at * 1000} />
-			{#if user_id}
-				{#if user_id.nip05}
-					<br /><small>{user_id.nip05}</small>
-				{/if}
-				{#if user_id.nip05valid}
-					<Fa class="small-fa" icon={faCertificate} />
-				{/if}
-			{/if}
-			{#if parent}
-				<br /><small>reply to: <a href={'/e/?key=' + parent}>{parent.slice(0, 5)}</a>...</small>
-			{:else if ref.length != 0}
-				{#each ref as r}
-					<br /><small>reply to: <a href={'/e/?key=' + r[1]}>{r[1].slice(0, 5)}</a>...</small>
-				{/each}
-			{/if}
-			{#if show_meta_button}
-				<Button class="small-button" id={rand_int} size="sm"
-					><Fa class="small-fa" icon={faInfo} /></Button
+	<Card class="mb-0" style={'px; margin-left: ' + 5 + 'px;'}>
+		<span class="note-content">
+			<span on:click={on_note_click}>
+				<CardHeader>
+					{#if user_id && user_id.picture}
+						<img style="width: 30px; height: 30px; border-radius: 30px;" src={user_id.picture} />
+						{user_id.name ? user_id.name : pubkey.slice(0, 5)}
+					{/if}
+					<Time id={'time' + id} relative live={1000} timestamp={created_at * 1000} />
+					{#if user_id}
+						{#if user_id.nip05}
+							<br /><small>{user_id.nip05}</small>
+						{/if}
+						{#if user_id.nip05valid}
+							<Fa class="small-fa" icon={faCertificate} />
+						{/if}
+					{/if}
+					{#if parent}
+						<br /><small>reply to: <a href={'/e/?key=' + parent}>{parent.slice(0, 5)}</a>...</small>
+					{:else if ref.length != 0}
+						{#each ref as r}
+							<br /><small>reply to: <a href={'/e/?key=' + r[1]}>{r[1].slice(0, 5)}</a>...</small>
+						{/each}
+					{/if}
+					{#if show_meta_button}
+						<Button class="small-button" id={rand_int} size="sm"
+							><Fa class="small-fa" icon={faInfo} /></Button
+						>
+						<Metadata note_id={id} {kind} id={rand_int} {pubkey} {created_at} {tags} {content} />
+					{/if}
+				</CardHeader>
+				<CardBody>
+					<div bind:clientWidth={w} bind:clientHeight={h}>
+						<CardText>
+							<SvelteMarkdown {source} />
+							{#if yt}
+								<YTFrame id={yt} width={w} height={w / (16 / 9)} />
+							{/if}
+							{#if vimeo}
+								<VideoIframe id={'33316053'} width={w} height={w / (16 / 9)} />
+							{/if}
+						</CardText>
+					</div></CardBody
 				>
-				<Metadata note_id={id} {kind} id={rand_int} {pubkey} {created_at} {tags} {content} />
-			{/if}
-		</CardHeader>
-		<CardBody>
-			<div bind:clientWidth={w} bind:clientHeight={h}>
-				<CardText>
-					<SvelteMarkdown {source} />
-					{#if yt}
-						<YTFrame id={yt} width={w} height={w / (16 / 9)} />
-					{/if}
-					{#if vimeo}
-						<VideoIframe id={'33316053'} width={w} height={w / (16 / 9)} />
-					{/if}
-				</CardText>
-			</div></CardBody
-		>
-		<CardFooter>
-			<small>User Identity: {pubkey.slice(0, 10)}...</small>
-			<br />
-			<small>Note Identity: <a href={'/e/?key=' + id}>{id.slice(0, 5)}</a></small>
-			<Button class="small-button" size="sm" on:click={() => (is_replying = true)}
-				><Fa class="small-fa" icon={faReply} /></Button
-			>
-			{#if is_replying}
-				<Post tags={[...JSON.parse(tags), ['e', id], ['p', pubkey]]} />
-			{/if}
-		</CardFooter>
+			</span>
+			<CardFooter>
+				<small>User Identity: {pubkey.slice(0, 10)}...</small>
+				<br />
+				<small>Note Identity: <a href={'/e/?key=' + id}>{id.slice(0, 5)}</a></small>
+				<Button class="small-button" size="sm" on:click={() => (is_replying = true)}
+					><Fa class="small-fa" icon={faReply} /></Button
+				>
+				{#if is_replying}
+					<Post tags={[...JSON.parse(tags), ['e', id], ['p', pubkey]]} />
+				{/if}
+			</CardFooter>
+		</span>
 		{#if depth < 5 && related}
 			{#each Object.entries(related) as [_id, note] (note.id)}
 				<Note

@@ -141,3 +141,8 @@ footer {
 	background-color: var(--secondary-color) !important;
 	color: var(--text-color) !important;
 }
+
+.note-content:hover {
+	background-color: var(--table-secondary-color) !important;
+	cursor: pointer;
+}
