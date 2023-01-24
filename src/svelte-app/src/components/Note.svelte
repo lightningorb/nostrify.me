@@ -44,6 +44,7 @@
 	yt = ''
 	vimeo = ''
 	user_id = null
+	user_doc = null
 	makeSafeHtml = (content) ->
 		if content? and content != undefined
 			imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/gi
@@ -68,6 +69,7 @@
 			subs.main(pubkey)
 		cmd = () ->
 			if pubkey?
+				user_doc = db.get_identity(pubkey)?
 				user_id = db.get_identity(pubkey)?.content
 				if user_id
 					user_id = JSON.parse(user_id)
@@ -108,9 +110,10 @@
  -->
 	<span class={'note-content'}>
 		<div on:click={on_note_click} style="margin: 0px; padding: 0px;">
+			<a href={'/profile/?key='+pubkey}>
 			{#if user_id && user_id.picture}
-				<img style="width: 30px; height: 30px; border-radius: 30px;" src={user_id.picture} />
-				{user_id.name ? user_id.name : pubkey.slice(0, 5)}
+					<img style="width: 30px; height: 30px; border-radius: 30px;" src={user_id.picture} />
+					{user_id.name ? user_id.name : pubkey.slice(0, 5)}
 			{/if}
 			<Time id={'time' + id} utc={created_at} />
 			{#if user_id}
@@ -121,6 +124,7 @@
 					<Fa class="small-fa" icon={faCertificate} />
 				{/if}
 			{/if}
+			</a>
 			{#if parent}
 				<br /><small>reply to: <a href={'/e/?key=' + parent}>{parent.slice(0, 5)}</a>...</small>
 			{:else if ref.length != 0}

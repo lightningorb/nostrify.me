@@ -36,3 +36,7 @@ a GPL licence.
 <a target="_blank" href="https://github.com/nbd-wtf/nostr-tools"
 	>https://github.com/nbd-wtf/nostr-tools</a
 >
+
+<h3>Links</h3>
+
+<a href='https://github.com/aljazceru/awesome-nostr'>https://github.com/aljazceru/awesome-nostr</a>
