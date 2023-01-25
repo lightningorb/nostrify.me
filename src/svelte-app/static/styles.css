@@ -150,3 +150,7 @@ footer {
 	background-color: var(--table-secondary-color) !important;
 	cursor: pointer;
 }
+
+p {
+	word-wrap: break-word !important;
+}

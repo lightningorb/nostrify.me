@@ -5,6 +5,7 @@ export var input_focus = writable(false);
 export var key_pressed = writable([{}]);
 
 var initial = {
+	stack: false,
 	theme_name: 'light',
 	global_hours: 1,
 	public_key: '',

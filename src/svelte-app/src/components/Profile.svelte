@@ -22,7 +22,7 @@
 	import pool from '$lib/pool.ts';
 
 	export let key;
-	export let debug = false;
+	export let debug = true;
 
 	interface Profile {
 		name: any;
@@ -54,7 +54,7 @@
 
 		onMount(() => {
 			var db_profile = db.get_identity(key);
-			if (db_profile) db_profile = JSON.parse(profile.content);
+			if (db_profile) db_profile = JSON.parse(db_profile.content);
 			subs = pool.sub('profile', {
 				kinds: [0],
 				authors: [key]

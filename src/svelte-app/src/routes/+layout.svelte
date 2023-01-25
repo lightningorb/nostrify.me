@@ -84,12 +84,21 @@
 		<br />
 		<br />
 		{#each data.sections as section}
-			<a href={`${base}/${section.slug}`}>
-				{#if section.icon}
-					<Fa icon={section.icon} />
-				{/if}
-				{@html section.title}
-			</a>
+			{#if section.callback}
+				<a on:click={section.callback()}>
+					{#if section.icon}
+						<Fa icon={section.icon} />
+					{/if}
+					{@html section.title}
+				</a>
+			{:else}
+				<a href={`${base}/${section.slug}`}>
+					{#if section.icon}
+						<Fa icon={section.icon} />
+					{/if}
+					{@html section.title}
+				</a>
+			{/if}
 			<br />
 			<br />
 		{/each}

@@ -9,17 +9,17 @@
 	import Key from '$lib/Key.ts';
 	var note;
 	export var restart;
+	export var base;
 	$: key = $page.url.searchParams;
 	import { afterNavigate } from '$app/navigation';
 
 	afterNavigate((x) => {
-		if (x.from.url.pathname == '/e/') restart();
+		if (x.from.url.pathname == '/') restart();
 	});
 
 	function get_note(id) {
 		var seen = new Set([]);
 		note = db.get_note(id);
-		note.active = true;
 		if (note) get_note_tree(note, 0, seen);
 		return note;
 	}
@@ -89,6 +89,7 @@
 <br />
 {#if note && note.content != undefined}
 	<Note
+		{base}
 		self={note}
 		related={note.related}
 		active={note.active}
