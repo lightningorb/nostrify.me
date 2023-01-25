@@ -10,7 +10,7 @@
 	var note;
 	export var restart;
 	export var base;
-	$: key = $page.url.searchParams;
+	$: key = new Key($page.url.searchParams.get('key') || '');
 	import { afterNavigate } from '$app/navigation';
 
 	afterNavigate((x) => {
@@ -19,7 +19,7 @@
 
 	function get_note(id) {
 		var seen = new Set([]);
-		note = db.get_note(id);
+		note = db.get_note(id.as_hex());
 		if (note) get_note_tree(note, 0, seen);
 		return note;
 	}
@@ -55,7 +55,7 @@
 
 	function on_event(ev) {
 		db.insert_data(ev);
-		note = get_note($page.url.searchParams.get('key'));
+		note = get_note(key);
 	}
 
 	var subs = [];
@@ -67,18 +67,18 @@
 	});
 
 	onMount(function () {
-		note = get_note($page.url.searchParams.get('key'));
-		subs = pool.sub('note', { kinds: [1], ids: [$page.url.searchParams.get('key')] });
+		note = get_note(key);
+		subs = pool.sub('note', { kinds: [1], ids: [key.as_hex()] });
 		for (var s of subs)
 			s[1].on('event', (ev) => {
 				db.insert_data(ev);
-				note = get_note($page.url.searchParams.get('key'));
+				note = get_note(key);
 			});
-		refs = pool.sub('refs', { kinds: [1], '#e': [$page.url.searchParams.get('key')] });
+		refs = pool.sub('refs', { kinds: [1], '#e': [key.as_hex()] });
 		for (var s of refs)
 			s[1].on('event', (ev) => {
 				db.insert_data(ev);
-				debounce($page.url.searchParams.get('key'));
+				debounce(key);
 			});
 	});
 </script>

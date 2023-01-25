@@ -115,7 +115,7 @@
 				<Button class="small-button" id={rand_int} size="sm"
 					><Fa class="small-fa" icon={faInfo} /></Button
 				>
-				<Metadata sig={sig} note_id={id} {kind} id={rand_int} {pubkey} {created_at} {tags} {content} />
+				<Metadata {sig} note_id={id} {kind} id={rand_int} {pubkey} {created_at} {tags} {content} />
 			{/if}
 			<!-- 			{#if yt}
 				<div bind:clientWidth={w} bind:clientHeight={h}>
@@ -126,12 +126,14 @@
 			<NoteContent source={content} />
 			<!-- {/if} -->
 		</div>
-		<small>User Identity: {pubkey.slice(0, 10)}...</small>
-		<br />
-		<small>Note Identity: <a href={'/?key=' + id}>{id.slice(0, 5)}</a></small>
+		<!-- <small>User Identity: {pubkey.slice(0, 10)}...</small> -->
+		<!-- <br /> -->
+		<!-- <small>Note Identity: <a href={'/?key=' + id}>{id.slice(0, 5)}</a></small> -->
 		<Button class="small-button" size="sm" on:click={() => (is_replying = true)}
 			><Fa class="small-fa" icon={faReply} /></Button
 		>
+		<br />
+		<br />
 		{#if is_replying}
 			<Post tags={[...JSON.parse(tags), ['e', id], ['p', pubkey]]} />
 		{/if}

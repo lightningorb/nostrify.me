@@ -37,7 +37,6 @@
 	});
 
 	let scroll_event_handler = (event) => {
-		if (event.target) console.log(event.target.scrollTop);
 		if (Math.ceil(window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
 			moar();
 		}
