@@ -69,10 +69,12 @@
 	{/each}
 	<small
 		>If this takes too long to enter, remove dead relays from your settings and add more performant
-		ones <a
-			on:click={() => {
-				connected = true;
-			}}>enter anyway</a
+		ones <span style="font-size: 1.5em; text-decoration: underline"
+			><a
+				on:click={() => {
+					connected = true;
+				}}>enter anyway</a
+			></span
 		>.</small
 	>
 {:else}
