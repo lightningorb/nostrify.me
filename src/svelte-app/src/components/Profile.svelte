@@ -18,7 +18,7 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { calculateId, signId } from 'nostr';
 	import Avatar from './Avatar.svelte';
-	import db from '$lib/db.coffee';
+	import db from '$lib/db.ts';
 	import pool from '$lib/pool.ts';
 
 	export let key;

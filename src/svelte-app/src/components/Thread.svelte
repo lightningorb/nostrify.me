@@ -5,7 +5,7 @@
 	import { onMount, onDestroy } from 'svelte';
 	import pool from '$lib/pool.ts';
 	import Note from './Note.svelte';
-	import db from '$lib/db.coffee';
+	import db from '$lib/db.ts';
 	import Key from '$lib/Key.ts';
 	var note;
 	export var restart;
@@ -14,6 +14,7 @@
 	import { afterNavigate } from '$app/navigation';
 
 	afterNavigate((x) => {
+		console.log('nav')
 		restart();
 	});
 

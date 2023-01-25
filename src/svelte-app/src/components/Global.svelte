@@ -1,5 +1,5 @@
 <script lang="ts">
-	import db from '$lib/db.coffee';
+	import db from '$lib/db.ts';
 	import { onDestroy } from 'svelte';
 	import { preferences } from '$lib/store';
 	import pool from '$lib/pool';

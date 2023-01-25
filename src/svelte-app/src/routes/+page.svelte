@@ -12,7 +12,7 @@
 </script>
 
 {#if prefs.stack}
-	<table style="background-color: transparent !important; ">
+	<table style="table-layout:fixed; background-color: transparent !important; ">
 		<tr>
 			<td style="width: 50">
 				<div

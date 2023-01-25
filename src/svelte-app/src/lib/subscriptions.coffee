@@ -1,5 +1,5 @@
 import pool from '$lib/pool.ts';
-import db from '$lib/db.coffee'
+import db from '$lib/db.ts'
 import { print } from '$lib/utils.ts'
 import { preferences } from '$lib/store.ts'
 import { get } from 'svelte/store'

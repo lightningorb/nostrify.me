@@ -2,7 +2,7 @@
 	import NoteContent from './NoteContent.svelte'
 	import { preferences, input_focus, key_pressed } from '$lib/store.ts';
 	import { goto } from '$app/navigation';
-	import db from '$lib/db.coffee'
+	import db from '$lib/db.ts'
 	import subs from '$lib/subscriptions.ts'
 	import { key_to_hex_key, hex_key_to_key} from '$lib/key.ts'
 	import { print, getRandomInt, breakLongWords } from '$lib/utils.ts'
@@ -85,7 +85,7 @@
 	style={'px; margin-left: ' + 5 + 'px; padding-top: 5px; padding-left: 5px; padding-right: 5px;'}
 >
 	<span class={'note-content'}>
-		<div on:click={on_note_click} style="margin: 0px; padding: 0px;">
+		<div on:click={on_note_click} style="margin: 0px; padding: 0px;"> 
 			<a href={'/profile/?key=' + pubkey}>
 				<Avatar
 					src={(user_id && user_id.picture) || null}

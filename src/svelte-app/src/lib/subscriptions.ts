@@ -1,5 +1,5 @@
 import pool from '$lib/pool.ts';
-import db from '$lib/db.coffee';
+import db from '$lib/db.ts';
 
 class Subscriptions {
 	timer: number = 0;
