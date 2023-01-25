@@ -1,7 +1,7 @@
 import { preferences } from '$lib/store.ts';
 import { get } from 'svelte/store';
 import { browser, dev } from '$app/environment';
-import { relayInit, generatePrivateKey, getPublicKey, getEventHash, signEvent } from 'nostr-tools';
+// import { relayInit, generatePrivateKey, getPublicKey, getEventHash, signEvent } from 'nostr-tools';
 
 class Pool {
 	constructor() {
@@ -10,10 +10,10 @@ class Pool {
 	}
 	init() {
 		const prefs = get(preferences);
-		prefs.relays.forEach((x) => this.relays.add(relayInit(x)));
+		if (browser) prefs.relays.forEach((x) => this.relays.add(window.NostrTools.relayInit(x)));
 		if (browser && prefs.public_key === '') {
-			prefs.private_key = generatePrivateKey();
-			prefs.public_key = getPublicKey(prefs.private_key);
+			prefs.private_key = window.NostrTools.generatePrivateKey();
+			prefs.public_key = window.NostrTools.getPublicKey(prefs.private_key);
 			preferences.set(prefs);
 		}
 	}

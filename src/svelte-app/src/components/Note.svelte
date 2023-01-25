@@ -95,7 +95,9 @@
 	)
 </script>
 
-<Card class="mb-0" style={'px; margin-left: ' + 5 + 'px; padding: 5px;'}>
+<Card
+	style={'px; margin-left: ' + 5 + 'px; padding-top: 5px; padding-left: 5px; padding-right: 5px;'}
+>
 	<!-- {#if self.parent}
 	<p>parent: {self.parent.id.slice(0, 5)}</p>
 {/if}
@@ -110,20 +112,20 @@
  -->
 	<span class={'note-content'}>
 		<div on:click={on_note_click} style="margin: 0px; padding: 0px;">
-			<a href={'/profile/?key='+pubkey}>
-			{#if user_id && user_id.picture}
+			<a href={'/profile/?key=' + pubkey}>
+				{#if user_id && user_id.picture}
 					<img style="width: 30px; height: 30px; border-radius: 30px;" src={user_id.picture} />
 					{user_id.name ? user_id.name : pubkey.slice(0, 5)}
-			{/if}
-			<Time id={'time' + id} utc={created_at} />
-			{#if user_id}
-				{#if user_id.nip05}
-					<br /><small>{user_id.nip05}</small>
 				{/if}
-				{#if user_id.nip05valid}
-					<Fa class="small-fa" icon={faCertificate} />
+				<Time id={'time' + id} utc={created_at} />
+				{#if user_id}
+					{#if user_id.nip05}
+						<br /><small>{user_id.nip05}</small>
+					{/if}
+					{#if user_id.nip05valid}
+						<Fa class="small-fa" icon={faCertificate} />
+					{/if}
 				{/if}
-			{/if}
 			</a>
 			{#if parent}
 				<br /><small>reply to: <a href={'/e/?key=' + parent}>{parent.slice(0, 5)}</a>...</small>

@@ -39,4 +39,4 @@ a GPL licence.
 
 <h3>Links</h3>
 
-<a href='https://github.com/aljazceru/awesome-nostr'>https://github.com/aljazceru/awesome-nostr</a>
+<a href="https://github.com/aljazceru/awesome-nostr">https://github.com/aljazceru/awesome-nostr</a>

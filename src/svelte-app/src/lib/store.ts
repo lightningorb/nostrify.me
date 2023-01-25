@@ -9,6 +9,7 @@ var initial = {
 	global_hours: 1,
 	public_key: '',
 	private_key: '',
+	debug: false,
 	relays: [
 		'wss://nostr.lnorb.com',
 		'wss://relay.damus.io',

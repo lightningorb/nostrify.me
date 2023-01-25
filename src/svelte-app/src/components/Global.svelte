@@ -7,7 +7,7 @@ import { onMount } from 'svelte'
 import Note from './Note.svelte'
 import Post from './Post.svelte'
 import { Form, FormGroup, FormText, Input, Label, Button } from 'sveltestrap'
-[prefs] = [{}, false]
+prefs = {}
 preferences.subscribe (x) => prefs = x
 max = 10
 entries = []
@@ -47,14 +47,14 @@ sotr = (a, b) => b[1].created_at - a[1].created_at
 <br />
 <Post />
 {#each entries as note (note.id)}
-    <Note
-        self={note}
-        parent={null}
-        related={note.related}
-        pubkey={note.pubkey}
-        created_at={note.created_at}
-        tags={note.tags}
-        id={note.id}
-        content={note.content}
-    />
+	<Note
+		self={note}
+		parent={null}
+		related={note.related}
+		pubkey={note.pubkey}
+		created_at={note.created_at}
+		tags={note.tags}
+		id={note.id}
+		content={note.content}
+	/>
 {/each}

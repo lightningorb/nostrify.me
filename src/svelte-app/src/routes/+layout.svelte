@@ -47,7 +47,6 @@
 	var left_style = 'padding-left: 50px; padding-right: 10px;';
 	$: input_has_focus = false;
 	input_focus.subscribe((x) => {
-		console.log('asf', x);
 		input_has_focus = x;
 	});
 </script>
