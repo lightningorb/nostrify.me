@@ -14,7 +14,7 @@
 	import { afterNavigate } from '$app/navigation';
 
 	afterNavigate((x) => {
-		console.log('nav')
+		console.log('nav');
 		restart();
 	});
 

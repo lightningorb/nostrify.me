@@ -3,13 +3,13 @@ import { print, toBinString, toBinArray } from '$lib/utils.ts';
 import { preferences } from '$lib/store.ts';
 
 interface Note {
-  id: string;
-  pubkey: string;
-  created_at: number;
-  kind: number;
-  tags: string;
-  content: string;
-  sig: string;
+	id: string;
+	pubkey: string;
+	created_at: number;
+	kind: number;
+	tags: string;
+	content: string;
+	sig: string;
 }
 
 class Database {

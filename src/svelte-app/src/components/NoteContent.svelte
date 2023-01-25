@@ -12,7 +12,8 @@
 		return str.replace(/&#([0-9]+);/g, (match, charCode) => String.fromCharCode(charCode));
 	};
 	const invRegex = /(lnbc[a-zA-Z0-9]*)/gi;
-	var urlRegex = /(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
+	var urlRegex =
+		/(https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|www\.[a-zA-Z0-9][a-zA-Z0-9-]+[a-zA-Z0-9]\.[^\s]{2,}|https?:\/\/(?:www\.|(?!www))[a-zA-Z0-9]+\.[^\s]{2,}|www\.[a-zA-Z0-9]+\.[^\s]{2,})/gi;
 	var imgRegex = /(https?:\/\/.*\.(?:png|jpg|jpeg|gif))/gi;
 
 	function extractImageLinks(content: string): string[] {
@@ -60,7 +61,7 @@
 
 <br />
 <br />
-<p style='overflow-wrap: break-word;'>{makeSafeHtml(source)}</p>
+<p style="overflow-wrap: break-word;">{makeSafeHtml(source)}</p>
 {#if prefs.show_images}
 	{#each links as imgs}
 		<img src={link} class="img-fluid" alt="image" />
