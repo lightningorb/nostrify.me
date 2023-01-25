@@ -53,8 +53,8 @@
 		};
 
 		onMount(() => {
-			profile = db.get_identity(key);
-			if (profile) profile = JSON.parse(profile.content);
+			var db_profile = db.get_identity(key);
+			if (db_profile) db_profile = JSON.parse(profile.content);
 			subs = pool.sub('profile', {
 				kinds: [0],
 				authors: [key]

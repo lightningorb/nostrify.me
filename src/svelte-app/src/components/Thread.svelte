@@ -67,6 +67,7 @@
 	});
 
 	onMount(function () {
+		note = get_note($page.url.searchParams.get('key'));
 		subs = pool.sub('note', { kinds: [1], ids: [$page.url.searchParams.get('key')] });
 		for (var s of subs)
 			s[1].on('event', (ev) => {
