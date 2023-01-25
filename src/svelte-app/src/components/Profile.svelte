@@ -17,6 +17,7 @@
 	import { preferences } from '$lib/store.ts';
 	import { onDestroy, onMount } from 'svelte';
 	import { calculateId, signId } from 'nostr';
+	import Avatar from './Avatar.svelte';
 	import db from '$lib/db.coffee';
 	import pool from '$lib/pool.ts';
 
@@ -52,6 +53,8 @@
 		};
 
 		onMount(() => {
+			profile = db.get_identity(key);
+			if (profile) profile = JSON.parse(profile.content);
 			subs = pool.sub('profile', {
 				kinds: [0],
 				authors: [key]
@@ -91,14 +94,15 @@
 		</CardHeader>
 		<CardBody>
 			{#if profile.picture}
-				<Figure caption={profile.npub}>
+				<Avatar src={profile.picture} alt={profile.name} width={300} height={300} />
+				<!-- 				<Figure caption={profile.npub}>
 					<Image
 						style="max-height: 300px; max-width: 300px;"
 						fluid
 						alt="Landscape"
 						src={profile.picture}
 					/>
-				</Figure>
+				</Figure> -->
 			{:else if me}
 				<p><small>Please set your profile picture URL</small></p>
 			{/if}

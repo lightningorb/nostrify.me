@@ -4,7 +4,9 @@ const toBinString = (arr: any[]) =>
 const toBinArray = (str: string) => new Uint8Array(str.split('').map((c) => c.charCodeAt(0)));
 const getRandomInt = (min: number, max: number) =>
 	Math.floor(Math.random() * (max - min + 1)) + min;
-export { print, toBinString, toBinArray, getRandomInt };
+const hash_profile_filler = (str: string) =>
+	(str.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0) % 3) + 1;
+export { print, toBinString, toBinArray, getRandomInt, hash_profile_filler };
 
 console.assert(toBinString([72, 101, 108, 108, 111]) === 'Hello');
 console.assert(toBinArray('Hello').toString() === '72,101,108,108,111');

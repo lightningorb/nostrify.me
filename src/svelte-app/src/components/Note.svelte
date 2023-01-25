@@ -8,6 +8,7 @@
 	import { page } from '$app/stores';
 	import YTFrame from '../components/YoutubeIframe.svelte'
 	import VideoIframe from '../components/VimeoIframe.svelte'
+	import Avatar from '../components/Avatar.svelte'
 	import Fa from 'svelte-fa/src/fa.svelte'
 	import Post from '../components/Post.svelte'
 	import Note from '../components/Note.svelte'
@@ -113,8 +114,11 @@
 	<span class={'note-content'}>
 		<div on:click={on_note_click} style="margin: 0px; padding: 0px;">
 			<a href={'/profile/?key=' + pubkey}>
-				{#if user_id && user_id.picture}
-					<img style="width: 30px; height: 30px; border-radius: 30px;" src={user_id.picture} />
+				<Avatar
+					src={(user_id && user_id.picture) || null}
+					alt={(user_id && user_id.name) || rand_int}
+				/>
+				{#if user_id}
 					{user_id.name ? user_id.name : pubkey.slice(0, 5)}
 				{/if}
 				<Time id={'time' + id} utc={created_at} />
