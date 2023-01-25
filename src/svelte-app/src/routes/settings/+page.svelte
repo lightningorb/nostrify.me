@@ -63,6 +63,36 @@
 
 <hr />
 
+<td
+	><Input
+		type="switch"
+		label="show images"
+		checked={prefs.show_images}
+		on:change={(x) => {
+			let p = get(preferences);
+			p.show_images = !p.show_images;
+			preferences.set(p);
+		}}
+	/></td
+>
+
+<hr />
+
+<td
+	><Input
+		type="switch"
+		label="show profile images"
+		checked={prefs.show_profile_images}
+		on:change={(x) => {
+			let p = get(preferences);
+			p.show_profile_images = !p.show_profile_images;
+			preferences.set(p);
+		}}
+	/></td
+>
+
+<hr />
+
 <Button on:click={add_relay}>Add Relay</Button>
 <br />
 <br />

@@ -11,6 +11,8 @@ var initial = {
 	public_key: '',
 	private_key: '',
 	debug: false,
+	show_images: true,
+	show_profile_images: true,
 	relays: [
 		'wss://nostr.lnorb.com',
 		'wss://relay.damus.io',
@@ -44,5 +46,13 @@ preferences.subscribe((value) => {
 	}
 	if (!Array.isArray(value.relays)) {
 		alert('relays is not an array. You may need to clear your cookies.');
+	}
+	if (value.show_images === undefined) {
+		value.show_images = true;
+		preferences.set(value);
+	}
+	if (value.show_profile_images === undefined) {
+		value.show_profile_images = true;
+		preferences.set(value);
 	}
 });

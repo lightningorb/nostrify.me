@@ -6,6 +6,7 @@
   export kind = ''
   export tags = '[]'
   export pubkey = ''
+  export sig = ''
   export created_at = 0
 </script>
 

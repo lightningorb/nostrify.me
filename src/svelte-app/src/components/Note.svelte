@@ -105,17 +105,17 @@
 				{/if}
 			</a>
 			{#if parent}
-				<br /><small>reply to: <a href={'/?key=' + parent}>{parent.slice(0, 5)}</a>...</small>
+				<br /><small>reply to: <a href={base + '?key=' + parent}>{parent.slice(0, 5)}</a>...</small>
 			{:else if ref.length != 0}
 				{#each ref as r}
-					<br /><small>reply to: <a href={'/?key=' + r[1]}>{r[1].slice(0, 5)}</a>...</small>
+					<br /><small>reply to: <a href={base + '?key=' + r[1]}>{r[1].slice(0, 5)}</a>...</small>
 				{/each}
 			{/if}
 			{#if show_meta_button}
 				<Button class="small-button" id={rand_int} size="sm"
 					><Fa class="small-fa" icon={faInfo} /></Button
 				>
-				<Metadata note_id={id} {kind} id={rand_int} {pubkey} {created_at} {tags} {content} />
+				<Metadata sig={sig} note_id={id} {kind} id={rand_int} {pubkey} {created_at} {tags} {content} />
 			{/if}
 			<!-- 			{#if yt}
 				<div bind:clientWidth={w} bind:clientHeight={h}>

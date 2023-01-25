@@ -14,7 +14,7 @@
 	import { afterNavigate } from '$app/navigation';
 
 	afterNavigate((x) => {
-		if (x.from.url.pathname == '/') restart();
+		restart();
 	});
 
 	function get_note(id) {

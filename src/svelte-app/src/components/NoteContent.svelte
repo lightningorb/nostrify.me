@@ -1,7 +1,11 @@
 <script lang="ts">
+	import { preferences } from '$lib/store.ts';
 	import { print, getRandomInt, breakLongWords } from '$lib/utils.ts';
 	import SvelteMarkdown from 'svelte-markdown';
 	export var source = '';
+
+	var prefs = {};
+	preferences.subscribe((x) => (prefs = x));
 
 	var decodeString = (str) => {
 		return str.replace(/&#([0-9]+);/g, (match, charCode) => String.fromCharCode(charCode));
@@ -32,8 +36,10 @@
 <br />
 <br />
 {makeSafeHtml(source)}
-{#each links as link}
-	<img src={link} class="img-fluid" alt="image" />
-{/each}
+{#if prefs.show_images}
+	{#each links as link}
+		<img src={link} class="img-fluid" alt="image" />
+	{/each}
+{/if}
 <br />
 <br />

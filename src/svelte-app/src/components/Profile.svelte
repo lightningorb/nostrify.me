@@ -95,14 +95,6 @@
 		<CardBody>
 			{#if profile.picture}
 				<Avatar src={profile.picture} alt={profile.name} width={300} height={300} />
-				<!-- 				<Figure caption={profile.npub}>
-					<Image
-						style="max-height: 300px; max-width: 300px;"
-						fluid
-						alt="Landscape"
-						src={profile.picture}
-					/>
-				</Figure> -->
 			{:else if me}
 				<p><small>Please set your profile picture URL</small></p>
 			{/if}
@@ -161,7 +153,6 @@
 						});
 					});
 				}
-				// var res = await pool.pool.send(event)
 			}}>Submit</Button
 		>
 	{:else if me}
