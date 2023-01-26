@@ -1,13 +1,11 @@
+/*
+ * @Author: lnorb.com
+ * @Date:   2023-01-26 16:41:17
+ * @Last Modified by:   lnorb.com
+ * @Last Modified time: 2023-01-26 16:41:47
+ */
+
 import coffee from 'vite-plugin-coffee';
-// import { sveltekit } from '@sveltejs/kit/vite';
-
-// /** @type {import('vite').UserConfig} */
-// const config = {
-// 	plugins: [sveltekit()]
-// };
-
-// export default config;
-
 import { sveltekit } from '@sveltejs/kit/vite';
 
 /** @type {import('vite').UserConfig} */

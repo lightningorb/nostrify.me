@@ -1,3 +1,10 @@
+/*
+* @Author: lnorb.com
+* @Date:   2023-01-26 15:39:16
+* @Last Modified by:   lnorb.com
+* @Last Modified time: 2023-01-26 18:08:46
+*/
+
 import { verify_nip05 } from '$lib/nostr-utils.js';
 import pool from '$lib/pool.ts';
 import db from '$lib/db.ts';
@@ -39,7 +46,6 @@ class Subscriptions {
 				this.checking_nips = true;
 				var done = new Set([]);
 				for (var pubkey of this.needs_nip05_check) {
-					console.log(this.needs_nip05_check);
 					var ev = db.get_identity(pubkey);
 					var profile = JSON.parse(ev.content);
 					profile.nip05valid = await verify_nip05(profile, ev.pubkey);

@@ -1,3 +1,10 @@
+/*
+ * @Author: lnorb.com
+ * @Date:   2023-01-26 16:43:47
+ * @Last Modified by:   lnorb.com
+ * @Last Modified time: 2023-01-26 17:49:54
+ */
+
 import initSqlJs from 'sql.js';
 import { print, toBinString, toBinArray } from '$lib/utils.ts';
 import { preferences } from '$lib/store.ts';

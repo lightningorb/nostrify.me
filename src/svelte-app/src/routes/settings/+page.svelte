@@ -1,6 +1,7 @@
 <script lang="coffee">
 	import { print } from '$lib/utils.ts';
 	import { preferences } from '$lib/store.ts'
+	import Key from '$lib/key.ts'
 	import { get } from 'svelte/store'
 	import { Button, Form, FormGroup, FormText, Label, Input } from 'sveltestrap'
 	import Relay from '../../components/Relay.svelte'
@@ -13,6 +14,8 @@
 	add_relay = () => preferences.update ({relays, ...rest}) ->
 		relays.push('')
 		{relays, ...rest}
+	`$: public_key = (new Key(prefs.public_key)).as_npub()`
+	`$: private_key = (new Key(prefs.private_key)).as_nsec()`
 </script>
 
 <h1>Profile</h1>
@@ -39,26 +42,29 @@
 	type="text"
 	name="pubic key"
 	id="public_key"
-	placeholder={prefs.public_key}
+	placeholder={'npub...'}
 	on:change={(x) => {
 		let p = get(preferences);
-		p.public_key = x.target.value;
+		let key = new Key(x.target.value)
+		p.public_key = key.as_hex();
 		preferences.set(p);
 	}}
-	bind:value={prefs.public_key}
+	value={public_key}
 />
+
 <Label for="private_key">Private Key</Label>
 <Input
 	type="text"
 	name="pviate key"
 	id="private_key"
-	placeholder={prefs.private_key}
+	placeholder={'nsec...'}
 	on:change={(x) => {
 		let p = get(preferences);
-		p.private_key = x.target.value;
+		let key = new Key(x.target.value)
+		p.private_key = key.as_hex();
 		preferences.set(p);
 	}}
-	bind:value={prefs.private_key}
+	value={private_key}
 />
 
 <hr />

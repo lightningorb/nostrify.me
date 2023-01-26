@@ -1,3 +1,15 @@
+/*
+* @Author: lnorb.com
+* @Date:   2023-01-26 18:04:28
+* @Last Modified by:   lnorb.com
+* @Last Modified time: 2023-01-26 18:21:39
+*/
+/*
+ * @Author: lnorb.com
+ * @Date:   2023-01-23 14:18:42
+ * @Last Modified by:   lnorb.com
+ * @Last Modified time: 2023-01-26 18:04:00
+ */
 import { print } from '$lib/utils.ts';
 import { bech32, fromWords, toWords } from '$lib/bech32.ts';
 
@@ -66,9 +78,39 @@ export default class Key {
 		return this.key.slice(0, 4) === 'note';
 	}
 
+	// Check if the key is an npub
+	is_npub(): boolean {
+		return this.key.slice(0, 4) === 'npub';
+	}
+
+	// Check if the key is an nsec
+	is_nsec(): boolean {
+		return this.key.slice(0, 4) === 'nsec';
+	}
+
+	as_npub(): string {
+		try {
+			return hex_key_to_key('npub', this.key)
+		} catch {
+			return
+		}
+	}
+
+	as_nsec(): string {
+		try {
+			return hex_key_to_key('nsec', this.key)
+		} catch {
+			return
+		}
+	}
+
 	// Returns the key as a hexadecimal string if it is a note key, otherwise returns the key as is
 	as_hex(): string {
 		if (this.is_note()) {
+			return key_to_hex_key(this.key);
+		} else if (this.is_npub()) {
+			return key_to_hex_key(this.key);
+		} else if (this.is_nsec()) {
 			return key_to_hex_key(this.key);
 		} else {
 			return this.key;
