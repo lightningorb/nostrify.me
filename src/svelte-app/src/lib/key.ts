@@ -1,9 +1,9 @@
 /*
-* @Author: lnorb.com
-* @Date:   2023-01-26 18:04:28
-* @Last Modified by:   lnorb.com
-* @Last Modified time: 2023-01-26 18:21:39
-*/
+ * @Author: lnorb.com
+ * @Date:   2023-01-26 18:04:28
+ * @Last Modified by:   lnorb.com
+ * @Last Modified time: 2023-01-26 18:21:39
+ */
 /*
  * @Author: lnorb.com
  * @Date:   2023-01-23 14:18:42
@@ -90,17 +90,17 @@ export default class Key {
 
 	as_npub(): string {
 		try {
-			return hex_key_to_key('npub', this.key)
+			return hex_key_to_key('npub', this.key);
 		} catch {
-			return
+			return;
 		}
 	}
 
 	as_nsec(): string {
 		try {
-			return hex_key_to_key('nsec', this.key)
+			return hex_key_to_key('nsec', this.key);
 		} catch {
-			return
+			return;
 		}
 	}
 

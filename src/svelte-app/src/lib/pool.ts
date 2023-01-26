@@ -1,3 +1,10 @@
+/*
+ * @Author: lnorb.com
+ * @Date:   2023-01-25 11:47:01
+ * @Last Modified by:   lnorb.com
+ * @Last Modified time: 2023-01-27 03:59:04
+ */
+
 import { preferences } from '$lib/store.ts';
 import { get } from 'svelte/store';
 import { browser, dev } from '$app/environment';
@@ -19,7 +26,11 @@ class Pool {
 	}
 	connect() {
 		this.relays.forEach(async (x) => {
-			await x.connect();
+			try {
+				await x.connect();
+			} catch {
+				console.log('could not conenct to', x.url);
+			}
 		});
 	}
 	on(event_name, callback) {

@@ -45,7 +45,7 @@
 	placeholder={'npub...'}
 	on:change={(x) => {
 		let p = get(preferences);
-		let key = new Key(x.target.value)
+		let key = new Key(x.target.value);
 		p.public_key = key.as_hex();
 		preferences.set(p);
 	}}
@@ -60,7 +60,7 @@
 	placeholder={'nsec...'}
 	on:change={(x) => {
 		let p = get(preferences);
-		let key = new Key(x.target.value)
+		let key = new Key(x.target.value);
 		p.private_key = key.as_hex();
 		preferences.set(p);
 	}}

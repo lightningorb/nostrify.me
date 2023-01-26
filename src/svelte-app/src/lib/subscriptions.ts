@@ -1,9 +1,9 @@
 /*
-* @Author: lnorb.com
-* @Date:   2023-01-26 15:39:16
-* @Last Modified by:   lnorb.com
-* @Last Modified time: 2023-01-26 18:08:46
-*/
+ * @Author: lnorb.com
+ * @Date:   2023-01-26 15:39:16
+ * @Last Modified by:   lnorb.com
+ * @Last Modified time: 2023-01-26 18:08:46
+ */
 
 import { verify_nip05 } from '$lib/nostr-utils.js';
 import pool from '$lib/pool.ts';
