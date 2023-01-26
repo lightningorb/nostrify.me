@@ -26,14 +26,14 @@ class Database {
 			this.db = new SQL.Database();
 			let sqlstr =
 				'CREATE TABLE data ( \
-        id TEXT PRIMARY KEY, \
-        pubkey TEXT , \
-        created_at INTEGER , \
-        kind INTEGER , \
-        tags TEXT , \
-        content TEXT , \
-        sig TEXT  \
-      ); \
+		        id TEXT PRIMARY KEY, \
+		        pubkey TEXT , \
+		        created_at INTEGER , \
+		        kind INTEGER , \
+		        tags TEXT , \
+		        content TEXT , \
+		        sig TEXT  \
+		      ); \
       ';
 			this.db.run(sqlstr);
 		}
@@ -72,6 +72,16 @@ class Database {
 					':sig': data.sig
 				}
 			);
+		}
+	}
+
+	update_identity_data(data: Note) {
+		let res = this.db.exec("SELECT * FROM data WHERE kind = 0 AND pubkey = '" + data.pubkey + "'");
+		if (res.length > 0) {
+			this.db.run('DELETE FROM data WHERE pubkey = :pubkey', {
+				':pubkey': data.pubkey
+			});
+			this.insert_identity_data(data);
 		}
 	}
 

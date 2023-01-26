@@ -15,6 +15,7 @@
 	} from 'sveltestrap';
 	import { Figure, Image } from 'sveltestrap';
 	import { preferences } from '$lib/store.ts';
+	import { Profile } from '$lib/interfaces.ts';
 	import { onDestroy, onMount } from 'svelte';
 	import { calculateId, signId } from 'nostr';
 	import Avatar from './Avatar.svelte';
@@ -22,22 +23,16 @@
 	import pool from '$lib/pool.ts';
 
 	export let key;
-	export let debug = true;
-
-	interface Profile {
-		name: any;
-		website: any;
-		npub: any;
-		picture: any;
-		about: any;
-	}
+	export let debug = false;
 
 	let profile: Profile = {
-		name: null,
-		website: null,
-		npub: null,
-		picture: null,
-		about: null
+		name: '',
+		website: '',
+		npub: '',
+		picture: '',
+		about: '',
+		nip05: '',
+		nip05valid: false
 	};
 
 	let edit: boolean = false;
@@ -71,6 +66,41 @@
 			}
 		});
 	}
+
+	var publish_profile = async function (event) {
+		console.log(event);
+		for (var i in prefs.relays) {
+			const relay = window.NostrTools.relayInit(prefs.relays[i]);
+			await relay.connect(1);
+			relay.on('connect', async () => {
+				let pub = await relay.publish(event);
+				pub.on('ok', () => {
+					console.log(`ok`);
+				});
+				pub.on('seen', () => {
+					console.log(`we saw the event`);
+				});
+				pub.on('failed', (reason) => {
+					console.log(`failed to publish`);
+					console.log(reason);
+				});
+			});
+		}
+	};
+
+	var set_metadata = async function () {
+		edit = false;
+		var event = {
+			kind: 0,
+			pubkey: prefs.public_key,
+			created_at: Math.floor(Date.now() / 1000),
+			tags: [],
+			content: JSON.stringify(profile)
+		};
+		event.id = await calculateId(event);
+		event.sig = await signId(prefs.private_key, event.id);
+		publish_profile(event);
+	};
 </script>
 
 {#if debug}
@@ -103,58 +133,40 @@
 				<Input type="text" name="picture_url" id="picture_url" bind:value={profile.picture} />
 			{/if}
 		</CardBody>
-		{#if edit}
-			<Label for="about">About</Label>
-			<Input type="textarea" name="about" id="about" bind:value={profile.about} />
-		{:else if profile.about}
-			<CardFooter>About: <SvelteMarkdown source={profile.about} /></CardFooter>
-		{:else if me}
-			<p><small>Please tell us what this profile is about.</small></p>
-		{/if}
-		{#if edit}
-			<Label for="website">Website</Label>
-			<Input type="text" name="website" id="website" bind:value={profile.website} />
-		{:else if profile.website}
-			<CardFooter>Website: {profile.website}</CardFooter>
-		{:else if me}
-			<p>
-				<small>Please set your website. If you're not sure, you can use https://nostrify.me.</small>
-			</p>
-		{/if}
+		<CardFooter>
+			{#if edit}
+				<Label for="about">About</Label>
+				<Input type="textarea" name="about" id="about" bind:value={profile.about} />
+			{:else if profile.about}
+				<p>About: <SvelteMarkdown source={profile.about} /></p>
+			{:else if me}
+				<p><small>Please tell us what this profile is about.</small></p>
+			{/if}
+			{#if edit}
+				<Label for="nip05">Nip05</Label>
+				<Input type="text" name="nip05" id="nip05" bind:value={profile.nip05} />
+			{:else if profile.nip05}
+				<p>Nip05: {profile.nip05}</p>
+			{:else if me}
+				<p><small>Please tell us your NIP05 identifier.</small></p>
+			{/if}
+			{#if edit}
+				<Label for="website">Website</Label>
+				<Input type="text" name="website" id="website" bind:value={profile.website} />
+			{:else if profile.website}
+				<p>Website: {profile.website}</p>
+			{:else if me}
+				<p>
+					<small
+						>Please set your website. If you're not sure, you can use https://nostrify.me.</small
+					>
+				</p>
+			{/if}
+		</CardFooter>
 		<hr style="padding-bottom: 0xp; margin-bottom: 0px; border-width: 2px !important;" />
 	</Card>
 	{#if edit}
-		<Button
-			on:click|once={async () => {
-				edit = false;
-				event = {
-					kind: 0,
-					pubkey: prefs.public_key,
-					created_at: Math.floor(Date.now() / 1000),
-					tags: [],
-					content: JSON.stringify(profile)
-				};
-				event.id = await calculateId(event);
-				event.sig = await signId(prefs.private_key, event.id);
-				for (var i in prefs.relays) {
-					const relay = window.NostrTools.relayInit(prefs.relays[i]);
-					await relay.connect(1);
-					relay.on('connect', async () => {
-						let pub = await relay.publish(event);
-						pub.on('ok', () => {
-							console.log(`ok`);
-						});
-						pub.on('seen', () => {
-							console.log(`we saw the event`);
-						});
-						pub.on('failed', (reason) => {
-							console.log(`failed to publish`);
-							console.log(reason);
-						});
-					});
-				}
-			}}>Submit</Button
-		>
+		<Button on:click|once={set_metadata}>Submit</Button>
 	{:else if me}
 		<Button on:click={() => (edit = true)}><Icon name="pen-fill" /></Button>
 	{/if}

@@ -1,4 +1,5 @@
 <script>
+	import subs from '$lib/subscriptions.ts';
 	import { onMount } from 'svelte';
 	import initSqlJs from 'sql.js';
 	import db from '$lib/db.ts';
@@ -17,6 +18,7 @@
 	import { get } from 'svelte/store';
 	import pool from '$lib/pool.ts';
 	export let data = null;
+	subs.nip05_timer();
 	let prefs = {};
 	preferences.subscribe((x) => (prefs = x));
 	$: connected_relays = {};

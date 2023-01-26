@@ -1,84 +1,86 @@
-<script lang="coffeescript">
-	import NoteContent from './NoteContent.svelte'
+<script lang="ts">
+	import NoteContent from './NoteContent.svelte';
 	import { preferences, input_focus, key_pressed } from '$lib/store.ts';
 	import { goto } from '$app/navigation';
-	import db from '$lib/db.ts'
-	import subs from '$lib/subscriptions.ts'
-	import { key_to_hex_key, hex_key_to_key} from '$lib/key.ts'
-	import { print, getRandomInt, breakLongWords } from '$lib/utils.ts'
+	import db from '$lib/db.ts';
+	import subs from '$lib/subscriptions.ts';
+	import { key_to_hex_key, hex_key_to_key } from '$lib/key.ts';
+	import { print, getRandomInt, breakLongWords } from '$lib/utils.ts';
 	import { page } from '$app/stores';
-	import YTFrame from '../components/YoutubeIframe.svelte'
-	import VideoIframe from '../components/VimeoIframe.svelte'
-	import Avatar from '../components/Avatar.svelte'
-	import Fa from 'svelte-fa/src/fa.svelte'
-	import Post from '../components/Post.svelte'
-	import Note from '../components/Note.svelte'
-	import Metadata from '../components/Metadata.svelte'
-	import { faReply, faInfo, faCertificate } from '@fortawesome/free-solid-svg-icons/index.js'
-	import {
-	  Card,
-	  Button,
-	  CardText,
-	  CardBody,
-	  CardFooter,
-	  CardHeader,
-	  Fade
-	} from 'sveltestrap'
-	import { onMount } from 'svelte'
-	import Time from '../components/Time.svelte'
-	isOpen = false
-	export base = '/e/'
-	export parent = null
-	export self = null
-	export restart = null
-	export parents = []
-	export id = null
-	export sig = null
-	export depth = 0
-	export kind = 0
-	export content = ''
-	export tags = '[]'
-	export pubkey = ''
-	export created_at = 0
-	show_meta_button = false
-	w = 0
-	h = 0
-	yt = ''
-	vimeo = ''
-	user_id = null
-	user_doc = null
-	`$: ref = JSON.parse(tags).filter((x) => x[0] == 'e')`
-	rand_int = 'id_'+getRandomInt(0, 1e10).toString()
-	[is_replying, show_metadata] = [false, false]
-	onMount ->
-		if pubkey?
-			subs.main(pubkey)
-		cmd = () ->
-			if pubkey?
-				user_doc = db.get_identity(pubkey)?
-				user_id = db.get_identity(pubkey)?.content
-				if user_id
-					user_id = JSON.parse(user_id)
-		setInterval(cmd, 1000)
-		cmd()
-		isOpen = true
-	on_note_click = ->
-		$page.url.searchParams.set('key', id)
-		goto(base+'?'+$page.url.searchParams.toString())
-	key_pressed.subscribe((x) ->
-		if self.active
-			key = x[0].key;
-			if key == 'j'
-				next = self.next
-				if next?
-					$page.url.searchParams.set('key', next.id)
-					goto(base+'?'+$page.url.searchParams.toString())
-			else if key == 'k'
-				prev = self.prev or ref?[ref.length-1][1]
-				if prev
-					$page.url.searchParams.set('key', prev)
-					goto(base+'?'+$page.url.searchParams.toString())
-	)
+	import Avatar from '../components/Avatar.svelte';
+	import Fa from 'svelte-fa/src/fa.svelte';
+	import Post from '../components/Post.svelte';
+	import Note from '../components/Note.svelte';
+	import Metadata from '../components/Metadata.svelte';
+	import { faReply, faInfo, faCertificate } from '@fortawesome/free-solid-svg-icons/index.js';
+	import { Card, Button, CardText, CardBody, CardFooter, CardHeader, Fade } from 'sveltestrap';
+	import { onMount } from 'svelte';
+	import Time from '../components/Time.svelte';
+
+	let isOpen = false;
+	export let base = '/e/';
+	export let parent = null;
+	export let self = null;
+	export let restart = null;
+	export let parents = [];
+	export let id = null;
+	export let sig = null;
+	export let depth = 0;
+	export let kind = 0;
+	export let content = '';
+	export let tags = '[]';
+	export let pubkey = '';
+	export let created_at = 0;
+	let show_meta_button = false;
+	let w = 0;
+	let h = 0;
+	let yt = '';
+	let user_id = null;
+	let user_doc = null;
+	let ref = JSON.parse(tags).filter((x) => x[0] == 'e');
+	let rand_int = 'id_' + getRandomInt(0, 1e10).toString();
+	let [is_replying, show_metadata] = [false, false];
+
+	onMount(async () => {
+		if (pubkey) {
+			await subs.main(pubkey);
+		}
+		let cmd = () => {
+			if (pubkey) {
+				user_doc = db.get_identity(pubkey)?.content;
+				if (user_doc) {
+					user_id = JSON.parse(user_doc);
+				}
+			}
+		};
+		setInterval(cmd, 1000);
+		cmd();
+		isOpen = true;
+	});
+
+	let on_note_click = () => {
+		$page.url.searchParams.set('key', id);
+		goto(base + '?' + $page.url.searchParams.toString());
+	};
+
+	key_pressed.subscribe((x: any) => {
+		if (self.active) {
+			let key = x[0].key;
+			if (key === 'j') {
+				let next = self.next;
+				if (next) {
+					$page.url.searchParams.set('key', next.id);
+					goto(base + '?' + $page.url.searchParams.toString());
+				}
+			} else if (key === 'k') {
+				let prev = self.prev || ref?.[ref.length - 1][1];
+				if (prev) {
+					$page.url.searchParams.set('key', prev);
+					goto(base + '?' + $page.url.searchParams.toString());
+				}
+			}
+		}
+	});
 </script>
 
 <Card
@@ -126,9 +128,6 @@
 			<NoteContent source={content} />
 			<!-- {/if} -->
 		</div>
-		<!-- <small>User Identity: {pubkey.slice(0, 10)}...</small> -->
-		<!-- <br /> -->
-		<!-- <small>Note Identity: <a href={'/?key=' + id}>{id.slice(0, 5)}</a></small> -->
 		<Button class="small-button" size="sm" on:click={() => (is_replying = true)}
 			><Fa class="small-fa" icon={faReply} /></Button
 		>
