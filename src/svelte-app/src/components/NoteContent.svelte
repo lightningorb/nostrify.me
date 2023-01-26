@@ -63,8 +63,8 @@
 <br />
 <p style="overflow-wrap: break-word;">{makeSafeHtml(source)}</p>
 {#if prefs.show_images}
-	{#each links as imgs}
-		<img src={link} class="img-fluid" alt="image" />
+	{#each imgs as img}
+		<img src={img} class="img-fluid" alt="image" />
 	{/each}
 {/if}
 {#each invoices as invoice}
