@@ -1,5 +1,11 @@
 /*
  * @Author: lnorb.com
+ * @Date:   2023-01-27 03:59:54
+ * @Last Modified by:   lnorb.com
+ * @Last Modified time: 2023-01-27 04:43:24
+ */
+/*
+ * @Author: lnorb.com
  * @Date:   2023-01-25 11:47:01
  * @Last Modified by:   lnorb.com
  * @Last Modified time: 2023-01-27 03:59:04
@@ -29,7 +35,7 @@ class Pool {
 			try {
 				await x.connect();
 			} catch {
-				console.log('could not conenct to', x.url);
+				console.log('could not connect to', x.url);
 			}
 		});
 	}

@@ -1,4 +1,6 @@
-<script>
+<script type="ts">
+	import { Styles } from 'sveltestrap';
+
 	import subs from '$lib/subscriptions.ts';
 	import { onMount } from 'svelte';
 	import initSqlJs from 'sql.js';
@@ -31,7 +33,7 @@
 		connected = Object.entries(connected_relays).length / prefs.relays.length > 0.5;
 	});
 	async function init() {
-		var SQL = await initSqlJs();
+		var SQL = await initSqlJs({ locateFile: (file) => `/${file}` });
 		db.init(SQL);
 		db_init = true;
 	}
@@ -53,17 +55,15 @@
 	});
 </script>
 
-<!-- <svelte:window on:keydown={(key) => {
-	if (input_has_focus != true){
-		key_pressed.set([{'key':key.key}])
-	}
-	
-}} /> -->
 <svelte:head>
-	<link rel="stylesheet" href="{base}/styles.css" />
-	<link rel="stylesheet" href="{base}/{prefs.theme_name}.css" />
+	{#if prefs.theme_name != 'default'}
+		<link rel="stylesheet" href="{base}/css/styles.css" />
+	{/if}
+	<link rel="stylesheet" href="{base}/css/{prefs.theme_name}.css" />
 </svelte:head>
+
 <Styles />
+
 {#if !connected || !db_init}
 	<Spinner size="sm" type="grow" />
 	{#each Object.entries(connected_relays) as relay}
@@ -81,10 +81,6 @@
 	>
 {:else}
 	<div class="submenu" style="position: absolute; top: 10px; left: 10px;">
-		<br />
-		<a href="/"><Fa style="font-size: 1.5em; color: #1DA1F2;" icon={faDove} /></a>
-		<br />
-		<br />
 		{#each data.sections as section}
 			{#if section.callback}
 				<a on:click={section.callback()}>

@@ -38,6 +38,7 @@
 		"dayjs": "^1.11.7",
 		"idb": "^7.1.1",
 		"jest": "^29.3.1",
+		"kysely": "^0.23.4",
 		"nostr": "github:jb55/nostr-js",
 		"sql.js": "^1.8.0",
 		"svelte-emoji-picker": "^1.1.2",

@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Notifications from '../../components/Notifications.svelte';
+	import Notifications from '$lib/components/Notifications.svelte';
 </script>
 
 <Notifications />

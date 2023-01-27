@@ -1,3 +1,9 @@
+/*
+* @Author: lnorb.com
+* @Date:   2023-01-27 06:57:00
+* @Last Modified by:   lnorb.com
+* @Last Modified time: 2023-01-27 08:23:51
+*/
 @import url('https://fonts.googleapis.com/css2?family=Source+Code+Pro&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Open+Sans&display=swap');
 
@@ -80,7 +86,7 @@ td {
 }
 
 .card-header {
-	border-bottom-color: #00000000 !important;
+	/*	border-bottom-color: #00000000 !important;*/
 	--bs-card-cap-bg: #00000000 !important;
 	background-color: #00000000;
 }
@@ -98,7 +104,7 @@ td {
 	color: var(--text-color) !important;
 	border-color: var(--border-color) !important;
 	border-radius: 0px !important;
-	border-bottom-style: none !important;
+	/*	border-bottom-style: none !important;*/
 }
 
 /* Forms */

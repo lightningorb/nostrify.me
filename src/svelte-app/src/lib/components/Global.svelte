@@ -68,11 +68,11 @@
 		{base}
 		self={note}
 		parent={null}
-		related={note.related}
 		pubkey={note.pubkey}
 		created_at={note.created_at}
 		tags={note.tags}
 		id={note.id}
 		content={note.content}
+		is_global={true}
 	/>
 {/each}

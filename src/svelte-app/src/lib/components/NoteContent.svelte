@@ -1,12 +1,16 @@
 <script lang="ts">
+	import { page } from '$app/stores';
 	import { preferences } from '$lib/store.ts';
 	import { print, getRandomInt, breakLongWords } from '$lib/utils.ts';
 	import Invoice from './Invoice.svelte';
 	import SvelteMarkdown from 'svelte-markdown';
 	export var source = '';
+	export let is_global = false;
 
 	var prefs = {};
 	preferences.subscribe((x) => (prefs = x));
+
+	$: show_images = (is_global && prefs.show_global_images) || (!is_global && prefs.show_images);
 
 	var decodeString = (str) => {
 		return str.replace(/&#([0-9]+);/g, (match, charCode) => String.fromCharCode(charCode));
@@ -62,7 +66,7 @@
 <br />
 <br />
 <p style="overflow-wrap: break-word;">{makeSafeHtml(source)}</p>
-{#if prefs.show_images}
+{#if show_images}
 	{#each imgs as img}
 		<img src={img} class="img-fluid" alt="image" />
 	{/each}
@@ -71,7 +75,7 @@
 	<Invoice bolt11={invoice} />
 {/each}
 {#each urls as url}
-	<a href={url}>{url.slice(0, 20)}...</a>
+	<a target="_blank" href={url}>{url.slice(0, 20)}...</a>
 {/each}
 
 <br />

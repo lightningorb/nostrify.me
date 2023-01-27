@@ -57,15 +57,27 @@
 </script>
 
 <br />
-{#each entries as note (note.id)}
-	<Note
-		self={note}
-		parent={null}
-		related={note.related}
-		pubkey={note.pubkey}
-		created_at={note.created_at}
-		tags={note.tags}
-		id={note.id}
-		content={note.content}
-	/>
-{/each}
+
+<span class="profile-notes">
+	{#each entries as note (note.id)}
+		<Note
+			self={note}
+			parent={null}
+			related={note.related}
+			pubkey={note.pubkey}
+			created_at={note.created_at}
+			tags={note.tags}
+			id={note.id}
+			content={note.content}
+		/>
+	{/each}
+</span>
+
+<style>
+	:global(.profile-notes) {
+		max-width: 500px;
+		margin-left: auto;
+		margin-right: auto;
+		display: block;
+	}
+</style>

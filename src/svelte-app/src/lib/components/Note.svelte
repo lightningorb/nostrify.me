@@ -7,17 +7,18 @@
 	import { key_to_hex_key, hex_key_to_key } from '$lib/key.ts';
 	import { print, getRandomInt, breakLongWords } from '$lib/utils.ts';
 	import { page } from '$app/stores';
-	import Avatar from '../components/Avatar.svelte';
+	import Avatar from '$lib/components/Avatar.svelte';
 	import Fa from 'svelte-fa/src/fa.svelte';
-	import Post from '../components/Post.svelte';
-	import Note from '../components/Note.svelte';
-	import Metadata from '../components/Metadata.svelte';
+	import Post from '$lib/components/Post.svelte';
+	import Note from '$lib/components/Note.svelte';
+	import Metadata from '$lib/components/Metadata.svelte';
 	import { faReply, faInfo, faCertificate } from '@fortawesome/free-solid-svg-icons/index.js';
 	import { Card, Button, CardText, CardBody, CardFooter, CardHeader, Fade } from 'sveltestrap';
 	import { onMount } from 'svelte';
-	import Time from '../components/Time.svelte';
+	import Time from '$lib/components/Time.svelte';
 
 	let isOpen = false;
+	export let is_global = false;
 	export let base = '/e/';
 	export let parent = null;
 	export let self = null;
@@ -92,11 +93,12 @@
 				<Avatar
 					src={(user_id && user_id.picture) || null}
 					alt={(user_id && user_id.name) || rand_int}
+					{is_global}
 				/>
 				{#if user_id}
 					{user_id.name ? user_id.name : pubkey.slice(0, 5)}
 				{/if}
-				<Time id={'time' + id} utc={created_at} />
+				<Time utc={created_at} />
 				{#if user_id}
 					{#if user_id.nip05}
 						<br /><small>{user_id.nip05}</small>
@@ -125,7 +127,7 @@
 					<YTFrame id={yt} width={w} height={w / (16 / 9)} />
 				</div>
 			{:else} -->
-			<NoteContent source={content} />
+			<NoteContent {is_global} source={content} />
 			<!-- {/if} -->
 		</div>
 		<Button class="small-button" size="sm" on:click={() => (is_replying = true)}

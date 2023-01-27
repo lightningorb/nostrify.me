@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Global from '../components/Global.svelte';
+	import Global from '$lib/components/Global.svelte';
 	import { page } from '$app/stores';
 	import { preferences } from '$lib/store.ts';
 	import { Col, Container, Row } from 'sveltestrap';
-	import Thread from '../components/Thread.svelte';
+	import Thread from '$lib/components/Thread.svelte';
 	let unique = [{}];
 	let prefs = {};
 	preferences.subscribe((x) => (prefs = x));
