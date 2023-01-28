@@ -106,7 +106,7 @@
 
 			<Card class="mb-3">
 				<CardHeader>
-					<CardTitle>Image Filters</CardTitle>
+					<CardTitle>Filters</CardTitle>
 				</CardHeader>
 				<CardBody>
 					<td
@@ -156,6 +156,19 @@
 							on:change={(x) => {
 								let p = get(preferences);
 								p.show_global_profile_images = !p.show_global_profile_images;
+								preferences.set(p);
+							}}
+						/></td
+					>
+					<hr />
+					<td
+						><Input
+							type="switch"
+							label="show unverified accounts"
+							checked={prefs.show_unverified_accounts}
+							on:change={(x) => {
+								let p = get(preferences);
+								p.show_unverified_accounts = !p.show_unverified_accounts;
 								preferences.set(p);
 							}}
 						/></td

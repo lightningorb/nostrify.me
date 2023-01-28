@@ -75,7 +75,7 @@
 	<Invoice bolt11={invoice} />
 {/each}
 {#each urls as url}
-	<a target="_blank" href={url}>{url.slice(0, 20)}...</a>
+	<a target="_blank" href={url}>{url.slice(0, 20)}...</a><br />
 {/each}
 
 <br />

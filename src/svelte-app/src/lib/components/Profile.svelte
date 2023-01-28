@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Clean from '$lib/components/Clean.svelte';
+	import subs from '$lib/subscriptions.ts';
 	import PlainText from '$lib/components/PlainText.svelte';
 	import SvelteMarkdown from 'svelte-markdown';
 	import {
@@ -23,7 +24,6 @@
 	import { onDestroy, onMount } from 'svelte';
 	import { calculateId, signId } from 'nostr';
 	import Avatar from './Avatar.svelte';
-	import db from '$lib/db.ts';
 	import pool from '$lib/pool.ts';
 
 	export let key;
@@ -42,31 +42,26 @@
 	let edit: boolean = false;
 	let prefs: any = null;
 	preferences.subscribe((x) => (prefs = x));
-	let subs: any[] = [];
 	$: me = key == prefs.public_key;
+	let interval = 0;
 
-	const event_cb = (ev: any) => {
-		db.insert_data(ev);
-		profile = JSON.parse(ev.content);
-	};
-
-	onMount(() => {
-		var db_profile = db.get_identity(key);
-		if (db_profile) profile = JSON.parse(db_profile.content);
-		subs = pool.sub('profile', {
-			kinds: [0],
-			authors: [key]
-		});
-
-		for (let s of subs) {
-			s[1].on('event', event_cb);
-		}
+	onMount(async () => {
+		console.log('profile on mount');
+		console.log(key);
+		await subs.main(key);
+		let cmd = () => {
+			if (key) {
+				var db_profile = window.db.get_profile(key);
+				if (db_profile) profile = db_profile;
+			}
+		};
+		interval = setInterval(cmd, 1000);
+		cmd();
 	});
 
 	onDestroy(() => {
-		for (let s of subs) {
-			s[1].unsub();
-		}
+		console.log('profile on destroy');
+		clearInterval(interval);
 	});
 
 	var publish_profile = async function (event) {
@@ -169,6 +164,8 @@
 			{:else if me}
 				<p><small>Please tell us your NIP05 identifier.</small></p>
 			{/if}
+			<CardSubtitle>Nip05 Checked</CardSubtitle>
+			<p>{profile.nip05checked ? 'yes' : 'no'}</p>
 			{#if edit}
 				<Label for="website">Website</Label>
 				<Input type="text" name="website" id="website" bind:value={profile.website} />

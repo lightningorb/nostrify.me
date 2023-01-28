@@ -1,5 +1,4 @@
 <script lang="ts">
-	import db from '$lib/db.ts';
 	import { onDestroy } from 'svelte';
 	import { preferences } from '$lib/store';
 	import pool from '$lib/pool';
@@ -23,9 +22,9 @@
 	};
 	const moar = () => {
 		max += 10;
-		entries = db.get_data(max);
+		entries = window.db.get_data(max);
 	};
-	const event_cb = (ev) => db.insert_data(ev);
+	const event_cb = (ev) => window.db.insert_data(ev);
 	let subs = [];
 	onDestroy(() => {
 		for (let intv of intervals) {
@@ -47,10 +46,10 @@
 	}
 
 	onMount(() => {
-		entries = db.get_data(max);
+		entries = window.db.get_data(max);
 		let intervalId = setInterval(() => {
-			entries = db.get_data(max);
-			db.save();
+			entries = window.db.get_data(max);
+			window.db.save();
 		}, 1000 * 1);
 		intervals.push(intervalId);
 		window.addEventListener('scroll', scroll_event_handler);
@@ -76,3 +75,5 @@
 		is_global={true}
 	/>
 {/each}
+
+(populating messages & profiles...)

@@ -20,7 +20,6 @@
 	import { get } from 'svelte/store';
 	import pool from '$lib/pool.ts';
 	export let data = null;
-	subs.nip05_timer();
 	let prefs = {};
 	preferences.subscribe((x) => (prefs = x));
 	$: connected_relays = {};
@@ -36,8 +35,10 @@
 		var SQL = await initSqlJs({ locateFile: (file) => `/${file}` });
 		db.init(SQL);
 		db_init = true;
+		window.db = db;
 	}
 	onMount(() => {
+		subs.nip05_timer();
 		init();
 		if (window)
 			window.addEventListener('scroll', () => {

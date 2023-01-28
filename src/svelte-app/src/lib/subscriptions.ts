@@ -1,59 +1,78 @@
 /*
  * @Author: lnorb.com
- * @Date:   2023-01-26 15:39:16
+ * @Date:   2023-01-28 12:00:08
  * @Last Modified by:   lnorb.com
- * @Last Modified time: 2023-01-26 18:08:46
+ * @Last Modified time: 2023-01-28 12:06:07
  */
 
 import { verify_nip05 } from '$lib/nostr-utils.js';
+import { Profile } from '$lib/interfaces.ts';
 import pool from '$lib/pool.ts';
-import db from '$lib/db.ts';
+
+import { Mutex, Semaphore, withTimeout } from 'async-mutex';
+const mutex = new Mutex();
 
 class Subscriptions {
-	timer: number = 0;
-	sub_pubkeys: Set<string> = new Set([]);
-	needs_nip05_check: Set<string> = new Set([]);
 	checking_nips: boolean = false;
 
-	main(pubkey: string): void {
-		clearTimeout(this.timer);
-		const obj = this;
-		if (!db.get_identity(pubkey)) {
-			this.sub_pubkeys.add(pubkey);
-		}
-		this.timer = setTimeout((): void => {
-			var subs = pool.sub('event_ids', {
-				kinds: [0],
-				authors: [...obj.sub_pubkeys]
-			});
-			for (var s of subs) {
-				s[1].on('event', (ev) => {
-					var db_ev = db.get_identity(pubkey);
-					if (!db_ev) {
-						db.insert_identity_data(ev);
-						obj.needs_nip05_check.add(ev.pubkey);
-					}
-				});
+	async main(pubkey: string): void {
+		await mutex.runExclusive(async () => {
+			var profile = window.db.get_profile(pubkey);
+			console.log(profile);
+			if (profile == undefined) {
+				window.db.insert_blank_profile(pubkey);
+				profile = window.db.get_profile(pubkey);
 			}
-			return;
-		}, 2000);
+			if (profile.profile_check_requested || profile.checking_profile || profile.profile_checked) {
+				return;
+			}
+			profile.profile_check_requested = true;
+			window.db.update_profile(profile, pubkey);
+		});
+	}
+
+	sub_to_profiles() {
+		var sub_profiles = window.db.get_profiles_that_need_checking();
+		var subs = pool.sub('event_ids', {
+			kinds: [0],
+			authors: sub_profiles.map((x) => x.pubkey)
+		});
+		for (var profile of sub_profiles) {
+			profile.checking_profile = true;
+			window.db.update_profile(profile, profile.pubkey);
+		}
+		for (var s of subs) {
+			s[1].on('event', async (ev) => {
+				await mutex.runExclusive(async () => {
+					var profile = JSON.parse(ev.content);
+					var db_profile = window.db.get_profile(ev.pubkey);
+					if (db_profile.profile_checked == true) return;
+					profile.profile_checked = true;
+					profile.checking_profile = false;
+					window.db.update_profile(profile, ev.pubkey);
+				});
+			});
+			s[1].on('eose', () => {
+				s[1].unsub();
+			});
+		}
 		return;
 	}
 
 	nip05_timer() {
+		setInterval(() => {
+			this.sub_to_profiles();
+		}, 1000);
+
 		setInterval(async () => {
-			if (this.needs_nip05_check.size > 0 && !this.checking_nips) {
+			let needs_nip05_check = window.db.get_profiles_that_need_nip05_check();
+			if (needs_nip05_check.length > 0 && !this.checking_nips) {
 				this.checking_nips = true;
-				var done = new Set([]);
-				for (var pubkey of this.needs_nip05_check) {
-					var ev = db.get_identity(pubkey);
-					var profile = JSON.parse(ev.content);
-					profile.nip05valid = await verify_nip05(profile, ev.pubkey);
-					ev.content = JSON.stringify(profile);
-					db.update_identity_data(ev);
-					done.add(pubkey);
+				for (var profile of needs_nip05_check) {
+					profile.nip05valid = await verify_nip05(profile, profile.pubkey);
+					profile.nip05checked = true;
+					window.db.update_profile(profile, profile.pubkey);
 				}
-				for (var pubkey of done) this.needs_nip05_check.delete(pubkey);
 				this.checking_nips = false;
 			}
 		}, 1000);

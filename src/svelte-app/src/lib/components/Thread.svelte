@@ -5,7 +5,6 @@
 	import { onMount, onDestroy } from 'svelte';
 	import pool from '$lib/pool.ts';
 	import Note from './Note.svelte';
-	import db from '$lib/db.ts';
 	import Key from '$lib/Key.ts';
 	var note;
 	export var restart;
@@ -20,7 +19,7 @@
 
 	function get_note(id) {
 		var seen = new Set([]);
-		note = db.get_note(id.as_hex());
+		note = window.db.get_note(id.as_hex());
 		if (note) get_note_tree(note, 0, seen);
 		return note;
 	}
@@ -30,7 +29,7 @@
 	var debounce = function (id) {
 		clearTimeout(timer);
 		timer = setTimeout(function () {
-			db.save();
+			window.db.save();
 			note = get_note(id);
 		}, 1000);
 	};
@@ -40,7 +39,7 @@
 		seen.add(id);
 		note.related = [];
 		note.parent = parent;
-		var related = db.get_related(id);
+		var related = window.db.get_related(id);
 		var prev = note;
 		for (var i = 0; i < related.length; i++) {
 			if (!seen.has(related[i].id)) {
@@ -55,7 +54,7 @@
 	}
 
 	function on_event(ev) {
-		db.insert_data(ev);
+		window.db.insert_data(ev);
 		note = get_note(key);
 	}
 
@@ -72,13 +71,13 @@
 		subs = pool.sub('note', { kinds: [1], ids: [key.as_hex()] });
 		for (var s of subs)
 			s[1].on('event', (ev) => {
-				db.insert_data(ev);
+				window.db.insert_data(ev);
 				note = get_note(key);
 			});
 		refs = pool.sub('refs', { kinds: [1], '#e': [key.as_hex()] });
 		for (var s of refs)
 			s[1].on('event', (ev) => {
-				db.insert_data(ev);
+				window.db.insert_data(ev);
 				debounce(key);
 			});
 	});

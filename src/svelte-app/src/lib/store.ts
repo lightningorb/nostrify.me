@@ -1,8 +1,8 @@
 /*
  * @Author: lnorb.com
- * @Date:   2023-01-27 08:02:41
+ * @Date:   2023-01-28 09:45:19
  * @Last Modified by:   lnorb.com
- * @Last Modified time: 2023-01-27 08:10:08
+ * @Last Modified time: 2023-01-28 09:45:24
  */
 
 import { persisted } from 'svelte-local-storage-store';
@@ -20,6 +20,7 @@ var initial = {
 	debug: false,
 	show_images: true,
 	show_profile_images: true,
+	show_unverified_accounts: false,
 	show_global_images: false,
 	show_global_profile_images: false,
 	relays: [
@@ -37,4 +38,4 @@ var initial = {
 	]
 };
 
-export const preferences = persisted('prefs_v4', initial);
+export const preferences = persisted('prefs_v5', initial);
