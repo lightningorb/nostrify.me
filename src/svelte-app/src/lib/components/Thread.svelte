@@ -85,7 +85,6 @@
 
 <br />
 <h2>Thread</h2>
-<hr />
 <br />
 {#if note && note.content != undefined}
 	<Note
@@ -101,5 +100,5 @@
 		content={note.content}
 		{restart}
 	/>
+	<hr class="mt-0" style="margin-left: 5px;" />
 {/if}
-<hr class="mt-0" style="margin-left: 5px;" />

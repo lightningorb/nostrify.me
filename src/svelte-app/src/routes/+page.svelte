@@ -12,18 +12,19 @@
 </script>
 
 {#if prefs.stack}
-	<table style="table-layout:fixed; background-color: transparent !important; ">
+	<table class="stack-table">
 		<tr>
-			<td style="width: 50">
+			<td style="width: 50%">
 				<div
-					style={'overflow-y: scroll; height:' + window.innerHeight + 'px;'}
+					style={'height:' + window.innerHeight + 'px;'}
+					class="stack-div"
 					on:scroll={(e) => (scroll_event = e)}
 				>
 					<Global {restart} {scroll_event} base="/" />
 				</div>
 			</td>
 			<td style="width: 50%">
-				<div style={'overflow-y: scroll; height:' + window.innerHeight + 'px;'}>
+				<div style={'height:' + window.innerHeight + 'px;'} class="stack-div">
 					{#each unique as key (key)}
 						<Thread {restart} base="/" />
 					{/each}
@@ -34,3 +35,15 @@
 {:else}
 	<Global />
 {/if}
+
+<style>
+	:global(.stack-div) {
+		overflow-y: scroll;
+		padding: 5px;
+	}
+	:global(.stack-table) {
+		table-layout: fixed;
+		background-color: transparent !important;
+		width: 100%;
+	}
+</style>
