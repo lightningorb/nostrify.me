@@ -18,7 +18,6 @@ class Subscriptions {
 	async main(pubkey: string): void {
 		await mutex.runExclusive(async () => {
 			var profile = window.db.get_profile(pubkey);
-			console.log(profile);
 			if (profile == undefined) {
 				window.db.insert_blank_profile(pubkey);
 				profile = window.db.get_profile(pubkey);
@@ -49,7 +48,7 @@ class Subscriptions {
 					if (db_profile.profile_checked == true) return;
 					profile.profile_checked = true;
 					profile.checking_profile = false;
-					window.db.update_profile(profile, ev.pubkey);
+					window.db.update_profile(profile, ev.pubkey, s[0]);
 				});
 			});
 			s[1].on('eose', () => {

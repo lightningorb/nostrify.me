@@ -1,25 +1,7 @@
-/*
- * @Author: lnorb.com
- * @Date:   2023-01-28 10:35:01
- * @Last Modified by:   lnorb.com
- * @Last Modified time: 2023-01-28 11:24:58
- */
-/*
- * @Author: lnorb.com
- * @Date:   2023-01-28 10:20:09
- * @Last Modified by:   lnorb.com
- * @Last Modified time: 2023-01-28 10:34:44
- */
-/*
- * @Author: lnorb.com
- * @Date:   2023-01-27 17:11:22
- * @Last Modified by:   lnorb.com
- * @Last Modified time: 2023-01-28 09:43:01
- */
-
 import { getRandomInt } from '$lib/utils.ts';
 import initSqlJs from 'sql.js';
 import { print, toBinString, toBinArray } from '$lib/utils.ts';
+import { create_table } from '$lib/orm.ts';
 import { preferences } from '$lib/store.ts';
 import { Profile, Note } from '$lib/interfaces.ts';
 
@@ -35,29 +17,41 @@ class Database {
 		} else {
 			print('NO Session Storage data - initializing db');
 			this.db = new SQL.Database();
-			this.db.run(
-				'CREATE TABLE data ( \
-		        id TEXT PRIMARY KEY, \
-		        pubkey TEXT , \
-		        created_at INTEGER , \
-		        kind INTEGER , \
-		        tags TEXT , \
-		        content TEXT , \
-		        sig TEXT  \
-		      );'
-			);
-			this.db.run(
-				'CREATE TABLE profile (id TEXT PRIMARY KEY, name TEXT, pubkey TEXT, nip05 TEXT, nip05checked INTEGER, nip05valid INTEGER, npub TEXT, website TEXT, picture TEXT, about TEXT, checking_profile INTEGER, profile_checked INTEGER, profile_check_requested INTEGER);'
-			);
+			this.db.run(create_table('data', ...[
+				['id', 'TEXT PRIMARY KEY'],
+				['pubkey', 'TEXT'],
+				['created_at', 'INTEGER'],
+				['kind', 'INTEGER'],
+				['tags', 'TEXT'],
+				['content', 'TEXT'],
+				['sig', 'TEXT']
+			]));
+			this.db.run(create_table('profile', ...[
+				['id', 'TEXT PRIMARY KEY'],
+				['relay', 'TEXT'],
+				['name', 'TEXT'],
+				['pubkey', 'TEXT'],
+				['nip05', 'TEXT'],
+				['nip05checked', 'INTEGER'],
+				['nip05valid', 'INTEGER'],
+				['npub', 'TEXT'],
+				['website', 'TEXT'],
+				['picture', 'TEXT'],
+				['about', 'TEXT'],
+				['checking_profile', 'INTEGER'],
+				['profile_checked', 'INTEGER'],
+				['profile_check_requested', 'INTEGER']
+			]));
 		}
 	}
 
-	insert_profile(data, pubkey) {
+	insert_profile(data, pubkey, relay = '') {
 		if (!pubkey) return;
 		let res = this.db.exec("SELECT * FROM profile WHERE pubkey = '" + pubkey + "'");
 		if (res.length == 0) {
 			var doc = {
 				':id': getRandomInt(0, 100000000).toString(),
+				':relay': relay,
 				':name': data.name || '',
 				':pubkey': pubkey,
 				':nip05': data.nip05 || '',
@@ -72,7 +66,7 @@ class Database {
 				':profile_check_requested': data.profile_check_requested === true ? 1 : 0
 			};
 			this.db.run(
-				'INSERT INTO profile VALUES (:id, :name, :pubkey, :nip05, :nip05checked, :nip05valid, :npub, :website, :picture, :about, :checking_profile, :profile_checked, :profile_check_requested)',
+				'INSERT INTO profile VALUES (:id, :relay, :name, :pubkey, :nip05, :nip05checked, :nip05valid, :npub, :website, :picture, :about, :checking_profile, :profile_checked, :profile_check_requested)',
 				doc
 			);
 		}
@@ -101,14 +95,15 @@ class Database {
 		}
 	}
 
-	update_profile(data, pubkey) {
+	update_profile(data, pubkey, relay='') {
 		if (!pubkey) return;
 		this.db.exec("DELETE FROM profile WHERE pubkey = '" + pubkey + "'");
-		this.insert_profile(data, pubkey);
+		this.insert_profile(data, pubkey, relay);
 	}
 
 	insert_blank_profile(pubkey) {
 		var doc = {
+			relay: '',
 			name: '',
 			pubkey: pubkey,
 			nip05: '',
