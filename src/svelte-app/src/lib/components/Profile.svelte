@@ -50,7 +50,7 @@
 		console.log(key);
 		await subs.main(key);
 		let cmd = () => {
-			if (key) {
+			if (key && !edit) {
 				var db_profile = window.db.get_profile(key);
 				if (db_profile) profile = db_profile;
 			}
@@ -159,13 +159,13 @@
 				<Label for="nip05">Nip05</Label>
 				<Input type="text" name="nip05" id="nip05" bind:value={profile.nip05} />
 			{:else if profile.nip05}
-				<CardSubtitle>Nip05</CardSubtitle>
-				<p>{profile.nip05}</p>
+				<CardSubtitle>Nip05: {profile.nip05}</CardSubtitle>
+				<br/>
 			{:else if me}
 				<p><small>Please tell us your NIP05 identifier.</small></p>
 			{/if}
-			<CardSubtitle>Nip05 Checked</CardSubtitle>
-			<p>{profile.nip05checked ? 'yes' : 'no'}</p>
+			<CardSubtitle>Nip05 Valid: {profile.nip05valid ? 'yes' : 'no'}</CardSubtitle>
+				<br/>
 			{#if edit}
 				<Label for="website">Website</Label>
 				<Input type="text" name="website" id="website" bind:value={profile.website} />
@@ -179,7 +179,7 @@
 				</p>
 			{/if}
 		</CardFooter>
-		<!-- <hr style="padding-bottom: 0xp; margin-bottom: 0px; border-width: 2px !important;" /> -->
+		<hr style="padding-bottom: 0xp; margin-bottom: 0px; border-width: 1px !important;" />
 	</Card>
 {/if}
 

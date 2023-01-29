@@ -60,7 +60,7 @@ class Database {
 				':npub': data.npub || '',
 				':website': data.website || '',
 				':picture': data.picture || '',
-				':about': data.picture || '',
+				':about': data.about || '',
 				':checking_profile': data.checking_profile === true ? 1 : 0,
 				':profile_checked': data.profile_checked === true ? 1 : 0,
 				':profile_check_requested': data.profile_check_requested === true ? 1 : 0
