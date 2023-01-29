@@ -13,14 +13,14 @@ export var key_pressed = writable([{}]);
 
 var initial = {
 	stack: false,
-	theme_name: 'default',
+	theme_name: 'light',
 	global_hours: 1,
 	public_key: '',
 	private_key: '',
 	debug: false,
 	show_images: true,
 	show_profile_images: true,
-	show_unverified_accounts: false,
+	show_unverified_accounts: true,
 	show_global_images: false,
 	show_global_profile_images: false,
 	relays: [
@@ -38,4 +38,4 @@ var initial = {
 	]
 };
 
-export const preferences = persisted('prefs_v5', initial);
+export const preferences = persisted('prefs_v9', initial);

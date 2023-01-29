@@ -57,9 +57,9 @@
 </script>
 
 <svelte:head>
-	{#if prefs.theme_name != 'default'}
-		<link rel="stylesheet" href="{base}/css/styles.css" />
-	{/if}
+	<!-- {#if prefs.theme_name != 'default'} -->
+	<!-- {/if} -->
+	<link rel="stylesheet" href="{base}/css/styles.css" />
 	<link rel="stylesheet" href="{base}/css/{prefs.theme_name}.css" />
 </svelte:head>
 

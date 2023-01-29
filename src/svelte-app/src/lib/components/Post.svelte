@@ -78,6 +78,6 @@
 	{/if}
 </FormGroup>
 
-<Popover class="meta-popover" target={rand_int}>
+<Popover class="meta-popover" placement={'bottom'} target={rand_int} style='width: 80%'>
 	<EmojiPicker bind:value={text} />
 </Popover>

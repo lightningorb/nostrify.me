@@ -44,7 +44,7 @@
 <Container>
 	<Row>
 		<Col>
-			<Card class="mb-3">
+			<Card class="mb-0">
 				<CardHeader>
 					<CardTitle>General</CardTitle>
 				</CardHeader>
@@ -65,7 +65,7 @@
 				</CardBody>
 			</Card>
 
-			<Card class="mb-3">
+			<Card class="mb-0">
 				<CardHeader>
 					<CardTitle>Keys</CardTitle>
 				</CardHeader>
@@ -104,7 +104,7 @@
 
 			<!-- <ImageFilter /> -->
 
-			<Card class="mb-3">
+			<Card class="mb-0">
 				<CardHeader>
 					<CardTitle>Filters</CardTitle>
 				</CardHeader>
@@ -176,7 +176,7 @@
 				</CardBody>
 			</Card>
 
-			<Card class="mb-3">
+			<Card class="mb-0">
 				<CardHeader>
 					<CardTitle>Relays</CardTitle>
 				</CardHeader>
@@ -192,7 +192,7 @@
 				</CardBody>
 			</Card>
 
-			<Card class="mb-3">
+			<Card class="mb-0">
 				<CardHeader>
 					<CardTitle>Danger Zone</CardTitle>
 				</CardHeader>
@@ -201,6 +201,7 @@
 					<Button on:click={clear_prefs}>Clear all prefs</Button>
 				</CardBody>
 			</Card>
+			<hr class='mt-0'/>
 		</Col>
 	</Row>
 </Container>
