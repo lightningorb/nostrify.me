@@ -11,10 +11,6 @@
 	let restart = () => (unique = [{}]);
 </script>
 
-<div class="text-center">
-	<a href="/register"><Button>Get Nostrified</Button></a>
-</div>
-
 {#if prefs.stack}
 	<table class="stack-table">
 		<tr>

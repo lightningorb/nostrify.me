@@ -11,7 +11,9 @@
 	import Post from '$lib/components/Post.svelte';
 	import Note from '$lib/components/Note.svelte';
 	import Metadata from '$lib/components/Metadata.svelte';
-	import { faReply, faInfo, faCertificate } from '@fortawesome/free-solid-svg-icons/index.js';
+	import { faInfo } from '@fortawesome/free-solid-svg-icons/index.js';
+	import { faReply } from '@fortawesome/free-solid-svg-icons/index.js';
+	import { faCertificate } from '@fortawesome/free-solid-svg-icons/index.js';
 	import { Card, Button, CardText, CardBody, CardFooter, CardHeader, Fade } from 'sveltestrap';
 	import { onMount, onDestroy } from 'svelte';
 	import Time from '$lib/components/Time.svelte';
@@ -48,6 +50,7 @@
 		(prefs.show_unverified_accounts == false && user_id && user_id.nip05valid);
 
 	onMount(async () => {
+		// console.log($page.url)
 		if (pubkey && !window.db.get_profile(pubkey)?.nip05checked) {
 			await subs.main(pubkey);
 		}
@@ -92,9 +95,9 @@
 
 {#if show_account}
 	<Card
-		style={'px; margin-left: ' + 5 + 'px; padding-top: 5px; padding-left: 5px; padding-right: 5px;'}
+		style={'px; margin-left: ' + 5 + 'px; padding-top: 0px; padding-left: 0px; padding-right: 0px;'}
 	>
-		<span class={'note-content'}>
+		<span class={'note-content'} style="padding: 20px;">
 			<div on:click={on_note_click} style="margin: 0px; padding: 0px;">
 				<a href={'/u/?key=' + pubkey}>
 					<Avatar

@@ -9,6 +9,7 @@ build:
 	cp static/nostr.jpeg build/
 
 push:
+	aws s3 rm s3://nostrify/_app --recursive
 	aws s3 cp build/ s3://nostrify/ --recursive
 	aws cloudfront create-invalidation --distribution-id E14Q4FNWR3HZVI --paths '/*'
 

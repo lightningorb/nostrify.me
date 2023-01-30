@@ -4,8 +4,7 @@
 	export let is_global = false;
 	export let src;
 	export let alt;
-	export let width = 30;
-	export let height = 30;
+	export let size = '30px';
 	var prefs = {};
 	preferences.subscribe((x) => (prefs = x));
 	$: show_images = (is_global && prefs.show_global_images) || (!is_global && prefs.show_images);
@@ -16,30 +15,29 @@
 			img.src = src;
 		});
 	}
+	let hashed_src = 'https://nostrify.me/avatar' + hash_profile_filler(alt) + '.jpeg';
 </script>
 
-{#if show_images}
-	{#if src}
-		{#await preload(src)}
-			<img
-				src={'https://nostrify.me/avatar' + hash_profile_filler(alt) + '.jpeg'}
-				{alt}
-				style={`width: ${width}px; height: ${height}px; border-radius: 30px;`}
-			/>
-		{:then _}
-			<img {src} {alt} style={`width: ${width}px; height: ${height}px; border-radius: 30px;`} />
-		{/await}
+<span style="--size: {size}">
+	{#if show_images}
+		{#if src}
+			{#await preload(src)}
+				<img src={hashed_src} {alt} class="avatar" />
+			{:then _}
+				<img {src} {alt} class="avatar" />
+			{/await}
+		{:else}
+			<img src={hashed_src} {alt} class="avatar" />
+		{/if}
 	{:else}
-		<img
-			src={'https://nostrify.me/avatar' + hash_profile_filler(alt) + '.jpeg'}
-			{alt}
-			style={`width: ${width}px; height: ${height}px; border-radius: 30px;`}
-		/>
+		<img src={hashed_src} class="avatar" {alt} />
 	{/if}
-{:else}
-	<img
-		src={'https://nostrify.me/avatar' + hash_profile_filler(alt) + '.jpeg'}
-		{alt}
-		style={`width: ${width}px; height: ${height}px; border-radius: 30px;`}
-	/>
-{/if}
+</span>
+
+<style>
+	:global(.avatar) {
+		height: var(--size);
+		width: var(--size);
+		border-radius: 30px;
+	}
+</style>

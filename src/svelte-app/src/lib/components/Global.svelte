@@ -22,6 +22,7 @@
 	};
 	const moar = () => {
 		max += 10;
+		console.log(max, entries.length);
 		entries = window.db.get_data(max);
 	};
 	const event_cb = (ev) => window.db.insert_data(ev);
@@ -36,6 +37,8 @@
 	});
 
 	let scroll_event_handler = (event) => {
+		let needs_moar =
+			Math.ceil(window.innerHeight + window.pageYOffset) >= document.body.offsetHeight;
 		if (Math.ceil(window.innerHeight + window.pageYOffset) >= document.body.offsetHeight) {
 			moar();
 		}

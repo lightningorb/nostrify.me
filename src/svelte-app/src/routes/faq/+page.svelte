@@ -1,5 +1,5 @@
 <script>
-	import { Lottie } from 'lottie-svelte';
+	//	import { Lottie } from 'lottie-svelte';
 	import SvelteMarkdown from 'svelte-markdown';
 	import { Col, Container, Row } from 'sveltestrap';
 	import Nav from '$lib/components/NostrificationNav.svelte';
@@ -22,10 +22,10 @@ Nostrify means: "To adopt, accept, or include as part of one's own culture."
 `}
 			/>
 
-			<div style="max-width:200px; margin: auto;">
-				<Lottie path="https://assets1.lottiefiles.com/packages/lf20_31wO02KXPj.json" speed={1} />
+			<!-- 			<div style="max-width:200px; margin: auto;">
+				<Lottie path="/nostrified.json" speed={1} />
 			</div>
-
+ -->
 			<SvelteMarkdown
 				source={`
 

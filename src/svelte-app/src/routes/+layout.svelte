@@ -1,7 +1,9 @@
 <script type="ts">
+	import { Icon } from 'sveltestrap';
 	import { Styles } from 'sveltestrap';
-
+	import { page } from '$app/stores';
 	import subs from '$lib/subscriptions.ts';
+	import SVG from '$lib/components/Svg.svelte';
 	import { onMount } from 'svelte';
 	import initSqlJs from 'sql.js';
 	import db from '$lib/db.ts';
@@ -13,7 +15,7 @@
 		faRightToBracket,
 		faRightFromBracket,
 		faDove
-	} from '@fortawesome/free-solid-svg-icons/index.js';
+	} from '@fortawesome/free-regular-svg-icons/index.js';
 	import { base } from '$app/paths';
 	import { preferences, input_focus, key_pressed } from '$lib/store.ts';
 	import { Styles } from 'sveltestrap';
@@ -82,19 +84,42 @@
 		>.</small
 	>
 {:else}
-	<div class="submenu" style="position: absolute; top: 10px; left: 10px;">
+	<div class="submenu" style="position: absolute; top: 10px; left: 20px;">
+		<a href="/"
+			><img
+				src="/ostrich-svgrepo-com.svg"
+				style:width={'30px'}
+				style:color="white"
+				style="position: relative; top: 5px; left: -5px;"
+			/></a
+		><br /><br />
 		{#each data.sections as section}
 			{#if section.callback}
 				<a on:click={section.callback()}>
 					{#if section.icon}
 						<Fa icon={section.icon} />
 					{/if}
+					{#if section.bsIcon}
+						<Icon name={section.bsIcon} />
+					{/if}
 					{@html section.title}
 				</a>
 			{:else}
-				<a href={`${base}/${section.slug}`}>
+				<a href={`${section.slug}`}>
 					{#if section.icon}
-						<Fa icon={section.icon} />
+						<Fa
+							style={$page.url.pathname == section.slug ? 'color: var(--heading-color);' : ''}
+							icon={section.icon}
+						/>
+					{/if}
+					{#if section.bsIcon}
+						<Icon
+							name={section.bsIcon}
+							style={$page.url.pathname == section.slug ? 'color: var(--heading-color);' : ''}
+						/>
+					{/if}
+					{#if section.svg}
+						<SVG />
 					{/if}
 					{@html section.title}
 				</a>

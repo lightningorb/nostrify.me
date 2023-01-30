@@ -38,4 +38,4 @@ var initial = {
 	]
 };
 
-export const preferences = persisted('prefs_v9', initial);
+export const preferences = persisted('prefs_v10', initial);

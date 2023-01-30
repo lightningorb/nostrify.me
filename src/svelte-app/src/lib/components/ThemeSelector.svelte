@@ -8,6 +8,7 @@
             { name: "Pitch Black", value: "pitchblack" },
             { name: "City Lights", value: "citylights" },
             { name: "Ariake Dark", value: "ariakedark" },
+            { name: "hamstr.to", value: "hamstr" },
             { name: "OpenAI", value: "openai" },
         ]
     prefs = {}

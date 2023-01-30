@@ -67,7 +67,6 @@
 			on:focus={() => {
 				input_focus.set(true);
 			}}
-			autofocus
 		/>
 	{/if}
 	<span id={rand_int} style="position: relative; top: 3px; left: 15px; cursor: pointer;">😁</span>

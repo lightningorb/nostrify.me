@@ -1,5 +1,5 @@
 <script>
-	import { Lottie } from 'lottie-svelte';
+	//	import { Lottie } from 'lottie-svelte';
 	import { TabContent, TabPane } from 'sveltestrap';
 	import axios from 'axios';
 	import SvelteMarkdown from 'svelte-markdown';
@@ -84,10 +84,10 @@
 										<p><i>"To adopt, accept, or include as part of one's own culture."</i></p>
 
 										<div style="max-width:200px; margin: auto;">
-											<Lottie
+											<!-- 											<Lottie
 												path="https://assets1.lottiefiles.com/packages/lf20_31wO02KXPj.json"
 												speed={1}
-											/>
+											/> -->
 										</div>
 									</CardText>
 								</CardBody>
@@ -113,26 +113,29 @@
 						{#if !i_have_keys}
 							<SvelteMarkdown source={`If you don't know what keys are, click "generate some"`} />
 							<br />
-							<Button class="shadow" color={'light'} disabled={i_have_keys || generate_some}>
-								<a
-									href="#step2"
-									on:click={() => {
-										generate_some = false;
-										i_have_keys = true;
-									}}>I have keys</a
-								>
+							<Button
+								class="shadow"
+								color={'light'}
+								on:click={() => {
+									generate_some = false;
+									i_have_keys = true;
+								}}
+								disabled={i_have_keys || generate_some}
+							>
+								I have keys
 							</Button>
-							<Button class="shadow" color={'light'} disabled={i_have_keys || generate_some}>
-								<a
-									href="#step2"
-									on:click={() => {
-										generate_some = true;
-										i_have_keys = true;
-										prefs.private_key = window.NostrTools.generatePrivateKey();
-										prefs.public_key = window.NostrTools.getPublicKey(prefs.private_key);
-										preferences.set(prefs);
-									}}>Generate some</a
-								>
+							<Button
+								class="shadow"
+								color={'light'}
+								disabled={i_have_keys || generate_some}
+								on:click={() => {
+									generate_some = true;
+									i_have_keys = true;
+									prefs.private_key = window.NostrTools.generatePrivateKey();
+									prefs.public_key = window.NostrTools.getPublicKey(prefs.private_key);
+									preferences.set(prefs);
+								}}
+								>Generate Some
 							</Button>
 						{/if}
 						{#if i_have_keys}

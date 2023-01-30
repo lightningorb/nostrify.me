@@ -130,7 +130,7 @@
 					<td
 						><Input
 							type="switch"
-							label="show dick pics (show unverified accounts...)"
+							label="show unverified accounts"
 							checked={prefs.show_unverified_accounts}
 							on:change={(x) => {
 								let p = get(preferences);

@@ -135,7 +135,7 @@
 		</CardHeader>
 		<CardBody>
 			{#if profile.picture}
-				<Avatar src={profile.picture} alt={profile.name} width={300} height={300} />
+				<Avatar src={profile.picture} alt={profile.name} size={'300px'} />
 				<br />
 			{:else if me}
 				<p><small>Please set your profile picture URL</small></p>

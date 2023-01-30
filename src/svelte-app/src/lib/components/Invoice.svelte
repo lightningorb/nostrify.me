@@ -7,5 +7,5 @@
 {#if show_invoice}
 	{bolt11}
 {:else}
-	<Button on:click={() => (show_invoice = true)}>Show invoice</Button>
+	<a class="btn" on:click|capture={() => (show_invoice = true)}>Show invoice</a>
 {/if}

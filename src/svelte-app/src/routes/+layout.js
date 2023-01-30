@@ -9,42 +9,49 @@ import Fa from 'svelte-fa/src/fa.svelte';
 import { get } from 'svelte/store';
 import { preferences } from '$lib/store.ts';
 
+import { faUser, faBell } from '@fortawesome/free-regular-svg-icons/index.js';
+
 import {
 	faTableColumns,
-	faUser,
 	faHouse,
-	faBell,
-	faCircleInfo,
-	faCog
+	faCog,
+	faCircleInfo
 } from '@fortawesome/free-solid-svg-icons/index.js';
 
 export var load = function () {
 	return {
 		sections: [
 			{
-				slug: '',
+				slug: '/',
 				title: '',
-				icon: faHouse
+				bsIcon: 'house-heart'
 			},
 			{
-				slug: 'notifications/',
+				slug: '/notifications/',
 				title: '',
 				icon: faBell
 			},
 			{
-				slug: 'u/',
+				slug: '/u/',
 				title: '',
 				icon: faUser
 			},
 			{
-				slug: 'settings/',
+				slug: '/settings/',
 				title: '',
-				icon: faCog
+				bsIcon: 'gear-wide'
 			},
+			// {
+			// 	slug: '/about/',
+			// 	title: '',
+			// 	bsIcon: 'info-circle'
+			// },
 			{
-				slug: 'about/',
+				slug: '/register/',
 				title: '',
-				icon: faCircleInfo
+				svg: {
+					path: ''
+				}
 			},
 			{
 				slug: '',
@@ -54,7 +61,7 @@ export var load = function () {
 					preferences.set(prefs);
 				},
 				title: '',
-				icon: faTableColumns
+				bsIcon: 'layout-three-columns'
 			}
 		]
 	};

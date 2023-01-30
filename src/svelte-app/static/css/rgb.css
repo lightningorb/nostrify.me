@@ -1,0 +1,9 @@
+:root {
+	--primary-color: red;
+	--primary-color-hover: green;
+	--secondary-color: blue;
+	--text-color: purple;
+	--heading-color: white;
+	--table-secondary-color: black;
+	--border-color: cyan;
+}
