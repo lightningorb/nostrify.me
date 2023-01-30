@@ -1,4 +1,5 @@
 <script lang="ts">
+	import Keys from '$lib/components/Keys.svelte';
 	import { print } from '$lib/utils.ts';
 	import { preferences } from '$lib/store.ts';
 	import Key from '$lib/key.ts';
@@ -65,42 +66,7 @@
 				</CardBody>
 			</Card>
 
-			<Card class="mb-0">
-				<CardHeader>
-					<CardTitle>Keys</CardTitle>
-				</CardHeader>
-				<CardBody>
-					<Label for="public_key">Public Key</Label>
-					<Input
-						type="text"
-						name="pubic key"
-						id="public_key"
-						placeholder={'npub...'}
-						on:change={(x) => {
-							let p = get(preferences);
-							let key = new Key(x.target.value);
-							p.public_key = key.as_hex();
-							preferences.set(p);
-						}}
-						value={public_key}
-					/>
-
-					<Label for="private_key">Private Key</Label>
-					<Input
-						type="text"
-						name="pviate key"
-						id="private_key"
-						placeholder={'nsec...'}
-						on:change={(x) => {
-							let p = get(preferences);
-							let key = new Key(x.target.value);
-							p.private_key = key.as_hex();
-							preferences.set(p);
-						}}
-						value={private_key}
-					/>
-				</CardBody>
-			</Card>
+			<Keys />
 
 			<!-- <ImageFilter /> -->
 
@@ -164,7 +130,7 @@
 					<td
 						><Input
 							type="switch"
-							label="show unverified accounts"
+							label="show dick pics (show unverified accounts...)"
 							checked={prefs.show_unverified_accounts}
 							on:change={(x) => {
 								let p = get(preferences);
@@ -201,7 +167,7 @@
 					<Button on:click={clear_prefs}>Clear all prefs</Button>
 				</CardBody>
 			</Card>
-			<hr class='mt-0'/>
+			<hr class="mt-0" />
 		</Col>
 	</Row>
 </Container>

@@ -6,6 +6,7 @@
 	import initSqlJs from 'sql.js';
 	import db from '$lib/db.ts';
 	import { print } from '$lib/utils.ts';
+	import { Button } from 'sveltestrap';
 	import { Spinner } from 'sveltestrap';
 	import Fa from 'svelte-fa/src/fa.svelte';
 	import {

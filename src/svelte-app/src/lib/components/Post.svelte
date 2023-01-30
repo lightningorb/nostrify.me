@@ -71,13 +71,13 @@
 		/>
 	{/if}
 	<span id={rand_int} style="position: relative; top: 3px; left: 15px; cursor: pointer;">😁</span>
-	{#if text}
+	{#if text && prefs.private_key != ''}
 		<Button class="float-end" on:click|once={() => post()}>Post</Button>
 	{:else}
 		<Button class="float-end" on:click|once={() => post()} disabled>Post</Button>
 	{/if}
 </FormGroup>
 
-<Popover class="meta-popover" placement={'bottom'} target={rand_int} style='width: 80%'>
+<Popover class="meta-popover" placement={'bottom'} target={rand_int} style="width: 80%">
 	<EmojiPicker bind:value={text} />
 </Popover>

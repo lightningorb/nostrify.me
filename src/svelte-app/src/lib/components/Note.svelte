@@ -96,7 +96,7 @@
 	>
 		<span class={'note-content'}>
 			<div on:click={on_note_click} style="margin: 0px; padding: 0px;">
-				<a href={'/profile/?key=' + pubkey}>
+				<a href={'/u/?key=' + pubkey}>
 					<Avatar
 						src={(user_id && user_id.picture) || null}
 						alt={(user_id && user_id.name) || rand_int}

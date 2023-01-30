@@ -87,7 +87,7 @@ td {
 }
 
 .card-header {
-		border-bottom-color: #00000000 !important;
+	border-bottom-color: #00000000 !important;
 	--bs-card-cap-bg: #00000000 !important;
 	background-color: #00000000;
 }

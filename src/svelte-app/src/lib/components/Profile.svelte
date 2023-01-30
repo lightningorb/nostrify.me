@@ -113,20 +113,20 @@
 	<Card class="profile-card" md={5}>
 		<CardHeader>
 			{#if edit}
-				<Button style="float: right;" size="sm" color={'light'} on:click={() => (edit = false)}
-					>Cancel</Button
-				>
-				<Button style="float: right;" size="sm" color={'light'} on:click|once={set_metadata}
-					>Submit</Button
-				>
-			{:else if me}
-				<Button style="float: right;" size="sm" color={'light'} on:click={() => (edit = true)}
-					><Icon name="pen-fill" /></Button
-				>
-			{/if}
-			{#if edit}
-				<Label for="name">name</Label>
-				<Input type="textarea" name="name" id="name" bind:value={profile.name} />
+				<Label for="name">name / pseudonym</Label>
+				<Input
+					type="textarea"
+					name="name"
+					id="name"
+					bind:value={profile.name}
+					invalid={profile.name == ''}
+					valid={profile.name != ''}
+					feedback={profile.name ? 'great' : 'required'}
+					on:change={(x) => {
+						var name = x.target.value;
+						profile.nip05 = x.target.value.replace(/[^a-z0-9-_\.]/gi, '') + '@nostrify.me';
+					}}
+				/>
 			{:else if profile.name}
 				<CardTitle>{profile.name}</CardTitle>
 			{:else if me}
@@ -150,22 +150,31 @@
 				<Label for="about">About</Label>
 				<Input type="textarea" name="about" id="about" bind:value={profile.about} />
 			{:else if profile.about}
-				<CardSubtitle>About</CardSubtitle>
+				<!-- <CardSubtitle>About</CardSubtitle> -->
 				<CardText><PlainText text={profile.about} /></CardText>
 			{:else if me}
 				<p><small>Please tell us what this profile is about.</small></p>
 			{/if}
 			{#if edit}
 				<Label for="nip05">Nip05</Label>
-				<Input type="text" name="nip05" id="nip05" bind:value={profile.nip05} />
+				<Input
+					type="text"
+					name="nip05"
+					id="nip05"
+					bind:value={profile.nip05}
+					invalid={profile.nip05 == ''}
+					valid={profile.nip05 != ''}
+					feedback={profile.nip05 ? 'great' : 'required'}
+				/>
 			{:else if profile.nip05}
 				<CardSubtitle>Nip05: {profile.nip05}</CardSubtitle>
-				<br/>
+				<br />
 			{:else if me}
 				<p><small>Please tell us your NIP05 identifier.</small></p>
 			{/if}
+			<br />
 			<CardSubtitle>Nip05 Valid: {profile.nip05valid ? 'yes' : 'no'}</CardSubtitle>
-				<br/>
+			<br />
 			{#if edit}
 				<Label for="website">Website</Label>
 				<Input type="text" name="website" id="website" bind:value={profile.website} />
@@ -178,9 +187,24 @@
 					>
 				</p>
 			{/if}
+
+			{#if edit}
+				<Button style="float: right;" size="sm" color={'light'} on:click={() => (edit = false)}
+					>Cancel</Button
+				>
+				<Button style="float: right;" size="sm" color={'light'} on:click|once={set_metadata}
+					>Submit</Button
+				>
+			{:else if me}
+				<Button style="float: right;" size="sm" color={'light'} on:click={() => (edit = true)}
+					><Icon name="pen-fill" /></Button
+				>
+			{/if}
+			<br />
 		</CardFooter>
 		<hr style="padding-bottom: 0xp; margin-bottom: 0px; border-width: 1px !important;" />
 	</Card>
+	<br />
 {/if}
 
 <style>

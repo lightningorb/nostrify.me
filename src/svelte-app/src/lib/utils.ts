@@ -12,6 +12,12 @@ const breakLongWords = (sentence) =>
 		.map((word) => (word.length > 30 ? word.match(/.{1,30}/g).join(' ') : word))
 		.join(' ');
 
+// interface String {
+//   startswith: (str) => {
+//   	return this.slice(0, str.length) == str
+//   }; // <-- Whatever signature you want.
+// }
+
 export { print, toBinString, toBinArray, getRandomInt, hash_profile_filler, breakLongWords };
 
 console.assert(toBinString([72, 101, 108, 108, 111]) === 'Hello');

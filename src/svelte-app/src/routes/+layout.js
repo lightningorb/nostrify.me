@@ -32,7 +32,7 @@ export var load = function () {
 				icon: faBell
 			},
 			{
-				slug: 'profile/',
+				slug: 'u/',
 				title: '',
 				icon: faUser
 			},

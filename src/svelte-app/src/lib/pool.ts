@@ -24,11 +24,11 @@ class Pool {
 	init() {
 		const prefs = get(preferences);
 		if (browser) prefs.relays.forEach((x) => this.relays.add(window.NostrTools.relayInit(x)));
-		if (browser && prefs.public_key === '') {
-			prefs.private_key = window.NostrTools.generatePrivateKey();
-			prefs.public_key = window.NostrTools.getPublicKey(prefs.private_key);
-			preferences.set(prefs);
-		}
+		// if (browser && prefs.public_key === '') {
+		// 	prefs.private_key = window.NostrTools.generatePrivateKey();
+		// 	prefs.public_key = window.NostrTools.getPublicKey(prefs.private_key);
+		// 	preferences.set(prefs);
+		// }
 	}
 	connect() {
 		this.relays.forEach(async (x) => {

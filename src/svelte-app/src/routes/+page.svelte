@@ -2,7 +2,7 @@
 	import Global from '$lib/components/Global.svelte';
 	import { page } from '$app/stores';
 	import { preferences } from '$lib/store.ts';
-	import { Col, Container, Row } from 'sveltestrap';
+	import { Button, Col, Container, Row } from 'sveltestrap';
 	import Thread from '$lib/components/Thread.svelte';
 	let unique = [{}];
 	let prefs = {};
@@ -10,6 +10,10 @@
 	$: scroll_event = {};
 	let restart = () => (unique = [{}]);
 </script>
+
+<div class="text-center">
+	<a href="/register"><Button>Get Nostrified</Button></a>
+</div>
 
 {#if prefs.stack}
 	<table class="stack-table">

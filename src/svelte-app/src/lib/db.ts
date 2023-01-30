@@ -17,31 +17,41 @@ class Database {
 		} else {
 			print('NO Session Storage data - initializing db');
 			this.db = new SQL.Database();
-			this.db.run(create_table('data', ...[
-				['id', 'TEXT PRIMARY KEY'],
-				['pubkey', 'TEXT'],
-				['created_at', 'INTEGER'],
-				['kind', 'INTEGER'],
-				['tags', 'TEXT'],
-				['content', 'TEXT'],
-				['sig', 'TEXT']
-			]));
-			this.db.run(create_table('profile', ...[
-				['id', 'TEXT PRIMARY KEY'],
-				['relay', 'TEXT'],
-				['name', 'TEXT'],
-				['pubkey', 'TEXT'],
-				['nip05', 'TEXT'],
-				['nip05checked', 'INTEGER'],
-				['nip05valid', 'INTEGER'],
-				['npub', 'TEXT'],
-				['website', 'TEXT'],
-				['picture', 'TEXT'],
-				['about', 'TEXT'],
-				['checking_profile', 'INTEGER'],
-				['profile_checked', 'INTEGER'],
-				['profile_check_requested', 'INTEGER']
-			]));
+			this.db.run(
+				create_table(
+					'data',
+					...[
+						['id', 'TEXT PRIMARY KEY'],
+						['pubkey', 'TEXT'],
+						['created_at', 'INTEGER'],
+						['kind', 'INTEGER'],
+						['tags', 'TEXT'],
+						['content', 'TEXT'],
+						['sig', 'TEXT']
+					]
+				)
+			);
+			this.db.run(
+				create_table(
+					'profile',
+					...[
+						['id', 'TEXT PRIMARY KEY'],
+						['relay', 'TEXT'],
+						['name', 'TEXT'],
+						['pubkey', 'TEXT'],
+						['nip05', 'TEXT'],
+						['nip05checked', 'INTEGER'],
+						['nip05valid', 'INTEGER'],
+						['npub', 'TEXT'],
+						['website', 'TEXT'],
+						['picture', 'TEXT'],
+						['about', 'TEXT'],
+						['checking_profile', 'INTEGER'],
+						['profile_checked', 'INTEGER'],
+						['profile_check_requested', 'INTEGER']
+					]
+				)
+			);
 		}
 	}
 
@@ -95,7 +105,7 @@ class Database {
 		}
 	}
 
-	update_profile(data, pubkey, relay='') {
+	update_profile(data, pubkey, relay = '') {
 		if (!pubkey) return;
 		this.db.exec("DELETE FROM profile WHERE pubkey = '" + pubkey + "'");
 		this.insert_profile(data, pubkey, relay);

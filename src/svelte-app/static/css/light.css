@@ -1,11 +1,11 @@
 /* Monokai Dark CSS Theme for Sveltestrap */
 
 :root {
-/*    --primary-color: #66d9ef;
+	/*    --primary-color: #66d9ef;
     --primary-color-hover: #f92672;
     --secondary-color: #272822;
     --text-color: #f8f8f2;
-    --heading-color: #f92672;
-    --table-secondary-color: #49483e;*/
-    --border-color: black;
+    --heading-color: #f92672;*/
+	--table-secondary-color: #ececec;
+	--border-color: black;
 }
