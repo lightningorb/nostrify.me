@@ -28,6 +28,9 @@
 	<NavbarToggler on:click={() => (isOpen = !isOpen)} />
 	<Collapse {isOpen} navbar expand="md" on:update={handleUpdate}>
 		<Nav class="ms-auto" navbar>
+			<!-- 			<NavItem>
+				<NavLink href="/fund">Development Fund</NavLink>
+			</NavItem> -->
 			<NavItem>
 				<NavLink href="/faq">FAQ</NavLink>
 			</NavItem>

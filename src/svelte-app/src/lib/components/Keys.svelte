@@ -39,7 +39,6 @@
 		} else if (k.is_nsec()) {
 			p.private_key = k.as_hex();
 			p.public_key = window.NostrTools.getPublicKey(k.as_hex());
-			p.private_key = x;
 		}
 		preferences.set(p);
 	};
@@ -75,6 +74,7 @@
 		<br />
 		{#if prefs.private_key}
 			<p>We have your private key.</p>
+			<p>{new Key(prefs.private_key).as_nsec()}</p>
 		{/if}
 		{#if prefs.private_key}
 			<Button

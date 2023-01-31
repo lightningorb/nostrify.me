@@ -13,7 +13,7 @@ export var key_pressed = writable([{}]);
 
 var initial = {
 	stack: false,
-	theme_name: 'light',
+	theme_name: 'hamstr',
 	global_hours: 1,
 	public_key: '',
 	private_key: '',

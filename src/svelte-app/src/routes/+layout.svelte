@@ -1,4 +1,5 @@
 <script type="ts">
+	import { Container, Row, Col } from 'sveltestrap';
 	import { Icon } from 'sveltestrap';
 	import { Styles } from 'sveltestrap';
 	import { page } from '$app/stores';
@@ -130,7 +131,14 @@
 		<hr />
 	</div>
 	<div style={left_style}>
-		<slot />
+		<Container>
+			<Row>
+				<Col>
+					<!-- <h1>Nostr + LN Development Fund</h1> -->
+					<slot />
+				</Col>
+			</Row>
+		</Container>
 	</div>
 	<style>
 		a {

@@ -5,6 +5,10 @@
  * @Last Modified time: 2023-01-28 08:12:40
  */
 
+interface Observer {
+  update: (data: any) => void;
+}
+
 export interface Profile {
 	name: string;
 	website: string;

@@ -1,5 +1,4 @@
 <script type="text/javascript">
-	/*import { getEventHash, signEvent, relayInit } from 'nostr-tools';*/
 	import Fa from 'svelte-fa/src/fa.svelte';
 	import { faInfo } from '@fortawesome/free-solid-svg-icons/index.js';
 	import { print, getRandomInt } from '$lib/utils.ts';
@@ -8,6 +7,7 @@
 	import { Form, FormGroup, FormText, Input, Label, Button } from 'sveltestrap';
 	import { preferences, input_focus } from '$lib/store.ts';
 	import { get } from 'svelte/store';
+	import Avatar from '$lib/components/Avatar.svelte';
 	let prefs = get(preferences);
 	let text = '';
 	export let tags = [];
@@ -55,6 +55,7 @@
 </script>
 
 <FormGroup class="que-pasa mb-md-4">
+	<!-- <Avatar alt='me' src={}/> -->
 	{#if !posting}
 		<Input
 			placeholder="Post something.. go on."
