@@ -23,44 +23,40 @@ export var load = function () {
 		sections: [
 			{
 				slug: '/',
-				title: '',
+				title: 'Home',
 				bsIcon: 'house-heart'
 			},
 			{
 				slug: '/notifications/',
-				title: '',
+				title: 'Notifications',
 				icon: faBell
 			},
 			{
 				slug: '/u/',
-				title: '',
+				title: 'Profile',
 				icon: faUser
 			},
 			{
 				slug: '/settings/',
-				title: '',
+				title: 'Settings',
 				bsIcon: 'gear-wide'
 			},
-			// {
-			// 	slug: '/about/',
-			// 	title: '',
-			// 	bsIcon: 'info-circle'
-			// },
 			{
 				slug: '/register/',
-				title: '',
+				title: 'Register',
 				svg: {
 					path: ''
 				}
 			},
 			{
-				slug: '',
+				slug: 'Stacks',
 				callback: () => {
 					var prefs = get(preferences);
 					prefs.stack = !!!prefs.stack;
 					preferences.set(prefs);
+					location.reload();
 				},
-				title: '',
+				title: 'Stacks',
 				bsIcon: 'layout-three-columns'
 			}
 		]

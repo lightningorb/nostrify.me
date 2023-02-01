@@ -47,17 +47,21 @@
 		if (window)
 			window.addEventListener('scroll', () => {
 				if (window.pageYOffset > 500) {
-					left_style = 'padding-left: 10px; padding-right: 10px;';
+					// left_style = 'padding-left: 10px; padding-right: 10px;';
 				} else {
-					left_style = 'padding-left: 50px; padding-right: 10px;';
+					// left_style = 'padding-left: 50px; padding-right: 10px;';
 				}
 			});
 	});
-	var left_style = 'padding-left: 50px; padding-right: 10px;';
+	// var left_style = 'padding-left: 50px; padding-right: 10px;';
+	var left_style = '';
 	$: input_has_focus = false;
 	input_focus.subscribe((x) => {
 		input_has_focus = x;
 	});
+	$: w = 10000;
+	$: h = 0;
+	$: xs = w < 135;
 </script>
 
 <svelte:head>
@@ -85,66 +89,74 @@
 		>.</small
 	>
 {:else}
-	<div class="submenu" style="position: absolute; top: 10px; left: 20px;">
-		<a href="/"
-			><img
-				src="/ostrich-svgrepo-com.svg"
-				style:width={'30px'}
-				style:color="white"
-				style="position: relative; top: 5px; left: -5px;"
-			/></a
-		><br /><br />
-		{#each data.sections as section}
-			{#if section.callback}
-				<a on:click={section.callback()}>
-					{#if section.icon}
-						<Fa icon={section.icon} />
-					{/if}
-					{#if section.bsIcon}
-						<Icon name={section.bsIcon} />
-					{/if}
-					{@html section.title}
-				</a>
-			{:else}
-				<a href={`${section.slug}`}>
-					{#if section.icon}
-						<Fa
-							style={$page.url.pathname == section.slug ? 'color: var(--heading-color);' : ''}
-							icon={section.icon}
-						/>
-					{/if}
-					{#if section.bsIcon}
-						<Icon
-							name={section.bsIcon}
-							style={$page.url.pathname == section.slug ? 'color: var(--heading-color);' : ''}
-						/>
-					{/if}
-					{#if section.svg}
-						<SVG />
-					{/if}
-					{@html section.title}
-				</a>
-			{/if}
-			<br />
-			<br />
-		{/each}
-		<hr />
-	</div>
-	<div style={left_style}>
-		<Container>
-			<Row>
-				<Col>
-					<!-- <h1>Nostr + LN Development Fund</h1> -->
-					<slot />
-				</Col>
-			</Row>
-		</Container>
-	</div>
-	<style>
-		a {
-			color: black;
-			font-size: 1.2em;
-			text-decoration: none;
-		}
-	</style>
+
+<Container>
+	<Row>
+		<Col xs={1} md={prefs.stack ? 1 : 2}>
+				<div bind:clientWidth={w} bind:clientHeight={h}>
+					<a href="/"
+						><img
+							src="/ostrich-svgrepo-com.svg"
+							style:width={'30px'}
+							style:color="white"
+							style="position: relative; top: 5px; left: -5px;"
+						/></a
+					><br /><br />
+					{#each data.sections as section}
+						{#if section.callback}
+							<a on:click={section.callback()}>
+								{#if section.icon}
+									<Fa icon={section.icon} />
+								{/if}
+								{#if section.bsIcon}
+									<Icon name={section.bsIcon} />
+								{/if}
+								{#if !xs}
+									{@html section.title}
+								{/if}
+							</a>
+						{:else}
+							<a href={`${section.slug}`}>
+								{#if section.icon}
+									<Fa
+										style={$page.url.pathname == section.slug ? 'color: var(--heading-color);' : ''}
+										icon={section.icon}
+									/>
+								{/if}
+								{#if section.bsIcon}
+									<Icon
+										name={section.bsIcon}
+										style={$page.url.pathname == section.slug ? 'color: var(--heading-color);' : ''}
+									/>
+								{/if}
+								{#if section.svg}
+									<SVG />
+								{/if}
+								{#if !xs}
+									{@html section.title}
+								{/if}
+							</a>
+						{/if}
+						<br />
+						<br />
+					{/each}
+					<hr />
+				</div>
+		</Col>
+		<Col xs={11} md={prefs.stack ? 11 : 7}>
+			<div style={left_style}>
+				<slot />
+			</div>
+		</Col>
+	</Row>
+</Container>
+
 {/if}
+
+<style>
+	:global(a) {
+		color: black;
+		font-size: 1.2em;
+		text-decoration: none;
+	}
+</style>
